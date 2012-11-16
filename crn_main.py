@@ -69,18 +69,38 @@ class my_top_block(gr.top_block):
 
 def main():
 
-    global n_rcvd, n_right
+    global n_rcvd, n_right, queue
         
     n_rcvd = 0
     n_right = 0
+    queue = [] 
 
     def rx_callback(ok, payload):
         global n_rcvd, n_right
         n_rcvd += 1
-        (pktno,) = struct.unpack('!H', payload[0:2])
-        if ok:
-            n_right += 1
-        print "ok: %r \t pktno: %d \t n_rcvd: %d \t n_right: %d" % (ok, pktno, n_rcvd, n_right)
+        (pktno,src,dest,data) = struct.unpack('!H', payload[0:2], payload[2:4], payload[4:6], payload[6:])
+        # reach destination
+        if int(options.id) == 3:
+            if ok:
+                n_right += 1
+            print "ok: %r \t pktno: %d \t n_rcvd: %d \t n_right: %d \t src: %d \t dest: %d" % (ok, pktno, n_rcvd, n_right, src, dest)
+
+        # retransmit
+        if int(options.id) == 2:
+            if ok:
+                n_right += 1
+            print "ok: %r \t pktno: %d \t n_rcvd: %d \t n_right: %d \t src: %d \t dest: %d" % (ok, pktno, n_rcvd, n_right, src, dest)
+            # save to queue
+            payload_re = struct.pack('!H', pktno & 0xffff) + struct.pack('!H', 2 & 0xffff) + struct.pack('!H', 3 & 0xffff) + data
+            queue.insert(0,payload_re)
+
+        # overheard by 1
+        if int(options.id) == 1:
+            if ok:
+                n_right += 1
+            print "ok: %r \t pktno: %d \t n_rcvd: %d \t n_right: %d \t src: %d \t dest: %d" % (ok, pktno, n_rcvd, n_right, src, dest)
+    
+
 
     def send_pkt(payload='', eof=False):
         return tb.txpath.send_pkt(payload, eof)
@@ -129,21 +149,61 @@ def main():
     tb.start()                      # start flow graph
 
     if int(options.id) == 1:
+        # Source
         # generate and send packets
         nbytes = int(1e6 * options.megabytes)
         n = 0
         pktno = 0
+        min_delay = 0.001
         pkt_size = int(options.size)
 
         while n < nbytes:
-            data = (pkt_size - 2) * chr(pktno & 0xff) 
-            payload = struct.pack('!H', pktno & 0xffff) + data
+            data = (pkt_size - 6) * chr(pktno & 0xff) 
+            payload = struct.pack('!H', pktno & 0xffff) + struct.pack('!H', 1 & 0xffff) + struct.pack('!H', 3 & 0xffff) + data
+
+            # sense 
+            time.sleep(10 * min_delay * random.random())
+            delay = min_delay
+            while self.tb.carrier_sensed():
+                sys.stderr.write('B')
+                time.sleep(delay)
+                if delay < 0.05:
+                    delay = delay * 2       # exponential back-off
+
             send_pkt(payload)
             n += len(payload)
             sys.stderr.write('.')
             pktno += 1
             
         send_pkt(eof=True)
+
+
+    if int(options.id) == 2:
+        # Router
+        # if queue is not empty, try to send, compete with sender
+
+        while len(queue) != 0:
+            payload = queue.pop()
+
+            # sense 
+            time.sleep(10 * min_delay * random.random())
+            delay = min_delay
+            while self.tb.carrier_sensed():
+                sys.stderr.write('B')
+                time.sleep(delay)
+                if delay < 0.05:
+                    delay = delay * 2       # exponential back-off
+
+            send_pkt(payload)
+            n += len(payload)
+            sys.stderr.write('.')
+            pktno += 1
+            
+        send_pkt(eof=True)
+
+    if int(options.id) == 3:
+        # Destination
+        pass
 
     tb.wait()                       # wait for it to finish
 
