@@ -33,7 +33,7 @@ from uhd_interface import uhd_receiver
 from transmit_path import transmit_path
 from uhd_interface import uhd_transmitter
 
-import struct, sys, time
+import struct, sys, time, random
 
 class my_top_block(gr.top_block):
     def __init__(self, callback, options):
@@ -62,6 +62,12 @@ class my_top_block(gr.top_block):
         self.connect(self.source, self.rxpath)
         self.connect(self.txpath, self.sink)
         
+
+    def carrier_sensed(self):
+        """
+        Return True if the receive path thinks there's carrier
+        """
+        return self.rxpath.carrier_sensed()
 
 # /////////////////////////////////////////////////////////////////////////////
 #                                   main
@@ -164,7 +170,7 @@ def main():
             # sense 
             time.sleep(10 * min_delay * random.random())
             delay = min_delay
-            while self.tb.carrier_sensed():
+            while tb.carrier_sensed():
                 sys.stderr.write('B')
                 time.sleep(delay)
                 if delay < 0.05:
@@ -188,7 +194,7 @@ def main():
             # sense 
             time.sleep(10 * min_delay * random.random())
             delay = min_delay
-            while self.tb.carrier_sensed():
+            while tb.carrier_sensed():
                 sys.stderr.write('B')
                 time.sleep(delay)
                 if delay < 0.05:
