@@ -31,7 +31,7 @@ from gnuradio import digital
 from receive_path import receive_path
 from uhd_interface import uhd_receiver
 
-import struct, sys
+import struct, sys, time
 
 class my_top_block(gr.top_block):
     def __init__(self, callback, options):
