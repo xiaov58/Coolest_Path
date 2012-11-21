@@ -19,8 +19,9 @@ class source:
         pkt_size = int(meta_data.packet_size)
         
         while n < nbytes:
-            data = (pkt_size - 2) * chr(pktno & 0xff) 
-            payload = struct.pack('!H', pktno & 0xffff, data)
+            data = (pkt_size - 4) * chr(pktno & 0xff) 
+            header_dest = 3
+            payload = struct.pack('!H', pktno & 0xffff) + struct.pack('!H', header_dest & 0xffff)  + data
             self.send_pkt(payload)
             n += len(payload)
             print pktno
