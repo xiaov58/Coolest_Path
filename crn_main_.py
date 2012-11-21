@@ -74,11 +74,11 @@ def main():
     # destination
     if meta_data.role_tup[int(options.id)] == 'destination':
         
-        # build the graph
-        db = destination_block(dest.rx_callback, options)
-        
         # new object
         dest = destination()
+        
+        # build the graph
+        db = destination_block(dest.rx_callback, options)
     
         db.start()                      # start flow graph
         db.wait()                       # wait for it to finish

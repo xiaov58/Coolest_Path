@@ -23,15 +23,16 @@ class source:
             payload = struct.pack('!H', pktno & 0xffff) + data
             self.send_pkt(payload)
             n += len(payload)
-            sys.stderr.write('.')
+            print pktno
             pktno += 1
         self.send_pkt(eof=True)
 
     def send_pkt(self, payload='', eof=False):
-                
+        return self.tb.txpath.send_pkt(payload, eof)
+
+
         # generate data
         # random wait
         # reserve channel
         # wait confirmation
         # carrier sense
-        return self.tb.txpath.send_pkt(payload, eof)
