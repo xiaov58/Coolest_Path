@@ -14,7 +14,7 @@ class destination:
         pkt_dest = struct.unpack('!H', payload[2:4])
         if ok:
             self.__n_right += 1
-        print "ok: %r \t pktno: %d \t n_rcvd: %d \t n_right: %d pkt_dest %d" % (ok, pktno, self.__n_rcvd, self.__n_right,  pkt_dest)
+        print "ok: %r \t pktno: %d \t n_rcvd: %d \t n_right: %d pkt_dest %d" % (ok, pktno, self.__n_rcvd, self.__n_right,  int(pkt_dest[0]))
 
 
 
