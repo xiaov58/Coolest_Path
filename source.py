@@ -20,7 +20,7 @@ class source:
         
         while n < nbytes:
             data = (pkt_size - 2) * chr(pktno & 0xff) 
-            payload = struct.pack('!H', pktno & 0xffff) + data
+            payload = struct.pack('!H', pktno & 0xffff, data)
             self.send_pkt(payload)
             n += len(payload)
             print pktno
