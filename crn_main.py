@@ -189,7 +189,7 @@ def main():
         # if queue is not empty, try to send, compete with sender
 
         while len(queue) != 0:
-            payload = queue.pop()
+
 
             # sense 
             time.sleep(10 * min_delay * random.random())
