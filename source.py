@@ -21,10 +21,10 @@ class source:
         
         while n < nbytes:
             data = (pkt_size - 4) * chr(pktno & 0xff) 
-            pkt_sender_id =  self.id
+            pkt_sender_id =  str(self.id)
             
             # tempraty routing needed
-            pkt_receiver_id = 3
+            pkt_receiver_id = str(3)
             payload = struct.pack('!H', pktno & 0xffff) + struct.pack('!H', pkt_sender_id & 0xff) + struct.pack('!H', pkt_receiver_id & 0xff)  + data
 #            data = (pkt_size - 2) * chr(pktno & 0xff) 
 #            payload = struct.pack('!H', pktno & 0xffff) + data
