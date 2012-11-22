@@ -8,6 +8,8 @@ from gnuradio import gr
 # from current dir
 from transmit_path import transmit_path
 from uhd_interface import uhd_transmitter
+from receive_path import receive_path
+from uhd_interface import uhd_receiver
 
 class source_block(gr.top_block):
     def __init__(self, options):
