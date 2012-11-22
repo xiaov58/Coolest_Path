@@ -27,7 +27,7 @@ class router:
     def run(self):
         n = 0
         nbytes = int(1e6 * meta_data.total_size)
-        rout_payload
+        rout_payload = ""
         
         while 1:
             # check if buffer is empry, buffer is critical section
