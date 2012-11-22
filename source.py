@@ -22,8 +22,8 @@ class source:
             payload = self.generate_data()
             self.send_pkt(payload)
             n += len(payload)
-            print pktno
-            pktno += 1
+            print self.pktno
+            self.pktno += 1
         self.send_pkt(eof=True)
 
     def send_pkt(self, payload='', eof=False):
