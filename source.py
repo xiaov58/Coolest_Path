@@ -20,12 +20,12 @@ class source:
         pkt_size = int(meta_data.packet_size)
         
         while n < nbytes:
-            data = (pkt_size - 4) * chr(pktno & 0xff) 
+            data = (pkt_size - 6) * chr(pktno & 0xff) 
             pkt_sender_id =  int(self.id)
             
             # tempraty routing needed
             pkt_receiver_id = int(3)
-            payload = struct.pack('!H', pktno & 0xffff) + struct.pack('!H', pkt_sender_id & 0xff) + struct.pack('!H', pkt_receiver_id & 0xff)  + data
+            payload = struct.pack('!H', pktno & 0xffff) + struct.pack('!H', pkt_sender_id & 0xffff) + struct.pack('!H', pkt_receiver_id & 0xffff)  + data
 #            data = (pkt_size - 2) * chr(pktno & 0xff) 
 #            payload = struct.pack('!H', pktno & 0xffff) + data
             self.send_pkt(payload)
