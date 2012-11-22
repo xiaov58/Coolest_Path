@@ -5,12 +5,13 @@ import sys
 
 # from current dir
 import meta_data
+from source_block import source_block
 
 class source:
 
-    def __init__(self, sb, id):
-        self.tb = sb
-        self.id = id
+    def __init__(self, options):
+        self.options = options
+        self.tb = source_block(self.options)
         self.pktno = 0
         pass
         
@@ -20,6 +21,7 @@ class source:
         
         while n < nbytes:
             payload = self.generate_data()
+            # more work needed
             self.send_pkt(payload)
             n += len(payload)
             print self.pktno
@@ -36,7 +38,7 @@ class source:
         # |     2 bytes     |   2bytes     |    2bytes       |   2 bytes |   2 bytes     |   ......     |
         pkt_size = int(meta_data.packet_size)
         data = (pkt_size - 10) * chr(self.pktno & 0xff) 
-        pkt_sender_id =  int(self.id)
+        pkt_sender_id =  int(self.options.id)
         # tempraty routing needed
         pkt_receiver_id = int(2)
         payload =    struct.pack('!H', self.pktno & 0xffff) +\

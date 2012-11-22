@@ -12,11 +12,8 @@ from optparse import OptionParser
 # from current dir
 import meta_data
 from destination import destination
-from destination_block import destination_block
 from source import source
-from source_block import source_block
 from router import router
-from router_block import router_block
 from receive_path import receive_path
 from uhd_interface import uhd_receiver
 from transmit_path import transmit_path
@@ -63,11 +60,9 @@ def main():
     # source
     if meta_data.role_tup[int(options.id)] == 'source':
         
-        # build the graph
-        sb = source_block(options)
-        
-        # new object
-        src = source(sb, options.id)
+        # new object and build graph
+        src = source(options)
+        sb = src.tb
     
         sb.start()                      # start flow graph
         src.run()
@@ -77,24 +72,20 @@ def main():
     # router
     if meta_data.role_tup[int(options.id)] == 'router':
         
-        # build the graph
-        rb = router_block(options)
-        
-        # new object
-        rout = router(sb, options.id)
+        # new object and build graph
+        rout = router(options)
+        rb = rout.tb
     
-        sb.start()                      # start flow graph
+        rb.start()                      # start flow graph
         rout.run()
-        sb.wait()                       # wait for it to finish
+        rb.wait()                       # wait for it to finish
     
     # destination
     if meta_data.role_tup[int(options.id)] == 'destination':
         
-        # new object
-        dest = destination()
-        
-        # build the graph
-        db = destination_block(dest.rx_callback, options)
+        # new object and build graph
+        src = destination(options)
+        db = destination.tb
     
         db.start()                      # start flow graph
         db.wait()                       # wait for it to finish

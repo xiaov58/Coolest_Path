@@ -2,11 +2,17 @@
 # from system
 import struct
 
+# from current dir
+from destination_block import destination_block
+
 class destination:
     
-    def __init__(self):
+    def __init__(self, options):
             self.__n_rcvd = 0
             self.__n_right = 0
+            self.options = options
+            self.tb = destination_block(self.rx_callback, self.options)
+
 
     def rx_callback(self, ok, payload):
         self.__n_rcvd += 1
