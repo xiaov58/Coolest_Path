@@ -15,6 +15,8 @@ from destination import destination
 from destination_block import destination_block
 from source import source
 from source_block import source_block
+from router import router
+from router_block import router_block
 from receive_path import receive_path
 from uhd_interface import uhd_receiver
 from transmit_path import transmit_path
@@ -69,6 +71,20 @@ def main():
     
         sb.start()                      # start flow graph
         src.run()
+        sb.wait()                       # wait for it to finish
+    
+    
+    # router
+    if meta_data.role_tup[int(options.id)] == 'router':
+        
+        # build the graph
+        rb = router_block(options)
+        
+        # new object
+        rout = router(sb, options.id)
+    
+        sb.start()                      # start flow graph
+        rout.run()
         sb.wait()                       # wait for it to finish
     
     # destination

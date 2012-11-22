@@ -1,6 +1,9 @@
 # Options value
-packet_size = 400       # Byte
-total_size = 1              #Mega Byte
+source_id = 1
+destination_id = 3
+packet_size = 400           # Byte
+total_size = 1                  # Mega Byte
+min_daley = 0.001          # seconda
 channels = (0, 4.915, 4.917, 4.919)
 
 # Topology
