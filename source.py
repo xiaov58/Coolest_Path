@@ -25,7 +25,7 @@ class source:
             payload = self.generate_data()
             
             # random backoff, prevent continous receiving
-            time.sleep(meta_data.min_delay * meta_data.random_backoff_range * random.random())
+            #time.sleep(meta_data.min_delay * meta_data.random_backoff_range * random.random())
             # RTS
             # CTS
             # sense

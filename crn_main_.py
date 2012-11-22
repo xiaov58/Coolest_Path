@@ -53,9 +53,9 @@ def preprocess():
         options.tx_freq = meta_data.channels[1] * 1e9
     
     return options
-    
 
 def main():
+
     options = preprocess()
     
     # assign diffrent job to diffrent role
@@ -91,6 +91,7 @@ def main():
     
         db.start()                      # start flow graph
         db.wait()                       # wait for it to finish
+    
     
 if __name__ == '__main__':
     try:

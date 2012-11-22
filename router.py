@@ -22,12 +22,11 @@ class router:
         self.__n_right = 0
         self.header_buffer = []
         self.data_buffer = []
-        pass
         
     def run(self):
         n = 0
         nbytes = int(1e6 * meta_data.total_size)
-        rout_payload = ""
+        payload = ""
         
         while 1:
             # check if buffer is empry, buffer is critical section
@@ -35,22 +34,23 @@ class router:
                 if len(self.data_buffer) == 0 and len(self.header_buffer) == 0:
                     con.wait()
                 else:
-                    rout_payload = self.fetch_data()
+                    payload = self.fetch_data()
                     con.release()
                     
             # random backoff, prevent continous receiving
-            time.sleep(meta_data.min_delay * meta_data.random_backoff_range * random.random())
+            #time.sleep(meta_data.min_delay * meta_data.random_backoff_range * random.random())
             # RTS
             # CTS
             # sense
             delay = meta_data.min_delay
             while self.tb.carrier_sensed():
-                sys.stderr.write('B')
+                lsys.stderr.write('B')
+                #print "B"
                 time.sleep(delay)
                 if delay < 0.050:
                     delay = delay * 2       # exponential back-off
             
-            self.send_pkt(rout_payload)
+            self.send_pkt(payload)
             print "pktno: %d forwarded" % (self.pktno)
         self.send_pkt(eof=True)
 
