@@ -13,7 +13,7 @@ class source:
 
     def __init__(self, options):
         self.options = options
-        self.tb = router_block(self.rx_callback, self.options)
+        self.tb = source_block(self.rx_callback, self.options)
         self.pktno = 0
         pass
         
