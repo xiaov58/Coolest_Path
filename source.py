@@ -13,7 +13,7 @@ class source:
 
     def __init__(self, options):
         self.options = options
-        self.tb = source_block(self.options)
+        self.tb = router_block(self.rx_callback, self.options)
         self.pktno = 0
         pass
         
@@ -65,9 +65,5 @@ class source:
         
 
 
-        # generate data
-        # routing query
-        # random wait
-        # reserve channel
-        # wait confirmation
-        # carrier sense
+    def rx_callback(self, ok, payload):
+        pass

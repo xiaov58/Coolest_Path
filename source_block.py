@@ -12,7 +12,7 @@ from receive_path import receive_path
 from uhd_interface import uhd_receiver
 
 class source_block(gr.top_block):
-    def __init__(self, options):
+    def __init__(self, callback, options):
         gr.top_block.__init__(self)
 
         self.sink = uhd_transmitter(options.args,
