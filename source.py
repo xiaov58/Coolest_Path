@@ -19,7 +19,7 @@ class source:
         nbytes = int(1e6 * meta_data.total_size)
         
         while n < nbytes:
-            payload = self.generate_data(self)
+            payload = self.generate_data()
             self.send_pkt(payload)
             n += len(payload)
             print pktno
