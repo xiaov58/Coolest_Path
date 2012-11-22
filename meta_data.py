@@ -3,7 +3,9 @@ source_id = 1
 destination_id = 3
 packet_size = 400           # Byte
 total_size = 1                  # Mega Byte
-min_daley = 0.001          # seconda
+min_daley = 0.001          # unit: second
+random_backoff_range = 10 #ms
+
 channels = (0, 4.915, 4.917, 4.919)
 
 # Topology

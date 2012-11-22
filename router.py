@@ -3,6 +3,8 @@
 import struct
 import sys
 import threading
+import time
+import random
 
 # from current dir
 import meta_data
@@ -35,9 +37,20 @@ class router:
                     payload = self.fetch_data()
                     con.release()
                     
-                    # more work needed
-                    self.send_pkt(payload)
-                    print "forward"
+            # random backoff, prevent continous receiving
+            time.sleep(meta_data.min_daley * random_backoff_range * random.random())
+            # RTS
+            # CTS
+            # sense
+            delay = meta_data.min_delay
+            while self.tb.carrier_sensed():
+                sys.stderr.write('B')
+                time.sleep(delay)
+                if delay < 0.050:
+                    delay = delay * 2       # exponential back-off
+            
+            self.send_pkt(payload)
+            print "pktno: %d forwarded" % (self.pktno)
         self.send_pkt(eof=True)
 
     def send_pkt(self, payload='', eof=False):
@@ -48,17 +61,18 @@ class router:
         data = self.data_buffer[0]
         del self.data_buffer[0]
         
-        pktno = self.header_buffer[0][0]
+        self.pktno = self.header_buffer[0][0]
         del self.header_buffer[0]
         pkt_sender_id =  int(self.options.id)
         # tempraty routing needed
         pkt_receiver_id = int(3)
-        payload =    struct.pack('!H', pktno & 0xffff) +\
+        payload =    struct.pack('!H', self.pktno & 0xffff) +\
                             struct.pack('!H', meta_data.source_id & 0xffff) + \
                             struct.pack('!H', meta_data.destination_id & 0xffff)  + \
                             struct.pack('!H', pkt_sender_id & 0xffff) + \
                             struct.pack('!H', pkt_receiver_id & 0xffff)  + \
                             data
+        print "pktno: %d fetched" % (self.pktno)
         # check if the buffer becomes empty
         return payload
         
@@ -78,4 +92,6 @@ class router:
                 self.data_buffer.append(data)
                 con.notify()
                 con.release()
-        print "ok: %r \t pktno: %d \t n_rcvd: %d \t n_right: %d \t sender: %d \t receiver: %d \t source: %d \t destination: %d" % (ok, pktno, self.__n_rcvd, self.__n_right,  pkt_sender_id,  pkt_receiver_id,  pkt_source_id,  pkt_destination_id)
+            print "pktno: %d \t n_rcvd: %d \t n_right: %d \t sender: %d \t receiver: %d \t source: %d \t destination: %d" % (pktno, self.__n_rcvd, self.__n_right,  pkt_sender_id,  pkt_receiver_id,  pkt_source_id,  pkt_destination_id)
+        else:
+            print "ok: %r \t pktno: %d \t" % (ok, pktno)

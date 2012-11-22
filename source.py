@@ -21,7 +21,19 @@ class source:
         
         while n < nbytes:
             payload = self.generate_data()
-            # more work needed
+            
+            # random backoff, prevent continous receiving
+            time.sleep(meta_data.min_daley * random_backoff_range * random.random())
+            # RTS
+            # CTS
+            # sense
+            delay = meta_data.min_delay
+            while self.tb.carrier_sensed():
+                sys.stderr.write('B')
+                time.sleep(delay)
+                if delay < 0.050:
+                    delay = delay * 2       # exponential back-off
+            
             self.send_pkt(payload)
             n += len(payload)
             print self.pktno
