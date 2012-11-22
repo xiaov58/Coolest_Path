@@ -50,7 +50,7 @@ class router:
         
         pktno = self.header_buffer[0][0]
         del self.header_buffer[0]
-        pkt_sender_id =  int(self.id)
+        pkt_sender_id =  int(self.options.id)
         # tempraty routing needed
         pkt_receiver_id = int(3)
         payload =    struct.pack('!H', pktno & 0xffff) +\
