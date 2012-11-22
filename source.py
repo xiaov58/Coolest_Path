@@ -2,6 +2,8 @@
 # from system
 import struct
 import sys
+import time
+import random
 
 # from current dir
 import meta_data
