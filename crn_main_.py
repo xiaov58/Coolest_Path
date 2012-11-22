@@ -84,8 +84,8 @@ def main():
     if meta_data.role_tup[int(options.id)] == 'destination':
         
         # new object and build graph
-        src = destination(options)
-        db = destination.tb
+        dest = destination(options)
+        db = dest.tb
     
         db.start()                      # start flow graph
         db.wait()                       # wait for it to finish
