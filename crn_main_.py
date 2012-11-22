@@ -65,7 +65,7 @@ def main():
         sb = source_block(options)
         
         # new object
-        src = source(sb)
+        src = source(sb, options.id)
     
         sb.start()                      # start flow graph
         src.run()

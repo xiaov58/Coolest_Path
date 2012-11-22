@@ -8,8 +8,9 @@ import meta_data
 
 class source:
 
-    def __init__(self, sb):
+    def __init__(self, sb, id):
         self.tb = sb;
+        self.id = id;
         pass
         
     def run(self):
@@ -20,8 +21,11 @@ class source:
         
         while n < nbytes:
             data = (pkt_size - 4) * chr(pktno & 0xff) 
-            header_dest = 3
-            payload = struct.pack('!H', pktno & 0xffff) + struct.pack('!H', header_dest & 0xffff)  + data
+            pkt_sender_id =  self.id
+            
+            # tempraty routing needed
+            pkt_receiver_id = 3
+            payload = struct.pack('!H', pktno & 0xffff) + struct.pack('!H', pkt_sender_id & 0xff) + struct.pack('!H', pkt_receiver_id & 0xff)  + data
 #            data = (pkt_size - 2) * chr(pktno & 0xff) 
 #            payload = struct.pack('!H', pktno & 0xffff) + data
             self.send_pkt(payload)
