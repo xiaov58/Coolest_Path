@@ -23,6 +23,7 @@ class destination:
         (pkt_receiver_id, ) = struct.unpack('!H', payload[8:10])
         if ok:
             self.__n_right += 1
-        print "ok: %r \t pktno: %d \t n_rcvd: %d \t n_right: %d \t sender: %d \t receiver: %d \t source: %d \t destination: %d" % (ok, pktno, self.__n_rcvd, self.__n_right,  pkt_sender_id,  pkt_receiver_id,  pkt_source_id,  pkt_destination_id)
-
+            print "pktno: %d \t n_rcvd: %d \t n_right: %d \t sender: %d \t receiver: %d \t source: %d \t destination: %d" % (pktno, self.__n_rcvd, self.__n_right,  pkt_sender_id,  pkt_receiver_id,  pkt_source_id,  pkt_destination_id)
+        else:
+            print "ok: %r \t pktno: %d \t" % (ok, pktno)
 
