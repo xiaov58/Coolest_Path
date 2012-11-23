@@ -14,6 +14,7 @@ class source:
     def __init__(self, options):
         self.options = options
         self.tb = source_block(self.rx_callback, self.options)
+        self.tb.rxpath.set_carrier_threshold(options.carrier_threshold)
         self.pktno = 0
         pass
         

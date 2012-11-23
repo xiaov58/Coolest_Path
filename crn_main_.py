@@ -31,7 +31,7 @@ def preprocess():
     # process parameters
     parser = OptionParser(option_class=eng_option, conflict_handler="resolve")
     expert_grp = parser.add_option_group("Expert")
-    expert_grp.add_option("-c", "--carrier-threshold", type="eng_float", default=30,
+    expert_grp.add_option("-c", "--carrier-threshold", type="eng_float", default=meta_data.default_carrier_thredshold,
                       help="set carrier detect threshold (dB) [default=%default]")
     parser.add_option("-i","--id", default=0,
                       help="id: check out meta_data.py also.")

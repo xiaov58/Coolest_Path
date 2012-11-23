@@ -3,6 +3,7 @@ source_id = 1
 destination_id = 3
 packet_size = 400           # Byte
 total_size = 1                  # Mega Byte
+default_carrier_thredshold = -50
 min_delay = 0.001          # unit: second
 random_backoff_range = 100 #ms
 

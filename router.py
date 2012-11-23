@@ -17,6 +17,7 @@ class router:
     def __init__(self, options):
         self.options = options
         self.tb = router_block(self.rx_callback, self.options)
+        self.tb.rxpath.set_carrier_threshold(options.carrier_threshold)
         self.pktno = 0
         self.__n_rcvd = 0
         self.__n_right = 0
@@ -37,19 +38,13 @@ class router:
                 payload = self.fetch_data()
                 delay = meta_data.min_delay
                 while self.tb.carrier_sensed():
-                    lsys.stderr.write('B')
+                    sys.stderr.write('B')
                     #print "B"
                     time.sleep(delay)
                     if delay < 0.050:
                         delay = delay * 2       # exponential back-off
-                
-            # RTS
-            # CTS
-            # sense
-
-            
-            self.send_pkt(payload)
-            print "pktno: %d forwarded" % (self.pktno)
+                self.send_pkt(payload)
+                print "pktno: %d forwarded" % (self.pktno)
         self.send_pkt(eof=True)
 
     def send_pkt(self, payload='', eof=False):
