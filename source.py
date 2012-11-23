@@ -21,11 +21,10 @@ class source:
         n = 0
         nbytes = int(1e6 * meta_data.total_size)
         
-        while n < nbytes:
-            payload = self.generate_data()
-            
+        while n < nbytes:            
             # random backoff, prevent continous receiving
             time.sleep(meta_data.min_delay * meta_data.random_backoff_range * random.random())
+            payload = self.generate_data()
             # RTS
             # CTS
             # sense

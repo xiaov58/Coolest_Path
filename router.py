@@ -29,26 +29,24 @@ class router:
         payload = ""
         
         while 1:
-            # check if buffer is empry, buffer is critical section
-            if con.acquire():
-                if len(self.data_buffer) == 0 and len(self.header_buffer) == 0:
-                    con.wait()
-                else:
-                    payload = self.fetch_data()
-                    con.release()
-                    
             # random backoff, prevent continous receiving
             time.sleep(meta_data.min_delay * meta_data.random_backoff_range * random.random())
+            if len(self.data_buffer) == 0 and len(self.header_buffer) == 0:
+                pass
+            else:
+                payload = self.fetch_data()
+                delay = meta_data.min_delay
+                while self.tb.carrier_sensed():
+                    lsys.stderr.write('B')
+                    #print "B"
+                    time.sleep(delay)
+                    if delay < 0.050:
+                        delay = delay * 2       # exponential back-off
+                
             # RTS
             # CTS
             # sense
-            delay = meta_data.min_delay
-            while self.tb.carrier_sensed():
-                lsys.stderr.write('B')
-                #print "B"
-                time.sleep(delay)
-                if delay < 0.050:
-                    delay = delay * 2       # exponential back-off
+
             
             self.send_pkt(payload)
             print "pktno: %d forwarded" % (self.pktno)
@@ -87,12 +85,9 @@ class router:
         data = payload[10:]
         if ok:
             self.__n_right += 1
-            # save to buffer, buffer is critical section
-            if con.acquire():
-                self.header_buffer.append((pktno, pkt_source_id,  pkt_destination_id,  pkt_sender_id, pkt_receiver_id))
-                self.data_buffer.append(data)
-                con.notify()
-                con.release()
+            # save to buffer
+            self.header_buffer.append((pktno, pkt_source_id,  pkt_destination_id,  pkt_sender_id, pkt_receiver_id))
+            self.data_buffer.append(data)
             print "pktno: %d \t n_rcvd: %d \t n_right: %d \t sender: %d \t receiver: %d \t source: %d \t destination: %d" % (pktno, self.__n_rcvd, self.__n_right,  pkt_sender_id,  pkt_receiver_id,  pkt_source_id,  pkt_destination_id)
         else:
             print "ok: %r \t pktno: %d \t" % (ok, pktno)
