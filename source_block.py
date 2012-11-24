@@ -38,3 +38,10 @@ class source_block(gr.top_block):
         Return True if the receive path thinks there's carrier
         """
         return self.rxpath.carrier_sensed()
+        
+    def set_freq(self, target_freq):
+        """
+        Set the center frequency we're interested in.
+        """
+        self.u_snk.set_freq(target_freq)
+        self.u_src.set_freq(target_freq)

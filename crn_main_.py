@@ -1,6 +1,7 @@
 
 # from system
 import sys
+import socket
 
 # from gnuradio
 from gnuradio import gr
@@ -11,6 +12,8 @@ from optparse import OptionParser
 
 # from current dir
 import meta_data
+from ccc_server import ccc_server
+from ccc_client import ccc_client
 from destination import destination
 from source import source
 from router import router
@@ -57,6 +60,28 @@ def preprocess():
 def main():
 
     options = preprocess()
+    
+    # start ccc_server, recieve coming control msg
+    ccc_server_thread = ccc_server("ccc_server_thread", options)
+    ccc_server_thread.setDaemon(True)
+    ccc_server.start()
+    
+    # wait a while for setting up all the node manually, then run ccc_client and connet
+    # client sock is only used for sending msg out
+    time.sleep(meta_data.setup_time)
+    
+    # use dict to store sock list
+    # key is the node id, value is the sock
+    socks = {}
+    for i in meta_data.neightbour_tup[options.id]:
+        sock = socket.socket( socket.AF_INET, socket.SOCK_STREAM )
+        sock.connect( (meta_data.ip_tup[i], meta_data.server_port) )
+        print sock.recv( 100 )
+        sock.send("Hello!")
+        socks[i] = sock
+    
+    
+    sys.exit(0)
     
     # assign diffrent job to diffrent role
     # source

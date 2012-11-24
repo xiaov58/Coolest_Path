@@ -1,38 +1,45 @@
+
+# ccc_server.py
 import socket
 import select
+import threading
+import meta_data
 
-class CCC_Server:
-    def __init__(self, port):
-        self.port = port;
-        self.server_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR,1)
-        self.server_sock.bind(("",port))
-        self.server_sock.listen(3)
-        self.descriptors = [self.server_sock]
-        print "CCC_Server started on %s" % port
-
+class ccc_server(threading.Thread):
+    def __init__(self, threadname,  options):
+        threading.Thread.__init__(self, name = threadname)
+        self.options = options
+        self.port = meta_data.server_port;
+        self.srvsock = socket.socket( socket.AF_INET, socket.SOCK_STREAM )
+        self.srvsock.setsockopt( socket.SOL_SOCKET, socket.SO_REUSEADDR, 1 )
+        self.srvsock.bind( ("", meta_data.server_port) )
+        self.srvsock.listen( meta_data.max_client )
+        self.descriptors = [self.srvsock]
+        print 'ChatServer started on node %d' % (self.options.id)
+        
     def run(self):
-        while 1:
-            # Wait an event on a readable socket descriptor
-            (sread, swrite, sexc) = select.select(self.descriptors, [], [])
-
-            # Iterate through the tagged read descriptor
-            for sock in sread:
-
-                # Received a connection to the server (listening) socket
-                if sock == self.server_sock:
-                    self.accept_new_connection()
-                #else:
-                    # Received something on a client socket
-                    #msg = sock.recv(100)
-                    #peer_ip, peer_port = sock.getpeername()
-                    #print "[%s;%s]:%s" % (peer_ip, peer_port, str)
-
+     while 1:
+        # Await an event on a readable socket descriptor
+        (sread, swrite, sexc) = select.select( self.descriptors, [], [] )
+    
+        # Iterate through the tagged read descriptors
+        for sock in sread:
+    
+          # Received a connect to the server (listening) socket
+          if sock == self.srvsock:
+            self.accept_new_connection()
+          else:
+            # Received something on a client socket
+            str = sock.recv(100)
+            print str
+        
+    def broadcast(self):
+        pass
+    
     def accept_new_connection(self):
-        newsock, (peer_host, peer_port) = self.server_sock.accept()
-        self.descriptors.append(newsock)
-        newsock.send("Connected to server")
-        msg = "Client joined [%s;%s]" % (peer_host, peer_port)
-
-ccc_server = CCC_Server(11012)
-ccc_server.run()
+      newsock, (remhost, remport) = self.srvsock.accept()
+      self.descriptors.append( newsock )
+    
+      newsock.send("Connected to ccc_server on node %d\r\n" % (self.options.id))
+      str = 'Client joined %s:%s\r\n' % (remhost, remport)
+      print str

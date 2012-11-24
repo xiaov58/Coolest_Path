@@ -2,15 +2,12 @@
 # from system
 import struct
 import sys
-import threading
 import time
 import random
 
 # from current dir
 import meta_data
 from router_block import router_block
-
-con = threading.Condition()
 
 class router:
 
