@@ -32,9 +32,11 @@ class ccc_server(threading.Thread):
             # Received something on a client socket
             str = sock.recv(100)
             if str == "":
-                print "peer closed"
-            else:
-                print str
+                host,port = sock.getpeername()
+                str = 'Client left %s:%s' % (host, port)
+                sock.close
+                self.descriptors.remove(sock)
+            print str
         
     def broadcast(self):
         pass
