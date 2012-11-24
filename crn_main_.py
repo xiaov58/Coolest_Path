@@ -2,6 +2,7 @@
 # from system
 import sys
 import socket
+import time
 
 # from gnuradio
 from gnuradio import gr
@@ -63,7 +64,7 @@ def main():
     # start ccc_server, recieve coming control msg
     ccc_server_thread = ccc_server("ccc_server_thread", options)
     ccc_server_thread.setDaemon(True)
-    ccc_server.start()
+    ccc_server_thread.start()
     
     # wait a while for setting up all the node manually, then run ccc_client and connet
     # client sock is only used for sending msg out

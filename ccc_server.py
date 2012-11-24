@@ -15,7 +15,7 @@ class ccc_server(threading.Thread):
         self.srvsock.bind( ("", meta_data.server_port) )
         self.srvsock.listen( meta_data.max_client )
         self.descriptors = [self.srvsock]
-        print 'ChatServer started on node %d' % (self.options.id)
+        print 'ChatServer started on node %d' % (int(self.options.id))
         
     def run(self):
      while 1:
@@ -40,6 +40,6 @@ class ccc_server(threading.Thread):
       newsock, (remhost, remport) = self.srvsock.accept()
       self.descriptors.append( newsock )
     
-      newsock.send("Connected to ccc_server on node %d\r\n" % (self.options.id))
+      newsock.send("Connected to ccc_server on node %d\r\n" % (int(self.options.id)))
       str = 'Client joined %s:%s\r\n' % (remhost, remport)
       print str
