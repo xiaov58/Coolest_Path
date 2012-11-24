@@ -20,7 +20,7 @@ class ccc_server(threading.Thread):
     def run(self):
      while 1:
         # Await an event on a readable socket descriptor
-        (sread, swrite, sexc) = select.select( self.descriptors, [], [] )
+        (sread, swrite, sexc) = select.select( self.descriptors, [], [], 1)
     
         # Iterate through the tagged read descriptors
         for sock in sread:
