@@ -73,7 +73,7 @@ def main():
     # use dict to store sock list
     # key is the node id, value is the sock
     socks = {}
-    for i in meta_data.neightbour_tup[options.id]:
+    for i in meta_data.neightbour_tup[int(options.id)]:
         sock = socket.socket( socket.AF_INET, socket.SOCK_STREAM )
         sock.connect( (meta_data.ip_tup[i], meta_data.server_port) )
         print sock.recv( 100 )
