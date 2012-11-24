@@ -13,7 +13,6 @@ from optparse import OptionParser
 # from current dir
 import meta_data
 from ccc_server import ccc_server
-from ccc_client import ccc_client
 from destination import destination
 from source import source
 from router import router
