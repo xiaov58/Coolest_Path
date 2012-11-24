@@ -20,7 +20,7 @@ class ccc_server(threading.Thread):
     def run(self):
      while 1:
         # Await an event on a readable socket descriptor
-        (sread, swrite, sexc) = select.select( self.descriptors, [], [], 1)
+        (sread, swrite, sexc) = select.select( self.descriptors, [], [])
     
         # Iterate through the tagged read descriptors
         for sock in sread:
@@ -31,7 +31,10 @@ class ccc_server(threading.Thread):
           else:
             # Received something on a client socket
             str = sock.recv(100)
-            print str
+            if str == "":
+                print "peer closed"
+            else:
+                print str
         
     def broadcast(self):
         pass
@@ -40,6 +43,6 @@ class ccc_server(threading.Thread):
       newsock, (remhost, remport) = self.srvsock.accept()
       self.descriptors.append( newsock )
     
-      newsock.send("Connected to ccc_server on node %d\r\n" % (int(self.options.id)))
-      str = 'Client joined %s:%s\r\n' % (remhost, remport)
+      newsock.send("Connected to ccc_server on node %d" % (int(self.options.id)))
+      str = "Client joined %s:%s" % (remhost, remport)
       print str
