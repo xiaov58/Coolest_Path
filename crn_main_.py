@@ -81,7 +81,7 @@ def main():
         socks[i] = sock
     
     
-    sys.exit(0)
+    time.sleep(100)
     
     # assign diffrent job to diffrent role
     # source
