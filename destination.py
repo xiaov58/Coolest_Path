@@ -7,10 +7,11 @@ from destination_block import destination_block
 
 class destination:
     
-    def __init__(self, options):
+    def __init__(self, options, crn_manager):
             self.__n_rcvd = 0
             self.__n_right = 0
             self.options = options
+            self.crn_manager = crn_manager
             self.tb = destination_block(self.rx_callback, self.options)
 
 

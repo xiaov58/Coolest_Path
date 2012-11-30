@@ -4,11 +4,14 @@ import socket
 import select
 import threading
 import meta_data
+import cPickle
+from control_msg import *
 
 class ccc_server(threading.Thread):
-    def __init__(self, threadname,  options):
+    def __init__(self, threadname,  options, crn_manager):
         threading.Thread.__init__(self, name = threadname)
         self.options = options
+        self.crn_manager = crn_manager
         self.port = meta_data.server_port;
         self.srvsock = socket.socket( socket.AF_INET, socket.SOCK_STREAM )
         self.srvsock.setsockopt( socket.SOL_SOCKET, socket.SO_REUSEADDR, 1 )
@@ -30,16 +33,16 @@ class ccc_server(threading.Thread):
             self.accept_new_connection()
           else:
             # Received something on a client socket
-            str = sock.recv(100)
+            str = sock.recv(meta_data.sock_buffer_size)
             if str == "":
                 host,port = sock.getpeername()
-                str = 'Client left %s:%s' % (host, port)
+                str = 'Client closed %s:%s' % (host, port)
                 sock.close
                 self.descriptors.remove(sock)
-            print str
-        
-    def broadcast(self):
-        pass
+            else:
+                ctrl_msg = cPickle.loads(str)
+                print "%d" % ctrl_msg.type
+                
     
     def accept_new_connection(self):
       newsock, (remhost, remport) = self.srvsock.accept()

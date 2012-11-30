@@ -4,15 +4,19 @@ import struct
 import sys
 import time
 import random
+import cPickle
 
 # from current dir
 import meta_data
 from source_block import source_block
+from control_msg import *
+
 
 class source:
 
-    def __init__(self, options):
+    def __init__(self, options, crn_manager):
         self.options = options
+        self.crn_manager = crn_manager
         self.tb = source_block(self.rx_callback, self.options)
         self.tb.rxpath.set_carrier_threshold(options.carrier_threshold)
         self.pktno = 0
@@ -64,6 +68,13 @@ class source:
         return payload
         
 
+    def sync_time(self):
+        self.crn_manager.time_sync_cnt += 1
+        tsm = time_sync_msg(1, self.crn_manager.time_sync_cnt)
+        tsm_string = cPickle.dumps(tsm)
+        for k in self.crn_manager.socks_table.keys():
+            self.crn_manager.socks_table[k].send(tsm_string)
+        
 
     def rx_callback(self, ok, payload):
         pass
