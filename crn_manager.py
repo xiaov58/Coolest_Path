@@ -39,6 +39,8 @@ class crn_manager:
             sock.connect( (meta_data.ip_tup[i], meta_data.server_port) )
             print sock.recv( meta_data.sock_buffer_size )
             self.socks_table[i] = sock
+    
+        time.sleep(meta_data.client_setup_time)
         
 #        # assign diffrent job to diffrent role
 #        # source
