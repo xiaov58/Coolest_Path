@@ -51,9 +51,9 @@ def preprocess():
     return options
 
 def main():
-    option = preprocess()
-    crn_manager = crn_manager(options)
-    crn_manager.run()
+    options = preprocess()
+    cm = crn_manager(options)
+    cm.run()
 
 if __name__ == '__main__':
     try:

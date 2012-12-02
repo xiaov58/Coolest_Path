@@ -19,9 +19,9 @@ class crn_manager:
         self.socks_table = {}
         self.channel_utilization_table = {}
         self.time_sync_cnt = 0
-        self.role
+        self.role = 0
 
-    def run():
+    def run(self):
         
         # start ccc_server, recieve coming control msg
         ccc_server_ = ccc_server("ccc_server", self.options, self)
