@@ -18,7 +18,7 @@ class ccc_server(threading.Thread):
         self.srvsock.bind( ("", meta_data.server_port) )
         self.srvsock.listen( meta_data.max_client )
         self.descriptors = [self.srvsock]
-        print 'ChatServer started on node %d' % (int(self.options.id))
+        print 'Control Server started on node %d' % (int(self.options.id))
         
     def run(self):
      while 1:

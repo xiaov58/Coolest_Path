@@ -38,7 +38,7 @@ class crn_manager:
             sock = socket.socket( socket.AF_INET, socket.SOCK_STREAM )
             sock.connect( (meta_data.ip_tup[i], meta_data.server_port) )
             print sock.recv( meta_data.sock_buffer_size )
-            self.socks[i] = sock
+            self.socks_table[i] = sock
         
         # assign diffrent job to diffrent role
         # source
@@ -47,7 +47,7 @@ class crn_manager:
             # new object and build graph
             self.role = source(self.options, self)
         
-            sself.role.tb.start()                      # start flow graph
+            self.role.tb.start()                      # start flow graph
             self.role.sync_time()
             time.sleep(1)
             self.role.run()
