@@ -24,7 +24,8 @@ class source:
         
     def run(self):
         # wait for control channel setup
-        time.sleep(30)
+        time.sleep(3)
+        self.sync_time()
         
         n = 0
         nbytes = int(1e6 * meta_data.total_size)
