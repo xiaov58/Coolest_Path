@@ -40,36 +40,36 @@ class crn_manager:
             print sock.recv( meta_data.sock_buffer_size )
             self.socks_table[i] = sock
         
-        # assign diffrent job to diffrent role
-        # source
-        if meta_data.role_tup[int(self.options.id)] == 'source':
-            
-            # new object and build graph
-            self.role = source(self.options, self)
-        
-            self.role.tb.start()                      # start flow graph
-            self.role.sync_time()
-            time.sleep(1)
-            self.role.run()
-            self.role.tb.wait()                       # wait for it to finish
-        
-        
-        # router
-        if meta_data.role_tup[int(self.options.id)] == 'router':
-            
-            # new object and build graph
-            self.role = router(self.options, self)
-        
-            self.role.tb.start()                      # start flow graph
-            self.role.run()
-            self.role.tb.wait()                       # wait for it to finish
-        
-        # destination
-        if meta_data.role_tup[int(self.options.id)] == 'destination':
-            
-            # new object and build graph
-            self.role = destination(self.options, self)
-        
-            self.role.tb.start()                      # start flow graph
-            self.role.tb.wait()                       # wait for it to finish
+#        # assign diffrent job to diffrent role
+#        # source
+#        if meta_data.role_tup[int(self.options.id)] == 'source':
+#            
+#            # new object and build graph
+#            self.role = source(self.options, self)
+#        
+#            self.role.tb.start()                      # start flow graph
+#            self.role.sync_time()
+#            time.sleep(1)
+#            self.role.run()
+#            self.role.tb.wait()                       # wait for it to finish
+#        
+#        
+#        # router
+#        if meta_data.role_tup[int(self.options.id)] == 'router':
+#            
+#            # new object and build graph
+#            self.role = router(self.options, self)
+#        
+#            self.role.tb.start()                      # start flow graph
+#            self.role.run()
+#            self.role.tb.wait()                       # wait for it to finish
+#        
+#        # destination
+#        if meta_data.role_tup[int(self.options.id)] == 'destination':
+#            
+#            # new object and build graph
+#            self.role = destination(self.options, self)
+#        
+#            self.role.tb.start()                      # start flow graph
+#            self.role.tb.wait()                       # wait for it to finish
     
