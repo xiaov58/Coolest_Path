@@ -17,7 +17,7 @@ channels = (0, 4.915, 4.917, 4.919)
 # first item is null to make it easy to count
 role_tup =                    (''      , 'source'                 , 'router'                 , 'destination'      ) 
 neightbour_tup =         ([]      ,   [2]                          ,   [1, 3]                      , [2]                          ) 
-ip_tup =                       (''      , '128.205.39.104'  , '128.205.68.152'  , '128.205.39.100') 
+ip_tup =                       (''      , '128.205.39.104'  , '67.20.207.30'  , '128.205.39.100') 
 neightbour_tup =         ([]      ,   []                            ,   [1]                          , [2]                          ) 
 
 #Options:
