@@ -19,7 +19,6 @@ channels = (0, 4.915, 4.917, 4.919)
 role_tup =                    (''      , 'source'                 , 'router'                 , 'destination'      ) 
 neightbour_tup =         ([]      ,   [2]                          ,   [1, 3]                      , [2]                          ) 
 ip_tup =                       (''      , '128.205.39.104'  , '67.20.207.30'  , '128.205.39.100') 
-neightbour_tup =         ([]      ,   []                            ,   [1]                          , [2]                          ) 
 
 #Options:
 #  -h, --help            show this help message and exit
