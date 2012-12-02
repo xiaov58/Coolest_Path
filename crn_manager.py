@@ -33,13 +33,15 @@ class crn_manager:
         time.sleep(meta_data.server_setup_time)
         
         # use dict to store sock list
-        # key is the node id, value is the sock
+        # key is the node id, value is the sock descriptor
         for i in meta_data.neightbour_tup[int(self.options.id)]:
             sock = socket.socket( socket.AF_INET, socket.SOCK_STREAM )
             sock.connect( (meta_data.ip_tup[i], meta_data.server_port) )
+            print "try to connect remote %s" % meta_data.ip_tup[i]
             print sock.recv( meta_data.sock_buffer_size )
             self.socks_table[i] = sock
-    
+            
+            
         time.sleep(meta_data.client_setup_time)
         
 #        # assign diffrent job to diffrent role
