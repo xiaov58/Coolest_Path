@@ -30,7 +30,7 @@ class crn_manager:
         
         # wait a while for setting up all the node manually, then run ccc_client and connet
         # client sock is only used for sending msg out
-        time.sleep(meta_data.setup_time)
+        time.sleep(meta_data.server_setup_time)
         
         # use dict to store sock list
         # key is the node id, value is the sock
