@@ -47,7 +47,8 @@ class crn_manager:
             
             # new object and build graph
             self.role = source(self.options, self)
-            # wait for 
+            
+            # initial time sync
             time.sleep(meta_data.setup_time)
             self.role.sync_time()
             time.sleep(meta_data.time_sync_interval)
