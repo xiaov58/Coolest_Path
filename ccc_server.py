@@ -41,7 +41,9 @@ class ccc_server(threading.Thread):
                 self.descriptors.remove(sock)
             else:
                 ctrl_msg = cPickle.loads(str)
-                print "control_msg: %d" % ctrl_msg.type
+                if ctrl_msg.type == 1:
+                    tsm = time_sync_msg(ctrl_msg)
+                    print "Time Sync Signal, %d" % time_sync_msg.cnt
                 
     
     def accept_new_connection(self):
