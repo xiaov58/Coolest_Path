@@ -49,8 +49,9 @@ class crn_manager:
             self.role = source(self.options, self)
         
             self.role.tb.start()                      # start flow graph
+            time.sleep(5)
             self.role.sync_time()
-            time.sleep(1)
+            time.sleep(100)
             self.role.run()
             self.role.tb.wait()                       # wait for it to finish
         
