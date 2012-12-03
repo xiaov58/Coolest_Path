@@ -41,7 +41,7 @@ class ccc_server(threading.Thread):
                 self.descriptors.remove(sock)
             else:
                 ctrl_msg = cPickle.loads(str)
-                print "%d" % ctrl_msg.type
+                print "control_msg: %d" % ctrl_msg.type
                 
     
     def accept_new_connection(self):

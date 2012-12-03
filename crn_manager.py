@@ -47,11 +47,11 @@ class crn_manager:
             
             # new object and build graph
             self.role = source(self.options, self)
-        
-            self.role.tb.start()                      # start flow graph
             time.sleep(5)
             self.role.sync_time()
             time.sleep(100)
+        
+            self.role.tb.start()                      # start flow graph
             self.role.run()
             self.role.tb.wait()                       # wait for it to finish
         
@@ -61,6 +61,7 @@ class crn_manager:
             
             # new object and build graph
             self.role = router(self.options, self)
+            time.sleep(100)
         
             self.role.tb.start()                      # start flow graph
             self.role.run()
@@ -71,6 +72,7 @@ class crn_manager:
             
             # new object and build graph
             self.role = destination(self.options, self)
+            time.sleep(100)
         
             self.role.tb.start()                      # start flow graph
             self.role.tb.wait()                       # wait for it to finish
