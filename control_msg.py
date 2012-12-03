@@ -6,5 +6,4 @@
 class time_sync_msg:
     def __init__(self, type, cnt):
         self.type = type
-        control_msg.__init__(self, type)
         self.cnt = cnt
