@@ -30,7 +30,7 @@ class crn_manager:
         
     def sync_time(self):
         self.time_sync_cnt += 1
-        tsm = time_sync_msg(1, self.crn_manager.time_sync_cnt)
+        tsm = time_sync_msg(1, self.time_sync_cnt)
         tsm_string = cPickle.dumps(tsm)
         for k in self.socks_table.keys():
             self.socks_table[k].send(tsm_string)
