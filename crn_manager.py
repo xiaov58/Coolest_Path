@@ -25,15 +25,15 @@ class crn_manager:
         self.time_sync_cnt = 0
         self.time_sync_con = threading.Condition()  
     
-    def broadcast(self):
-        pass
+    def broadcast(self, str):
+        for k in self.socks_table.keys():
+            self.socks_table[k].send(str)
         
     def sync_time(self):
         self.time_sync_cnt += 1
         tsm = time_sync_msg(1, self.time_sync_cnt)
         tsm_string = cPickle.dumps(tsm)
-        for k in self.socks_table.keys():
-            self.socks_table[k].send(tsm_string)
+        broadcast(tsm_string)
 
     def run(self):
         
@@ -54,11 +54,12 @@ class crn_manager:
             print sock.recv( meta_data.sock_buffer_size )
             self.socks_table[i] = sock
             
-        # wait for connections
-        time.sleep(meta_data.setup_time)
+
         
         # source begin to send time_sync signal
         if meta_data.role_tup[int(self.options.id)] == 'source':
+            # wait for connections setup
+            time.sleep(meta_data.setup_time)
             print "time sync"
             self.sync_time()
         
@@ -67,10 +68,9 @@ class crn_manager:
         if self.time_sync_cnt == 0:
             print "wait"
             self.time_sync_con.wait() 
-            print "Timer start at local time:",time.time()
         self.time_sync_con.release()
         
-        print "done"
+        print "Timer start at local time:",time.time()
         time.sleep(100)
         
 #       # assign diffrent job to diffrent role

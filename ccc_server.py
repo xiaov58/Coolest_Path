@@ -49,6 +49,10 @@ class ccc_server(threading.Thread):
                         self.crn_manager.time_sync_con.notify() 
                         print "notify"
                         self.crn_manager.time_sync_con.release()
+                        print "broadcast"
+                        self.crn_manager.broadcast(str)
+                    else:
+                        print "ignore"
                         
                 
     
