@@ -4,12 +4,10 @@ import struct
 import sys
 import time
 import random
-import cPickle
 
 # from current dir
 import meta_data
 from source_block import source_block
-from control_msg import *
 
 
 class source:
@@ -66,14 +64,6 @@ class source:
                             struct.pack('!H', pkt_receiver_id & 0xffff)  + \
                             data
         return payload
-        
-
-    def sync_time(self):
-        self.crn_manager.time_sync_cnt += 1
-        tsm = time_sync_msg(1, self.crn_manager.time_sync_cnt)
-        tsm_string = cPickle.dumps(tsm)
-        for k in self.crn_manager.socks_table.keys():
-            self.crn_manager.socks_table[k].send(tsm_string)
         
 
     def rx_callback(self, ok, payload):

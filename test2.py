@@ -1,25 +1,14 @@
-#
+import time,sched
 
-class ken:
-    def __init__(self):   
-        self.a = 1
-    def run(self):
-        g = gen (self)
-        g.run()
-        
-class gen:
-    def __init__(self, ken):   
-        self.ken = ken
-    def run(self):
-        self.ken.a = 2
-   
-def main():   
-    k = ken()
-    k.run()
-    print k.a
+def event_func(msg):
+    print "Current Time:",time.time(),'msg:',msg
 
-if __name__ == '__main__':
-    try:
-        main()
-    except KeyboardInterrupt:
-        pass
+if __name__ == "__main__":
+
+    s = sched.scheduler(time.time,time.sleep)
+
+    s.enter(1,2,event_func,("Small event.",))
+    s.enter(2,1,event_func,("Big event.",))
+    s.run()
+    while True:
+        time.sleep(100)

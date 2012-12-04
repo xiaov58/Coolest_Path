@@ -3,6 +3,8 @@
 import sys
 import socket
 import time
+import threading
+import cPickle
 
 # from current dir
 import meta_data
@@ -10,6 +12,7 @@ from ccc_server import ccc_server
 from destination import destination
 from source import source
 from router import router
+from control_msg import *
 
 
 class crn_manager:
@@ -18,8 +21,19 @@ class crn_manager:
         self.options = options
         self.socks_table = {}
         self.channel_utilization_table = {}
-        self.time_sync_cnt = 0
         self.role = 0
+        self.time_sync_cnt = 0
+        self.time_sync_con = threading.Condition()  
+    
+    def broadcast(self):
+        pass
+        
+    def sync_time(self):
+        self.time_sync_cnt += 1
+        tsm = time_sync_msg(1, self.crn_manager.time_sync_cnt)
+        tsm_string = cPickle.dumps(tsm)
+        for k in self.socks_table.keys():
+            self.socks_table[k].send(tsm_string)
 
     def run(self):
         
@@ -39,41 +53,49 @@ class crn_manager:
             sock.connect( (meta_data.ip_tup[i], meta_data.server_port) )
             print sock.recv( meta_data.sock_buffer_size )
             self.socks_table[i] = sock
-            
         
-        # assign diffrent job to diffrent role
-        # source
+        # source begin to send time_sync signal
         if meta_data.role_tup[int(self.options.id)] == 'source':
-            
-            # new object and build graph
-            self.role = source(self.options, self)
-            
-            # initial time sync
-            time.sleep(meta_data.setup_time)
-            self.role.sync_time()
-            time.sleep(meta_data.time_sync_interval)
+            self.sync_time()
         
-            self.role.tb.start()                      # start flow graph
-            self.role.run()
-            self.role.tb.wait()                       # wait for it to finish
+        # wait for time sync
+        self.time_sync_con.acquire()
+        if self.time_sync_cnt == 0:
+            self.time_sync_con.wait() 
+            print "Start at local time:",time.time()
+        self.time_sync_con.release()
         
         
-        # router
-        if meta_data.role_tup[int(self.options.id)] == 'router':
-            
-            # new object and build graph
-            self.role = router(self.options, self)
+        time.sleep(100)
         
-            self.role.tb.start()                      # start flow graph
-            self.role.run()
-            self.role.tb.wait()                       # wait for it to finish
-        
-        # destination
-        if meta_data.role_tup[int(self.options.id)] == 'destination':
-            
-            # new object and build graph
-            self.role = destination(self.options, self)
-        
-            self.role.tb.start()                      # start flow graph
-            self.role.tb.wait()                       # wait for it to finish
+#       # assign diffrent job to diffrent role
+#       # source
+#        if meta_data.role_tup[int(self.options.id)] == 'source':
+#            
+#           # new object and build graph
+#            self.role = source(self.options, self)
+#        
+#            self.role.tb.start()                      # start flow graph
+#            self.role.run()
+#            self.role.tb.wait()                       # wait for it to finish
+#        
+#        
+#       # router
+#        if meta_data.role_tup[int(self.options.id)] == 'router':
+#            
+#           # new object and build graph
+#            self.role = router(self.options, self)
+#        
+#            self.role.tb.start()                      # start flow graph
+#            self.role.run()
+#            self.role.tb.wait()                       # wait for it to finish
+#        
+#       # destination
+#        if meta_data.role_tup[int(self.options.id)] == 'destination':
+#            
+#           # new object and build graph
+#            self.role = destination(self.options, self)
+#        
+#            self.role.tb.start()                      # start flow graph
+#            self.role.tb.wait()                       # wait for it to finish
     

@@ -43,7 +43,12 @@ class ccc_server(threading.Thread):
                 ctrl_msg = cPickle.loads(str)
                 # time sync signal
                 if ctrl_msg.type == 1:
-                    print "Time Sync Signal, %d" % ctrl_msg.cnt
+                    if ctrl_msg.cnt > crn_manager.time_sync_cnt:
+                        self.crn_manager.time_sync_con.acquire()
+                        self.crn_manager.time_sync_cnt = ctrl_msg.cnt
+                        self.crn_manager.time_sync_con.notify() 
+                        self.crn_manager.time_sync_con.release()
+                        
                 
     
     def accept_new_connection(self):
