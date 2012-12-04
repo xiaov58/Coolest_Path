@@ -47,6 +47,7 @@ class ccc_server(threading.Thread):
                         self.crn_manager.time_sync_con.acquire()
                         self.crn_manager.time_sync_cnt = ctrl_msg.cnt
                         self.crn_manager.time_sync_con.notify() 
+                        print "notify"
                         self.crn_manager.time_sync_con.release()
                         
                 

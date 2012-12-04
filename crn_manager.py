@@ -65,11 +65,12 @@ class crn_manager:
         # wait for time sync
         self.time_sync_con.acquire()
         if self.time_sync_cnt == 0:
+            print "wait"
             self.time_sync_con.wait() 
             print "Timer start at local time:",time.time()
         self.time_sync_con.release()
         
-        
+        print "done"
         time.sleep(100)
         
 #       # assign diffrent job to diffrent role
