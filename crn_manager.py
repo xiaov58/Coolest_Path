@@ -56,13 +56,14 @@ class crn_manager:
         
         # source begin to send time_sync signal
         if meta_data.role_tup[int(self.options.id)] == 'source':
+            print "time sync"
             self.sync_time()
         
         # wait for time sync
         self.time_sync_con.acquire()
         if self.time_sync_cnt == 0:
             self.time_sync_con.wait() 
-            print "Start at local time:",time.time()
+            print "Timer start at local time:",time.time()
         self.time_sync_con.release()
         
         
