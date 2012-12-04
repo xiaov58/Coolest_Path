@@ -53,6 +53,9 @@ class crn_manager:
             sock.connect( (meta_data.ip_tup[i], meta_data.server_port) )
             print sock.recv( meta_data.sock_buffer_size )
             self.socks_table[i] = sock
+            
+        # wait for connections
+        time.sleep(meta_data.setup_time)
         
         # source begin to send time_sync signal
         if meta_data.role_tup[int(self.options.id)] == 'source':
