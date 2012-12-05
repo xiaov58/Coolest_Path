@@ -30,7 +30,7 @@ class router:
         while 1:
             self.crn_manager.process_con.acquire()
             # random backoff, prevent continous receiving
-            time.sleep(meta_data.min_delay * meta_data.random_backoff_range * random.random())
+            time.sleep(meta_data.min_delay * meta_data.random_backoff_range * random.random() + 0.03) 
             if len(self.data_buffer) == 0 and len(self.header_buffer) == 0:
                 pass
             else:
