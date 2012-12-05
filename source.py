@@ -28,7 +28,7 @@ class source:
             self.crn_manager.process_con.acquire()
             start = time.time()
             # random backoff, prevent continous sending
-            #time.sleep(meta_data.min_delay * meta_data.random_backoff_range * random.random())
+            time.sleep(meta_data.min_delay * meta_data.random_backoff_range * random.random())
             payload = self.generate_data()
             # RTS
             # CTS
