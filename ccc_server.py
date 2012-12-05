@@ -58,8 +58,6 @@ class ccc_server(threading.Thread):
                             for j in range(len(meta_data.channels)) :
                                 self.crn_manager.link_temp_table[i][j] = 1 - (1-self.crn_manager.channel_utilization_table[j])*(1-ctrl_msg.cut[j])
                         
-                        
-                
     
     def accept_new_connection(self):
       newsock, (remhost, remport) = self.srvsock.accept()

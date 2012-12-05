@@ -13,7 +13,7 @@ time_adjust_runs = 10
 sensing_time = 0.1
 server_port = 11012
 max_client = 5
-sock_buffer_size = 100
+sock_buffer_size = 1000
 
 channels = [0, 4.915, 4.917, 4.919]
 

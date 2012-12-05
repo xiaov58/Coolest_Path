@@ -93,3 +93,4 @@ class router:
         else:
             print "ok: %r \t pktno: %d \t" % (ok, pktno)
         self.crn_manager.process_con.release()
+        time.sleep(0.001)
