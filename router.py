@@ -28,6 +28,7 @@ class router:
         payload = ""
         
         while 1:
+            self.crn_manager.process_con.acquire()
             # random backoff, prevent continous receiving
             time.sleep(meta_data.min_delay * meta_data.random_backoff_range * random.random())
             if len(self.data_buffer) == 0 and len(self.header_buffer) == 0:
@@ -35,6 +36,8 @@ class router:
             else:
                 payload = self.fetch_data()
                 delay = meta_data.min_delay
+                if self.crn_manager.process_flag == 0:
+                    self.crn_manager.process_con.wait()
                 while self.tb.carrier_sensed():
                     sys.stderr.write('B')
                     #print "B"
@@ -43,6 +46,8 @@ class router:
                         delay = delay * 2       # exponential back-off
                 self.send_pkt(payload)
                 print "pktno: %d forwarded" % (self.pktno)
+            self.crn_manager.process_con.release()
+            time.sleep(0.001)
         self.send_pkt(eof=True)
 
     def send_pkt(self, payload='', eof=False):
@@ -69,6 +74,9 @@ class router:
         return payload
         
     def rx_callback(self, ok, payload):
+        self.crn_manager.process_con.acquire()
+        if self.crn_manager.process_flag == 0:
+            self.crn_manager.process_con.wait()
         self.__n_rcvd += 1
         (pktno, ) = struct.unpack('!H', payload[0:2])
         (pkt_source_id, ) = struct.unpack('!H', payload[2:4])
@@ -84,3 +92,4 @@ class router:
             print "pktno: %d \t n_rcvd: %d \t n_right: %d \t sender: %d \t receiver: %d \t source: %d \t destination: %d" % (pktno, self.__n_rcvd, self.__n_right,  pkt_sender_id,  pkt_receiver_id,  pkt_source_id,  pkt_destination_id)
         else:
             print "ok: %r \t pktno: %d \t" % (ok, pktno)
+        self.crn_manager.process_con.release()

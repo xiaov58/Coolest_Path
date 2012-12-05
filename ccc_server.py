@@ -47,12 +47,17 @@ class ccc_server(threading.Thread):
                         self.crn_manager.time_sync_con.acquire()
                         self.crn_manager.time_sync_cnt = ctrl_msg.cnt
                         self.crn_manager.time_sync_con.notify() 
-                        print "notify"
-                        self.crn_manager.time_sync_con.release()
-                        print "broadcast"
                         self.crn_manager.broadcast(str)
-                    else:
-                        print "ignore"
+                        self.crn_manager.time_sync_con.release()
+                        
+                # channel utilazation info
+                if ctrl_msg.type == 2:
+                    #update link temprature table
+                    for i in meta_data.neightbour_tup[int(self.options.id)]:
+                        if int(i) == int(ctrl_msg.sender_id):
+                            for j in range(len(meta_data.channels)) :
+                                self.crn_manager.link_temp_table[i][j] = 1 - (1-self.crn_manager.channel_utilization_table[j])*(1-ctrl_msg.cut[j])
+                        
                         
                 
     

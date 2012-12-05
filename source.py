@@ -24,12 +24,17 @@ class source:
         n = 0
         nbytes = int(1e6 * meta_data.total_size)
         
-        while n < nbytes:            
-            # random backoff, prevent continous receiving
-            time.sleep(meta_data.min_delay * meta_data.random_backoff_range * random.random())
+        while n < nbytes:       
+            self.crn_manager.process_con.acquire()
+            start = time.time()
+            # random backoff, prevent continous sending
+            #time.sleep(meta_data.min_delay * meta_data.random_backoff_range * random.random())
             payload = self.generate_data()
             # RTS
             # CTS
+            
+            if self.crn_manager.process_flag == 0:
+                self.crn_manager.process_con.wait()
             # sense
             delay = meta_data.min_delay
             while self.tb.carrier_sensed():
@@ -40,12 +45,20 @@ class source:
             
             self.send_pkt(payload)
             n += len(payload)
-            print self.pktno
+            end = time.time()
+            print "%d : time %.3f" % (self.pktno, end - start)
             self.pktno += 1
+            
+            self.crn_manager.process_con.release()
+            time.sleep(0.001)
+            
         self.send_pkt(eof=True)
 
     def send_pkt(self, payload='', eof=False):
         return self.tb.txpath.send_pkt(payload, eof)
+        
+    def change_channel(self, channel_id):
+        self.tb.set_freq()
         
     def generate_data(self):
         # prepare data and pack
@@ -65,6 +78,6 @@ class source:
                             data
         return payload
         
-
+    
     def rx_callback(self, ok, payload):
         pass

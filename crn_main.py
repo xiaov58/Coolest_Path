@@ -45,8 +45,8 @@ def preprocess():
         parser.print_help(sys.stderr)
         sys.exit(1)
     else:
-        options.rx_freq = meta_data.channels[1] * 1e9
-        options.tx_freq = meta_data.channels[1] * 1e9
+        options.rx_freq = meta_data.channels[meta_data.init_channel] * 1e9
+        options.tx_freq = meta_data.channels[meta_data.init_channel] * 1e9
     
     return options
 

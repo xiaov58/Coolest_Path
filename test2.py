@@ -1,7 +1,8 @@
 import time,sched
 
 def event_func(msg):
-    print "Current Time:",time.time(),'msg:',msg
+    a = time.time()
+    print "Current Time:%10.3f" % a
 
 if __name__ == "__main__":
 
