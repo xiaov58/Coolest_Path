@@ -57,7 +57,8 @@ class crn_manager:
             self.active_time.append(0)
         
     
-    def broadcast(self, str):
+    def broadcast(self, ctrl_string):
+        str = ctrl_string
         for k in self.socks_table.keys():
             self.socks_table[k].send(str)
         
