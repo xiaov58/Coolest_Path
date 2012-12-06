@@ -6,13 +6,14 @@ packet_size = 400           # Byte
 total_size = 1                  # Mega Byte
 default_carrier_thredshold = -60
 min_delay = 0.001          # unit: second
-random_backoff_range = 50 #ms
-setup_time = 5
+random_backoff_range = 100 #ms
+setup_time = 3
 time_interval = 1
 time_adjust_runs = 10
 sensing_time = 0.1
 server_port = 11012
 max_client = 5
+hop_cnt  = 2
 sock_buffer_size = 1000
 
 channels = [0, 4.915, 4.917, 4.919]

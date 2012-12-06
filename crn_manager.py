@@ -33,7 +33,7 @@ class crn_manager:
         self.sense_cnt = 0
         self.process_timer = 0
         self.process_cnt = 0
-        self.process_flag = 0
+        self.process_flag = 0 
 
         # tables
         self.socks_table = {}
@@ -70,16 +70,19 @@ class crn_manager:
     
     # Thread priority need
     def sense(self):
+        virtual_time_stamp_ = time.time() - self.start_local_time - meta_data.setup_time
+        print "acquire at virtual time: %.3f" % virtual_time_stamp_
+        self.process_con.acquire()
         virtual_time_stamp = time.time() - self.start_local_time - meta_data.setup_time
         print "sense at virtual time: %.3f" % virtual_time_stamp
-        self.process_con.acquire()
+
         # block process thread
         self.process_flag = 0
         self.process_con.release()
         # sleep so that process thread can run and wait as soon as possible
         time.sleep(0.001)
         self.sense_cnt += 1
-        self.pseudo_check(virtual_time_stamp)
+        self.pseudo_check(virtual_time_stamp_)
         
         # adjust time
         new_virtual_time_stamp = time.time() - self.start_local_time - meta_data.setup_time
@@ -118,9 +121,11 @@ class crn_manager:
         self.process_con.acquire()
         virtual_time_stamp = time.time() - self.start_local_time - meta_data.setup_time
         print "process at virtual time: %.3f" % virtual_time_stamp
+        
         self.process_cnt += 1
-        self.process_flag = 1
-        self.process_con.notifyAll()
+        if  (self.process_cnt - 1)%meta_data.hop_cnt == (int(self.options.id) - 1):
+            self.process_flag = 1
+            self.process_con.notify()
         
         # adjust time
         new_virtual_time_stamp = time.time() - self.start_local_time - meta_data.setup_time
@@ -167,16 +172,19 @@ class crn_manager:
         
         self.start_local_time = time.time()
         
-        # make use of 5s interval to build graph
+        
+        # make use of interval to build graph
+        print time.time()
         self.sense_timer = threading.Timer(meta_data.setup_time, self.sense)
         self.sense_timer.daemon = True
         self.sense_timer.start()
+        print time.time()
         self.process_timer = threading.Timer(meta_data.setup_time + meta_data.sensing_time, self.process)
         self.process_timer.daemon = True
         self.process_timer.start()
-
-        #time.sleep(100)
+        print time.time()
         
+        #time.sleep(100)
        # assign diffrent job to diffrent role
        # source
         if meta_data.role_tup[int(self.options.id)] == 'source':

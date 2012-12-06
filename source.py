@@ -25,23 +25,23 @@ class source:
         nbytes = int(1e6 * meta_data.total_size)
         
         while n < nbytes:       
+            payload = self.generate_data()
             self.crn_manager.process_con.acquire()
             start = time.time()
             # random backoff, prevent continous sending
-            time.sleep(meta_data.min_delay * meta_data.random_backoff_range * random.random() + 0.03)
-            payload = self.generate_data()
+            #time.sleep(meta_data.min_delay * meta_data.random_backoff_range * random.random())
             # RTS
             # CTS
             
             if self.crn_manager.process_flag == 0:
                 self.crn_manager.process_con.wait()
-            # sense
-            delay = meta_data.min_delay
-            while self.tb.carrier_sensed():
-                sys.stderr.write('B')
-                time.sleep(delay)
-                if delay < 0.050:
-                    delay = delay * 2       # exponential back-off
+#            # sense
+#            delay = meta_data.min_delay
+#            while self.tb.carrier_sensed():
+#                sys.stderr.write('B')
+#                time.sleep(delay)
+#                if delay < 0.050:
+#                    delay = delay * 2       # exponential back-off
             
             self.send_pkt(payload)
             n += len(payload)

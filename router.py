@@ -30,20 +30,21 @@ class router:
         while 1:
             self.crn_manager.process_con.acquire()
             # random backoff, prevent continous receiving
-            time.sleep(meta_data.min_delay * meta_data.random_backoff_range * random.random()) 
+            #time.sleep(meta_data.min_delay * meta_data.random_backoff_range * random.random()) 
             if len(self.data_buffer) == 0 and len(self.header_buffer) == 0:
                 pass
             else:
                 payload = self.fetch_data()
-                delay = meta_data.min_delay
                 if self.crn_manager.process_flag == 0:
                     self.crn_manager.process_con.wait()
-                while self.tb.carrier_sensed():
-                    sys.stderr.write('B')
-                    #print "B"
-                    time.sleep(delay)
-                    if delay < 0.050:
-                        delay = delay * 2       # exponential back-off
+                    
+#                delay = meta_data.min_delay
+#                while self.tb.carrier_sensed():
+#                    sys.stderr.write('B')
+#                    #print "B"
+#                    time.sleep(delay)
+#                    if delay < 0.050:
+#                        delay = delay * 2       # exponential back-off
                 self.send_pkt(payload)
                 print "pktno: %d forwarded" % (self.pktno)
             self.crn_manager.process_con.release()
