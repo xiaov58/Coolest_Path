@@ -46,7 +46,8 @@ class router:
 #                    if delay < 0.050:
 #                        delay = delay * 2       # exponential back-off
                 self.send_pkt(payload)
-                print "pktno: %d forwarded" % (self.pktno)
+                #print "pktno: %d forwarded" % (self.pktno)
+                print "Forward %d; channel %d" % (self.pktno, self.crn_manager.cur_channel)
             self.crn_manager.process_con.release()
             time.sleep(0.001)
         self.send_pkt(eof=True)
@@ -70,8 +71,6 @@ class router:
                             struct.pack('!H', pkt_sender_id & 0xffff) + \
                             struct.pack('!H', pkt_receiver_id & 0xffff)  + \
                             data
-        print "pktno: %d fetched" % (self.pktno)
-        # check if the buffer becomes empty
         return payload
         
     def rx_callback(self, ok, payload):

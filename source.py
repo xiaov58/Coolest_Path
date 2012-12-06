@@ -30,8 +30,6 @@ class source:
             start = time.time()
             # random backoff, prevent continous sending
             #time.sleep(meta_data.min_delay * meta_data.random_backoff_range * random.random())
-            # RTS
-            # CTS
             
             if self.crn_manager.process_flag == 0:
                 self.crn_manager.process_con.wait()
@@ -46,7 +44,7 @@ class source:
             self.send_pkt(payload)
             n += len(payload)
             end = time.time()
-            print "%d : time %.3f" % (self.pktno, end - start)
+            print "%d; channel %d; time %.3f" % (self.pktno, self.crn_manager.cur_channel , end - start)
             self.pktno += 1
             
             self.crn_manager.process_con.release()

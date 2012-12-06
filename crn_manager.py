@@ -37,7 +37,7 @@ class crn_manager:
 
         # tables
         self.socks_table = {}
-        self.channel_mask = []
+        self.channel_mask = [] #1:available 0: not
         for i in range(len(meta_data.channels)) :
             self.channel_mask.append(0)
         self.channel_mask[0] = 1
@@ -49,6 +49,11 @@ class crn_manager:
             self.link_temp_table[i] = []
             for j in range(len(meta_data.channels)) :
                 self.link_temp_table[i] .append(0)
+        self.neighbour_channel_mask = {}
+        for i in meta_data.neightbour_tup[int(self.options.id)]:
+            self.neighbour_channel_mask[i] = []
+            for j in range(len(meta_data.channels)) :
+                self.neighbour_channel_mask[i] .append(0)
             
         #for calculating utilazation
         self.total_time = 0
@@ -113,7 +118,7 @@ class crn_manager:
 #        print self.channel_mask
 #        print self.active_time
         # broadcast utilazation table to neighbour in order to calculate link temprature
-        cum = channel_utilazation_msg(2, self.options.id, self.channel_utilization_table)
+        cum = sensing_result_msg(2, self.options.id, self.channel_utilization_table, self.channel_mask)
         cum_string = cPickle.dumps(cum)
         self.broadcast(cum_string)
         
@@ -122,6 +127,8 @@ class crn_manager:
         virtual_time_stamp = time.time() - self.start_local_time - meta_data.setup_time
         print "process at virtual time: %.3f" % virtual_time_stamp
         
+        print self.neighbour_channel_mask
+        print self.link_temp_table
         self.process_cnt += 1
         if  (self.process_cnt - 1)%meta_data.hop_cnt == (int(self.options.id) - 1):
             self.process_flag = 1
@@ -135,8 +142,8 @@ class crn_manager:
         self.process_timer.start()
         self.process_con.release()
         
+    def set_channel(self):
         
-    def select_coolest_channel(self):
         pass
 
     def run(self):

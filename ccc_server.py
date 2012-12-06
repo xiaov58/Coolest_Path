@@ -55,8 +55,11 @@ class ccc_server(threading.Thread):
                     #update link temprature table
                     for i in meta_data.neightbour_tup[int(self.options.id)]:
                         if int(i) == int(ctrl_msg.sender_id):
+                            self.crn_manager.neighbour_channel_mask[i] = ctrl_msg.cm
                             for j in range(len(meta_data.channels)) :
                                 self.crn_manager.link_temp_table[i][j] = 1 - (1-self.crn_manager.channel_utilization_table[j])*(1-ctrl_msg.cut[j])
+                                
+                    
                         
     
     def accept_new_connection(self):
