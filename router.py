@@ -21,6 +21,8 @@ class router:
         self.__n_right = 0
         self.header_buffer = []
         self.data_buffer = []
+        # psuedo
+        self.next_hop = 3
         
     def run(self):
         n = 0
@@ -64,7 +66,7 @@ class router:
         del self.header_buffer[0]
         pkt_sender_id =  int(self.options.id)
         # tempraty routing needed
-        pkt_receiver_id = int(3)
+        pkt_receiver_id = self.next_hop
         payload =    struct.pack('!H', self.pktno & 0xffff) +\
                             struct.pack('!H', meta_data.source_id & 0xffff) + \
                             struct.pack('!H', meta_data.destination_id & 0xffff)  + \

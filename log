@@ -1,0 +1,9 @@
+1. stop sending and receiving asap when sense should start(0.1 period)
+2. MAC design(TDMA now)
+3. thread mutex
+4. routing table, muti-flow
+
+
+single-flow
+half_duplex
+mac

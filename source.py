@@ -18,7 +18,7 @@ class source:
         self.tb = source_block(self.rx_callback, self.options)
         self.tb.rxpath.set_carrier_threshold(options.carrier_threshold)
         self.pktno = 0
-        pass
+        self.next_hop = 2
         
     def run(self):
         n = 0
@@ -67,7 +67,7 @@ class source:
         data = (pkt_size - 10) * chr(self.pktno & 0xff) 
         pkt_sender_id =  int(self.options.id)
         # tempraty routing needed
-        pkt_receiver_id = int(2)
+        pkt_receiver_id = self.next_hop
         payload =    struct.pack('!H', self.pktno & 0xffff) +\
                             struct.pack('!H', meta_data.source_id & 0xffff) + \
                             struct.pack('!H', meta_data.destination_id & 0xffff)  + \

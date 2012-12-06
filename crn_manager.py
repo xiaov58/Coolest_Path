@@ -28,6 +28,7 @@ class crn_manager:
         self.time_sync_cnt = 0
         self.time_sync_con = threading.Condition()  
         self.process_con = threading.Condition()  
+        self.cts_con = threading.Condition()  
         self.start_local_time = 0
         self.sense_timer = 0
         self.sense_cnt = 0
@@ -39,11 +40,12 @@ class crn_manager:
         self.socks_table = {}
         self.channel_mask = [] #1:available 0: not
         for i in range(len(meta_data.channels)) :
-            self.channel_mask.append(0)
-        self.channel_mask[0] = 1
+            self.channel_mask.append(1)
+        self.channel_mask[0] = 0
         self.channel_utilization_table = []
         for i in range(len(meta_data.channels)) :
             self.channel_utilization_table.append(0)
+        self.channel_utilization_table[0] = 1
         self.link_temp_table = {}
         for i in meta_data.neightbour_tup[int(self.options.id)]:
             self.link_temp_table[i] = []
@@ -69,7 +71,7 @@ class crn_manager:
         
     def sync_time(self):
         self.time_sync_cnt += 1
-        tsm = time_sync_msg(1, self.time_sync_cnt)
+        tsm = time_sync_msg(self.time_sync_cnt)
         tsm_string = cPickle.dumps(tsm)
         self.broadcast(tsm_string)
     
@@ -101,14 +103,14 @@ class crn_manager:
         self.total_time += 1
         # recover channel_mask
         for i in range(len(meta_data.channels)) :
-            self.channel_mask[i] = 0
-        self.channel_mask[0] = 1
+            self.channel_mask[i] = 1
+        self.channel_mask[0] = 0
 
         for i in meta_data.pu_id_tup[int(self.options.id)]:
             for j in meta_data.pu_activity[int(i)]:
                 #update channel_utilization_table
                 if j[0] < vts < j[1] or j[0] < vts + 0.1 < j[1] :
-                    self.channel_mask[int(meta_data.pu_channel[int(i)])] = 1
+                    self.channel_mask[int(meta_data.pu_channel[int(i)])] = 0
                     self.active_time[int(meta_data.pu_channel[int(i)])] += 1
         
         # recalculate ultilazation table
@@ -118,7 +120,7 @@ class crn_manager:
 #        print self.channel_mask
 #        print self.active_time
         # broadcast utilazation table to neighbour in order to calculate link temprature
-        cum = sensing_result_msg(2, self.options.id, self.channel_utilization_table, self.channel_mask)
+        cum = sensing_result_msg(self.options.id, self.channel_utilization_table, self.channel_mask)
         cum_string = cPickle.dumps(cum)
         self.broadcast(cum_string)
         
@@ -132,6 +134,16 @@ class crn_manager:
         self.process_cnt += 1
         if  (self.process_cnt - 1)%meta_data.hop_cnt == (int(self.options.id) - 1):
             self.process_flag = 1
+            set_channel(self.role.next_hop)
+            # reserve receiving channel
+            rts = sensing_result_msg(int(self.options.id), self.cur_channel)
+            rts_string = cPickle.dumps(rts)
+            self.socks_table[self.role.next_hop].send(rts_string)
+            #wait for cts
+            self.cts_con.acquire()
+            self.cts_con.wait()
+            self.cts_con.release()
+            
             self.process_con.notify()
         
         # adjust time
@@ -142,9 +154,26 @@ class crn_manager:
         self.process_timer.start()
         self.process_con.release()
         
-    def set_channel(self):
-        
-        pass
+    def set_channel(self, next_top):
+        channel_id = 0
+        for i in range(len(meta_data.channels)) :
+            if self.link_temp_table[next_top][i] < temprature and self.channel_mask[i] == 1 and self.neighbour_channel_mask[next_top][i] ==1:
+                self.cur_channel = i 
+                self.role.tb.set_freq(meta_data.channels[i])
+        if cur_channel == 0:
+            # all channel not available
+            # send routing request
+            pass
+            
+    
+    def get_coolest_channel(self, next_top):
+        channel_id = 0
+        temprature = 1
+        for i in range(len(meta_data.channels)) :
+            if link_temp_table[next_top][i] < temprature:
+                temprature = link_temp_table[next_top][i]
+                channel_id = i
+        return (channel_id, temprature)
 
     def run(self):
         

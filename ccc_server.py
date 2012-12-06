@@ -59,7 +59,19 @@ class ccc_server(threading.Thread):
                             for j in range(len(meta_data.channels)) :
                                 self.crn_manager.link_temp_table[i][j] = 1 - (1-self.crn_manager.channel_utilization_table[j])*(1-ctrl_msg.cut[j])
                                 
-                    
+                # rts
+                if ctrl_msg.type == 3:
+                    self.crn_manager.cur_channel = ctrl_msg.ci
+                    self.crn_manager.role.tb.set_freq(meta_data.channels[ctrl_msg.ci])
+                    cts = sensing_result_msg()
+                    cts_string = cPickle.dumps(cts)
+                    self.crn_manager.socks_table[ctrl_msg.sender_id].send(cts_string)
+            
+                # cts
+                if ctrl_msg.type == 4:
+                    self.crn_manager.cts_con.acquire()
+                    self.crn_manager.cts_con.notify()
+                    self.crn_manager.cts_con.release()
                         
     
     def accept_new_connection(self):
