@@ -16,7 +16,7 @@ class destination:
 
 
     def rx_callback(self, ok, payload):
-        self.crn_manager.process_con.acquire()
+        #self.crn_manager.process_con.acquire()
         if self.crn_manager.process_flag == 0:
             self.crn_manager.process_con.wait()
         self.__n_rcvd += 1
@@ -30,5 +30,5 @@ class destination:
             print "pktno: %d \t n_rcvd: %d \t n_right: %d \t sender: %d \t receiver: %d \t source: %d \t destination: %d" % (pktno, self.__n_rcvd, self.__n_right,  pkt_sender_id,  pkt_receiver_id,  pkt_source_id,  pkt_destination_id)
         else:
             print "ok: %r \t pktno: %d \t" % (ok, pktno)
-        self.crn_manager.process_con.release()
+        #self.crn_manager.process_con.release()
 
