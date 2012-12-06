@@ -16,9 +16,9 @@ class destination:
 
 
     def rx_callback(self, ok, payload):
-        #self.crn_manager.process_con.acquire()
-        if self.crn_manager.process_flag == 0:
-            self.crn_manager.process_con.wait()
+#        self.crn_manager.process_con.acquire()
+#        if self.crn_manager.process_flag == 0:
+#            self.crn_manager.process_con.wait()
         self.__n_rcvd += 1
         (pktno, ) = struct.unpack('!H', payload[0:2])
         (pkt_source_id, ) = struct.unpack('!H', payload[2:4])
