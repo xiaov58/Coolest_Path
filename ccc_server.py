@@ -63,7 +63,7 @@ class ccc_server(threading.Thread):
                 if ctrl_msg.type == 3:
                     self.crn_manager.cur_channel = ctrl_msg.ci
                     self.crn_manager.role.tb.set_freq(meta_data.channels[ctrl_msg.ci])
-                    cts = sensing_result_msg()
+                    cts = cts_msg()
                     cts_string = cPickle.dumps(cts)
                     self.crn_manager.socks_table[ctrl_msg.sender_id].send(cts_string)
             

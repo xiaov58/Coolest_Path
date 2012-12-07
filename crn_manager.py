@@ -138,7 +138,7 @@ class crn_manager:
             self.process_flag = 1
             self.set_channel(self.role.next_hop)
             # reserve receiving channel
-            rts = sensing_result_msg(int(self.options.id), self.cur_channel)
+            rts = rts_msg(int(self.options.id), self.cur_channel)
             rts_string = cPickle.dumps(rts)
             self.socks_table[self.role.next_hop].send(rts_string)
             #wait for cts
