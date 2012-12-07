@@ -6,7 +6,6 @@ import struct
 from my_top_block import my_top_block
 
 class destination:
-    
     def __init__(self, options, crn_manager):
             self.__n_rcvd = 0
             self.__n_right = 0
