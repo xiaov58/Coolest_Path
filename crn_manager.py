@@ -134,7 +134,7 @@ class crn_manager:
         self.process_cnt += 1
         if  (self.process_cnt - 1)%meta_data.hop_cnt == (int(self.options.id) - 1):
             self.process_flag = 1
-            set_channel(self.role.next_hop)
+            self.set_channel(self.role.next_hop)
             # reserve receiving channel
             rts = sensing_result_msg(int(self.options.id), self.cur_channel)
             rts_string = cPickle.dumps(rts)
