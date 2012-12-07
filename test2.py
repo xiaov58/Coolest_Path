@@ -1,15 +1,20 @@
-import time,sched
+import thread, time , sys
 
-def event_func(msg):
-    a = time.time()
-    print "Current Time:%10.3f" % a
+def main():
+    i = 1
+    while 1:
+        print "B"
+        time.sleep(0.1)
+        i += 1
+        if i == 5:
+            thread.start_new_thread(interrupt, ())  
+    
+def interrupt():
+    print "try to interrupt"
+    thread.interrupt_main()
 
-if __name__ == "__main__":
-
-    s = sched.scheduler(time.time,time.sleep)
-
-    s.enter(1,2,event_func,("Small event.",))
-    s.enter(2,1,event_func,("Big event.",))
-    s.run()
-    while True:
-        time.sleep(100)
+try:  
+    main()
+except KeyboardInterrupt:  
+    print 'error'
+print 'over'  

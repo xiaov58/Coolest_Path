@@ -132,7 +132,9 @@ class crn_manager:
         print self.neighbour_channel_mask
         print self.link_temp_table
         self.process_cnt += 1
+        # need modification
         if  (self.process_cnt - 1)%meta_data.hop_cnt == (int(self.options.id) - 1):
+            start = time.time()
             self.process_flag = 1
             self.set_channel(self.role.next_hop)
             # reserve receiving channel
@@ -143,6 +145,8 @@ class crn_manager:
             self.cts_con.acquire()
             self.cts_con.wait()
             self.cts_con.release()
+            end = time.time()
+            print "preprocess time %.3f" % (end - start)
             
             self.process_con.notify()
         
@@ -164,6 +168,7 @@ class crn_manager:
         if cur_channel == 0:
             # all channel not available
             # send routing request
+            print "Route Request"
             pass
             
     
