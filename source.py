@@ -7,7 +7,7 @@ import random
 
 # from current dir
 import meta_data
-from source_block import source_block
+from my_top_block import my_top_block
 
 
 class source:
@@ -15,7 +15,7 @@ class source:
     def __init__(self, options, crn_manager):
         self.options = options
         self.crn_manager = crn_manager
-        self.tb = source_block(self.rx_callback, self.options)
+        self.tb = my_top_block(self.rx_callback, self.options)
         self.tb.rxpath.set_carrier_threshold(options.carrier_threshold)
         self.pktno = 0
         self.next_hop = 2

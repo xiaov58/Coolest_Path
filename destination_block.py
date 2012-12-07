@@ -3,7 +3,7 @@
 import sys
 
 # from gnuradio
-from gnuradio import gr
+from gnuradio import gr, digital
 
 # from current dir
 from receive_path import receive_path

@@ -3,7 +3,7 @@
 import struct
 
 # from current dir
-from destination_block import destination_block
+from my_top_block import my_top_block
 
 class destination:
     
@@ -12,7 +12,7 @@ class destination:
             self.__n_right = 0
             self.options = options
             self.crn_manager = crn_manager
-            self.tb = destination_block(self.rx_callback, self.options)
+            self.tb = my_top_block(self.rx_callback, self.options)
 
 
     def rx_callback(self, ok, payload):
