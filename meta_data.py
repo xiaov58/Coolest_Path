@@ -16,7 +16,7 @@ max_client = 5
 hop_cnt  = 2
 sock_buffer_size = 1000
 
-channels = [0, 4.915, 4.917, 4.919]
+channels = [0, 4.5002, 4.5004, 4.5006]
 
 # Topology
 # first item is null to make it easy to count
