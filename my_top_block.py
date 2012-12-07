@@ -43,8 +43,8 @@ class my_top_block(gr.top_block):
         """
         Set the center frequency we're interested in.
         """
-        self.source.u.set_center_freq(target_freq)
-        self.sink.u.set_center_freq(target_freq)
+        self.source.u.set_center_freq(target_freq * 1e9)
+        self.sink.u.set_center_freq(target_freq * 1e9)
         print target_freq
 #        self.u_snk.set_freq(target_freq)
 #        self.u_src.set_freq(target_freq)
