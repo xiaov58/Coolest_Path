@@ -165,7 +165,7 @@ class crn_manager:
             if self.link_temp_table[next_top][i] < temprature and self.channel_mask[i] == 1 and self.neighbour_channel_mask[next_top][i] ==1:
                 self.cur_channel = i 
                 self.role.tb.set_freq(meta_data.channels[i] * 1e9)
-        if cur_channel == 0:
+        if self.cur_channel == 0:
             # all channel not available
             # send routing request
             print "Route Request"
