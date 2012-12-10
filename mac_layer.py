@@ -43,6 +43,7 @@ class mac_layer:
         if self.crn_manager.status == 0 and len(self.buffer) != 0:
             # reserve receiver
             rts = rts_msg(self.crn_manager.id, self.crn_manager.best_channel)
+            print "best_channel %s" % self.crn_manager.best_channel
             rts_string = cPickle.dumps(rts)
             self.crn_manager.socks_table[self.crn_manager.route[self.crn_manager.route.index(self.crn_manager.id) + 1]].send(rts_string)
             # wait for reply
