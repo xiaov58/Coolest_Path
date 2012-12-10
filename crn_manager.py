@@ -150,6 +150,7 @@ class crn_manager:
         # recalculate ultilazation table
         for i in range(len(meta_data.channels)) :
             self.channel_utilization_table[i] = self.active_time_table[i]/self.total_time
+        self.channel_utilization_table[0] = 1
         
         # broadcast utilazation table to neighbour in order to calculate link temprature
         cum = sensing_result_msg(self.options.id, self.channel_utilization_table, self.channel_mask)
