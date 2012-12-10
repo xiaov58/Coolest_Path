@@ -6,15 +6,16 @@ import meta_data
 
 class mac_layer:
     def __init__(self, buffer, crn_manager):
+        self.pktno = 0
         self.buffer = buffer
         self.crn_manager = crn_manager
             
     def fetch_packge(self):
-        pktno = self.buffer[0][0]
+        self.pktno = self.buffer[0][0]
         pkt_sender_id =  self.buffer[0][1]
         data = self.buffer[0][2]
         del self.buffer[0]
-        payload =    struct.pack('!H', pktno & 0xffff) +\
+        payload =    struct.pack('!H', self.pktno & 0xffff) +\
                             struct.pack('!H', pkt_sender_id & 0xffff) + \
                             data
         return payload

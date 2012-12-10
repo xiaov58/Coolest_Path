@@ -183,13 +183,14 @@ class crn_manager:
         print best_links
         # if none of the channel can be use, broadcast error so that source will invoke routing request
         if self.best_channel == 0:
-            print "route error"
-            print self.route
-            print self.link_temp_table
+            print "route error"            
         else:
             self.role.tb.set_freq(self.best_channel)
         
     def get_best_links(self):
+        print self.channel_mask
+        print self.neighbour_channel_mask
+        print self.link_temp_table
         next_hop = self.route[self.route.index(self.id) + 1]
         cost = meta_data.INF
         best_links = {}
