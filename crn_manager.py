@@ -101,7 +101,7 @@ class crn_manager:
     def exit(self):
         print "Done !!" 
         if self.id == meta_data.source_id:
-            print "Source: send out %d" % (self.role.pktno)
+            print "Source: send out %d" % (self.role.mac_layer_.pkt_cnt)
         if self.id == meta_data.destination_id:
             print "Destination: recieve %d" % (self.role.pkt_cnt)
             print self.role.routing_request_log
@@ -195,6 +195,7 @@ class crn_manager:
     def get_best_links(self):
         next_hop = self.route[self.route.index(self.id) + 1]
         best_links = {}
+        print self.link_temp_table
         for i in meta_data.neighbour_table[self.id]:
             cost = meta_data.INF
             for j in range(len(meta_data.channels)) :
@@ -203,6 +204,7 @@ class crn_manager:
                         self.best_channel = j 
                         print "set best channel"
                     cost = self.link_temp_table[i][j]
+                    print cost
                     self.role.tb.set_freq(meta_data.channels[j])
             best_links[i] = [self.id, i, cost]         # sender, receiver, cost
         return best_links
