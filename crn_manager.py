@@ -89,6 +89,7 @@ class crn_manager:
             self.socks_table[k].send(str)
         
     def sync_time(self):
+        print "init time sync"
         self.time_sync_flag = 1
         tsm = time_sync_msg(self.time_sync_flag)
         tsm_string = cPickle.dumps(tsm)
@@ -226,6 +227,7 @@ class crn_manager:
         self.time_sync_con.acquire()
         if self.time_sync_flag == 0:
             self.time_sync_con.wait() 
+            print "wait time sync"
         self.time_sync_con.release()
         
         self.start_local_time = time.time()
