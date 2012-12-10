@@ -59,7 +59,12 @@ class ccc_server(threading.Thread):
                         if i == ctrl_msg.sender_id:
                             self.crn_manager.neighbour_channel_mask[i] = ctrl_msg.channel_mask
                             for j in range(len(meta_data.channels)) :
+                                print j
+                                print self.crn_manager.link_temp_table[i][j]
+                                print self.crn_manager.channel_utilization_table[j]
+                                print ctrl_msg.channel_utilization_table[j]
                                 self.crn_manager.link_temp_table[i][j] = 1 - (1-self.crn_manager.channel_utilization_table[j])*(1-ctrl_msg.channel_utilization_table[j])
+                                
                     print self.crn_manager.link_temp_table
                                 
                 # rts
