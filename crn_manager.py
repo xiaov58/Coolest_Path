@@ -160,7 +160,7 @@ class crn_manager:
         self.channel_utilization_table[0] = 1
         
         # broadcast utilazation table to neighbour in order to calculate link temprature
-        cum = sensing_result_msg(self.options.id, self.channel_utilization_table, self.channel_mask)
+        cum = sensing_result_msg(self.id, self.channel_utilization_table, self.channel_mask)
         cum_string = cPickle.dumps(cum)
         self.broadcast(cum_string) 
         
