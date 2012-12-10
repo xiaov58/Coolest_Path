@@ -120,7 +120,7 @@ class crn_manager:
         self.process_flag = 0
         # wake form waiting fo buffer
         self.buffer_con.acquire()
-        self.buffer_con.wait()
+        self.buffer_con.notify()
         self.buffer_con.release()
         
         self.process_con.acquire()
