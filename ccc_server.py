@@ -65,6 +65,7 @@ class ccc_server(threading.Thread):
                     if self.crn_manager.status == 0:
                         
                         self.crn_manager.status = 2
+                        print meta_data.channels[ctrl_msg.channel_id]
                         self.crn_manager.role.tb.set_freq(meta_data.channels[ctrl_msg.channel_id])
                         self.crn_manager.rx_con.acquire()
                         self.crn_manager.rx_con.notify()
