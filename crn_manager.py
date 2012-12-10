@@ -191,7 +191,7 @@ class crn_manager:
         best_links = {}
         for i in meta_data.neighbour_table[self.id]:
             for j in range(len(meta_data.channels)) :
-                if self.link_temp_table[i][j] < temprature and self.channel_mask[j] == 1 and self.neighbour_channel_mask[i][j] ==1:
+                if self.link_temp_table[i][j] < cost and self.channel_mask[j] == 1 and self.neighbour_channel_mask[i][j] ==1:
                     if i == next_hop:
                         self.best_channel = j 
                     cost = self.link_temp_table[i][j]
