@@ -27,7 +27,7 @@ def preprocess():
     # process parameters
     parser = OptionParser(option_class=eng_option, conflict_handler="resolve")
     expert_grp = parser.add_option_group("Expert")
-    expert_grp.add_option("-c", "--carrier-threshold", type="eng_float", default=meta_data.default_carrier_thredshold,
+    expert_grp.add_option("-c", "--carrier-threshold", type="eng_float", default=meta_data.carrier_thredshold,
                       help="set carrier detect threshold (dB) [default=%default]")
     parser.add_option("-i","--id", default=0,
                       help="id: check out meta_data.py also.")
@@ -52,8 +52,8 @@ def preprocess():
 
 def main():
     options = preprocess()
-    cm = crn_manager(options)
-    cm.run()
+    crn_manager_ = crn_manager(options)
+    crn_manager_.run()
 
 if __name__ == '__main__':
     try:

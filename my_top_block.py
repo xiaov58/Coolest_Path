@@ -33,11 +33,11 @@ class my_top_block(gr.top_block):
         self.connect(self.txpath, self.sink)
         self.connect(self.source, self.rxpath)
 
-    def carrier_sensed(self):
+    def carrier_sense(self):
         """
         Return True if the receive path thinks there's carrier
         """
-        return self.rxpath.carrier_sensed()
+        return self.rxpath.carrier_sense()
 
     def set_freq(self, target_freq):
         """
@@ -45,7 +45,5 @@ class my_top_block(gr.top_block):
         """
         self.source.u.set_center_freq(target_freq * 1e9)
         self.sink.u.set_center_freq(target_freq * 1e9)
-        print target_freq
-#        self.u_snk.set_freq(target_freq)
-#        self.u_src.set_freq(target_freq)
+
 

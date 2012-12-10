@@ -60,7 +60,7 @@ class receive_path(gr.hier_block2):
         if self._verbose:
             self._print_verbage()
         
-    def carrier_sensed(self):
+    def carrier_sense(self):
         """
         Return True if we think carrier is present.
         """
