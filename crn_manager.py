@@ -188,17 +188,13 @@ class crn_manager:
             self.role.tb.set_freq(self.best_channel)
         
     def get_best_links(self):
-        print self.channel_mask
-        print self.neighbour_channel_mask
-        print self.link_temp_table
         next_hop = self.route[self.route.index(self.id) + 1]
-        cost = meta_data.INF
         best_links = {}
         for i in meta_data.neighbour_table[self.id]:
-            print "%d ; %d" % (i, next_hop)
             for j in range(len(meta_data.channels)) :
+                cost = meta_data.INF
                 if self.link_temp_table[i][j] < cost and self.channel_mask[j] == 1 and self.neighbour_channel_mask[i][j] ==1:
-                    if int(i) == int(next_hop):
+                    if i == next_hop:
                         self.best_channel = j 
                         print "set best_channel"
                     cost = self.link_temp_table[i][j]
