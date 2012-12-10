@@ -200,7 +200,7 @@ class crn_manager:
             
     def run(self):
         # start ccc_server, recieve coming control msg only
-        ccc_server_ = ccc_server("ccc_server", self.id, self)
+        ccc_server_ = ccc_server("ccc_server", self)
         ccc_server_.setDaemon(True)
         ccc_server_.start()
         
