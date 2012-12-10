@@ -212,7 +212,7 @@ class crn_manager:
          #key is the node id, value is the sock descriptor
         for i in meta_data.neighbour_table[self.id]:
             sock = socket.socket( socket.AF_INET, socket.SOCK_STREAM )
-            sock.connect( (meta_data.ip_tup[i], meta_data.server_port) )
+            sock.connect( (meta_data.ip_table[i], meta_data.server_port) )
             print sock.recv( meta_data.sock_buffer_size )
             self.socks_table[i] = sock
             
