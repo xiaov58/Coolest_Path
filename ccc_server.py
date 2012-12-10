@@ -67,13 +67,13 @@ class ccc_server(threading.Thread):
                         self.crn_manager.rx_con.notify()
                         self.crn_manager.rx_con.release()
                         self.crn_manager.role.tb.set_freq(meta_data.channels[ctrl_msg.channel_id])
-                        cts = cts_msg(1)
-                        cts_string = cPickle.dumps(cts)
-                        self.crn_manager.socks_table[ctrl_msg.sender_id].send(cts_string)
+                        rts_ack = rts_ack_msg(1)
+                        rts_ack_string = cPickle.dumps(rts_ack)
+                        self.crn_manager.socks_table[ctrl_msg.sender_id].send(rts_ack_string)
                     else: 
-                        cts = cts_msg(0)
-                        cts_string = cPickle.dumps(cts)
-                        self.crn_manager.socks_table[ctrl_msg.sender_id].send(cts_string)
+                        rts_ack = rts_ack_msg(0)
+                        rts_ack_string = cPickle.dumps(rts_ack)
+                        self.crn_manager.socks_table[ctrl_msg.sender_id].send(rts_ack_string)
             
                 # rts ack
                 if ctrl_msg.type == 4:
