@@ -192,6 +192,7 @@ class crn_manager:
         print self.neighbour_channel_mask
         print self.link_temp_table
         next_hop = self.route[self.route.index(self.id) + 1]
+        print next_hop
         cost = meta_data.INF
         best_links = {}
         for i in meta_data.neighbour_table[self.id]:
@@ -201,6 +202,7 @@ class crn_manager:
                         self.best_channel = j 
                         print "set best_channel"
                     cost = self.link_temp_table[i][j]
+                    print cost
                     self.role.tb.set_freq(meta_data.channels[j])
             best_links[i] = [self.id, i, cost]         # sender, receiver, cost
         return best_links

@@ -32,7 +32,7 @@ class mac_layer:
                 delay_range = delay_range * 2       # exponential back-off range
                 
         self.crn_manager.role.tb.txpath.send_pkt(payload, False)
-        print "%d; channel %d; time %.3f" % (self.pktno, self.crn_manager.best_channel)
+        print "pktno %d; channel %d" % (self.pktno, self.crn_manager.best_channel)
 
     def run(self):
         if self.crn_manager.status ==0 and len(self.buffer) == 0:
