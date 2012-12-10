@@ -179,11 +179,10 @@ class crn_manager:
         
     def update_routing(self):
         best_links = self.get_best_links()
-        print self.channel_utilization_table
-        print best_links
         # if none of the channel can be use, broadcast error so that source will invoke routing request
         if self.best_channel == 0:
             print "route error"            
+            # update route
         
     def get_best_links(self):
         next_hop = self.route[self.route.index(self.id) + 1]
@@ -194,7 +193,6 @@ class crn_manager:
                 if self.link_temp_table[i][j] < cost and self.channel_mask[j] == 1 and self.neighbour_channel_mask[i][j] ==1:
                     if i == next_hop:
                         self.best_channel = j 
-                        print "set best_channel"
                     cost = self.link_temp_table[i][j]
                     self.role.tb.set_freq(meta_data.channels[j])
             best_links[i] = [self.id, i, cost]         # sender, receiver, cost

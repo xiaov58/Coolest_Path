@@ -61,6 +61,7 @@ class ccc_server(threading.Thread):
                                 
                 # rts
                 if ctrl_msg.type == 3:
+                    print "receive RTS"
                     if self.crn_manager.status == 0:
                         self.crn_manager.status = 2
                         self.crn_manager.rx_con.acquire()
