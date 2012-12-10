@@ -39,7 +39,7 @@ class mac_layer:
             # reserve receiver
             rts = rts_msg(self.crn_manager.id, self.crn_manager.best_channel)
             rts_string = cPickle.dumps(rts)
-            self.crn_manager.socks_table[self.crn_manager.route[index(self.crn_manager.id) + 1]].send(rts_string)
+            self.crn_manager.socks_table[self.crn_manager.route[self.crn_manager.route.index(self.crn_manager.id) + 1]].send(rts_string)
             # wait for reply
             self.crn_manager.rts_ack_con.acquire()
             self.crn_manager.rts_ack_con.wait()
@@ -53,9 +53,9 @@ class mac_layer:
                 
         if self.crn_manager.status == 1 and len(self.buffer) == 0:
             # free receiver
-            free = free_msg()
-            free_string = cPickle.dumps(free)
-            self.crn_manager.socks_table[self.crn_manager.route[index(self.crn_manager.id) + 1]].send(rts_string)
+            cts = cts_msg()
+            cts_string = cPickle.dumps(cts)
+            self.crn_manager.socks_table[self.crn_manager.route[self.crn_manager.route.index(self.crn_manager.id) + 1]].send(cts_string)
             self.crn_manager.status = 0
             # give the next_hop highter priority to forward
             time.sleep(0.01)

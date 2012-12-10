@@ -34,15 +34,4 @@ class cts_msg:
     def __init__(self):
         self.type = 5
         
-class routing_error_msg:
-    def __init__(self):
-        self.type = 5
-
-class routing_request:
-    def __init__(self):
-        self.type = 5
-        
-class routing_reply:
-    def __init__(self):
-        self.type = 5
 

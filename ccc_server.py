@@ -42,6 +42,7 @@ class ccc_server(threading.Thread):
                 ctrl_msg = cPickle.loads(str)
                 # time sync signal
                 if ctrl_msg.type == 1:
+                    print "receive time sync"
                     #ignore if time_sync_flag is already 1
                     if ctrl_msg.time_sync_flag == 0:
                         self.crn_manager.time_sync_con.acquire()
