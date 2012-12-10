@@ -90,7 +90,7 @@ class crn_manager:
         
     def sync_time(self):
         self.time_sync_flag = 1
-        tsm = time_sync_msg(self.time_sync_cnt)
+        tsm = time_sync_msg(self.time_sync_flag)
         tsm_string = cPickle.dumps(tsm)
         self.broadcast(tsm_string)
     
