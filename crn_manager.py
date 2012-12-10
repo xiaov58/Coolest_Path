@@ -80,7 +80,7 @@ class crn_manager:
         self.total_time = 0
         self.active_time_table = []
         for i in range(len(meta_data.channels)) :
-            self.active_time.append(0)
+            self.active_time_table.append(0)
         
     
     def broadcast(self, ctrl_string):
