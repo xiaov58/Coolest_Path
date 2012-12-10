@@ -52,12 +52,15 @@ class ccc_server(threading.Thread):
                         
                 # channel utilazation info
                 if ctrl_msg.type == 2:
+                    print self.crn_manager.channel_utilization_table
+                    print ctrl_msg.channel_utilization_table
                     #update link temprature table
                     for i in meta_data.neighbour_table[self.crn_manager.id]:
-                        if int(i) == int(ctrl_msg.sender_id):
+                        if i == ctrl_msg.sender_id:
                             self.crn_manager.neighbour_channel_mask[i] = ctrl_msg.channel_mask
                             for j in range(len(meta_data.channels)) :
                                 self.crn_manager.link_temp_table[i][j] = 1 - (1-self.crn_manager.channel_utilization_table[j])*(1-ctrl_msg.channel_utilization_table[j])
+                    print self.crn_manager.link_temp_table
                                 
                 # rts
                 if ctrl_msg.type == 3:
