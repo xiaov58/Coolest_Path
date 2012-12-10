@@ -42,7 +42,6 @@ class router:
     def rx_callback(self, ok, payload):
         self.crn_manager.process_con.acquire()
         if self.crn_manager.process_flag == 0:
-            print "wait"
             self.crn_manager.process_con.wait()
         
 #        self.crn_manager.rx_con.acquire()

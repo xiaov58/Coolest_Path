@@ -115,6 +115,10 @@ class crn_manager:
         if self.sense_cnt == meta_data.round:
             self.exit()
             
+        # wake form waiting fo buffer
+        self.crn_manager.buffer_con.acquire()
+        self.crn_manager.buffer_con.wait()
+        self.crn_manager.buffer_con.release()
         # block process thread
         self.process_flag = 0
         self.process_con.acquire()
