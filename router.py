@@ -44,13 +44,12 @@ class router:
         if self.crn_manager.process_flag == 0:
             self.crn_manager.process_con.wait()
         
-        self.crn_manager.rx_con.acquire()
-        if self.crn_manager.status != 2:
-            self.crn_manager.rx_con.wait()
-            print "wait"
-        self.crn_manager.rx_con.release()
-        #
-        print "wake"
+#        self.crn_manager.rx_con.acquire()
+#        if self.crn_manager.status != 2:
+#            self.crn_manager.rx_con.wait()
+#            print "wait"
+#        self.crn_manager.rx_con.release()
+
 
         (pktno, ) = struct.unpack('!H', payload[0:2])
         (pkt_sender_id, ) = struct.unpack('!H', payload[2:4])
