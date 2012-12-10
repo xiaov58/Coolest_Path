@@ -47,9 +47,10 @@ class router:
         self.crn_manager.rx_con.acquire()
         if self.crn_manager.status != 2:
             self.crn_manager.rx_con.wait()
+            print "wait"
         self.crn_manager.rx_con.release()
         #
-        print wake
+        print "wake"
 
         (pktno, ) = struct.unpack('!H', payload[0:2])
         (pkt_sender_id, ) = struct.unpack('!H', payload[2:4])

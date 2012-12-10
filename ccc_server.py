@@ -63,13 +63,13 @@ class ccc_server(threading.Thread):
                 if ctrl_msg.type == 3:
                     print "receive RTS"
                     if self.crn_manager.status == 0:
-                        print "ready to receive"
+                        
                         self.crn_manager.status = 2
                         self.crn_manager.role.tb.set_freq(meta_data.channels[ctrl_msg.channel_id])
                         self.crn_manager.rx_con.acquire()
                         self.crn_manager.rx_con.notify()
+                        print "notify"
                         self.crn_manager.rx_con.release()
-                        print ctrl_msg.channel_id
                         rts_ack = rts_ack_msg(1)
                         rts_ack_string = cPickle.dumps(rts_ack)
                         self.crn_manager.socks_table[ctrl_msg.sender_id].send(rts_ack_string)
