@@ -1,6 +1,7 @@
 
 from control_msg import *
 import cPickle
+import struct
 
 class mac_layer:
     def __init__(self, buffer, crn_manager):
