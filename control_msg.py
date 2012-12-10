@@ -13,10 +13,10 @@ class time_sync_msg:
         self.time_sync_flag = time_sync_flag
         
 class sensing_result_msg:
-    def __init__(self, sender_id, channel_utilazation_table, channel_mask):
+    def __init__(self, sender_id, channel_utilization_table, channel_mask):
         self.type = 2
         self.sender_id = sender_id
-        self.channel_utilazation_table = channel_utilazation_table
+        self.channel_utilization_table = channel_utilization_table
         self.channel_mask = channel_mask
         
 class rts_msg:
