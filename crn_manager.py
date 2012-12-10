@@ -109,7 +109,8 @@ class crn_manager:
         
     # Thread priority need
     def sense(self):
-        print "acquire at virtual time: %.3f" % (self.get_virtual_time())
+        sensing_time_stamp = self.get_virtual_time()
+        print "acquire at virtual time: %.3f" % sensing_time_stamp
         
         if self.sense_cnt == meta_data.round:
             self.exit()
@@ -117,8 +118,8 @@ class crn_manager:
         # block process thread
         self.process_flag = 0
         self.process_con.acquire()
-        sensing_time_stamp = self.get_virtual_time()
-        print "sense at virtual time: %.3f" % sensing_time_stamp
+        
+        print "sense at virtual time: %.3f" %  (self.get_virtual_time())
         self.process_con.release()
         # yeild so that process thread can run and wait asap
         time.sleep(meta_data.min_time)
