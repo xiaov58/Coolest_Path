@@ -34,7 +34,12 @@ class source:
             if self.crn_manager.process_flag == 0:
                 self.crn_manager.process_con.wait()
             
-                self.mac_layer_.run()
+            self.crn_manager.tx_con.acquire()
+            if self.crn_manager.status == 2:
+                self.crn_manager.tx_con.wait()
+            self.crn_manager.tx_con.release()
+            
+            self.mac_layer_.run()
             
             self.crn_manager.process_con.release()
             #yeild

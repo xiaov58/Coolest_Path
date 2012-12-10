@@ -231,15 +231,15 @@ class crn_manager:
         self.start_local_time = time.time()
         
         # start timer and make use of interval to build graph
-        print time.time()
+
         self.sense_timer = threading.Timer(meta_data.setup_time, self.sense)
         self.sense_timer.daemon = True
         self.sense_timer.start()
-        print time.time()
+
         self.process_timer = threading.Timer(meta_data.setup_time + meta_data.sensing_time, self.process)
         self.process_timer.daemon = True
         self.process_timer.start()
-        print time.time()
+
         
        # assign diffrent job to diffrent role
        # source

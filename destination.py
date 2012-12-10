@@ -24,8 +24,13 @@ class destination:
 
     def rx_callback(self, ok, payload):
         self.crn_manager.process_con.acquire()
-        if self.crn_manager.process_flag == 0 or self.crn_manager.status != 2:
+        if self.crn_manager.process_flag == 0:
             self.crn_manager.process_con.wait()
+        
+        self.crn_manager.rx_con.acquire()
+        if self.crn_manager.status != 2:
+            self.crn_manager.rx_con.wait()
+        self.crn_manager.rx_con.release()
             
         (pktno, ) = struct.unpack('!H', payload[0:2])
         (pkt_sender_id, ) = struct.unpack('!H', payload[2:4])
