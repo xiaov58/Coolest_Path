@@ -181,6 +181,8 @@ class crn_manager:
         # if none of the channel can be use, broadcast error so that source will invoke routing request
         if self.best_channel == 0:
             print "route error"
+            print self.route
+            print self.link_temp_table
         else:
             self.role.tb.set_freq(self.best_channel)
         
