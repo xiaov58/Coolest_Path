@@ -123,7 +123,7 @@ class crn_manager:
         # yeild so that process thread can run and wait asap
         time.sleep(meta_data.min_time)
 
-        self.pseudo_check(self.sensing_time_stamp)
+        self.pseudo_check(sensing_time_stamp)
         
         # adjust time and set timer for next round
         time_gap = self.get_virtual_time() - self.sense_cnt
@@ -186,7 +186,7 @@ class crn_manager:
         
     def get_best_links(self):
         channel_id = 0
-        next_hop = self.route[index(self.id) + 1]
+        next_hop = self.route[self.route.index(self.id) + 1]
         cost = meta_data.INF
         best_links = {}
         for i in meta_data.neighbour_table[self.id]:
@@ -227,7 +227,6 @@ class crn_manager:
         self.time_sync_con.acquire()
         if self.time_sync_flag == 0:
             self.time_sync_con.wait() 
-            print "wait time sync"
         self.time_sync_con.release()
         
         self.start_local_time = time.time()
