@@ -24,7 +24,7 @@ class mac_layer:
         self.crn_manager.role.tb.set_freq(meta_data.channels[self.crn_manager.best_channel])
         # carrier sense
         delay_range = meta_data.min_time
-        while self.tb.carrier_sensed():
+        while self.crn_manager.role.tb.carrier_sensed():
             sys.stderr.write('B')
             time.sleep(delay_range * random.random())
             if delay_range < 0.050:

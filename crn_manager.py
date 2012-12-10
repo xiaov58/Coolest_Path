@@ -178,6 +178,8 @@ class crn_manager:
         
     def update_routing(self):
         best_links = self.get_best_links()
+        print channel_utilization_table
+        print best_links
         # if none of the channel can be use, broadcast error so that source will invoke routing request
         if self.best_channel == 0:
             print "route error"
