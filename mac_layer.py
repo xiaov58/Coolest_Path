@@ -4,6 +4,7 @@ import cPickle
 import struct
 import time
 import sys
+import random
 import meta_data
 
 class mac_layer:
