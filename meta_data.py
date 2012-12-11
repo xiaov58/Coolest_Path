@@ -10,7 +10,7 @@ round = 20
 min_time = 0.001          # second
 setup_time = 3               # second
 yeild_forward_time = 0.5 # second
-batch_size = 20
+batch_size = 50
 backoff_min = 0.001
 backoff_max = 0.050
 INF = 100
@@ -35,11 +35,12 @@ ip_table =                       [''     , '128.205.39.104'  , '67.20.206.90'   
 # PU info (first item is null to make it easy to count)
 pu_id_table =                  [[]      ,   []                           ,   [1]                           ,  [2, 3]                         ]
 pu_channel = [0, 1, 2, 3]
-pu_activity = [
-               [], 
-               [[6.612, 48.456], [54.171, 64.950]], 
-               [[14.872, 44.847], [80.137, 100.646]], 
-               [[24.377, 30, 032]]
-               ]
+#pu_activity = [
+#               [], 
+#               [[6.612, 48.456], [54.171, 64.950]], 
+#               [[14.872, 44.847], [80.137, 100.646]], 
+#               [[24.377, 30, 032]]
+#               ]
+pu_activity = [[], [], [], []]
 
 
