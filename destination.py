@@ -25,6 +25,7 @@ class destination:
     def rx_callback(self, ok, payload):
         self.crn_manager.rx_con.acquire()
         if self.crn_manager.status != 2:
+            print "wait"
             self.crn_manager.rx_con.wait()
         self.crn_manager.rx_con.release()
             
