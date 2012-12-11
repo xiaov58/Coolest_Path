@@ -66,7 +66,7 @@ class ccc_server(threading.Thread):
                         self.crn_manager.status = 2
                         self.crn_manager.role.tb.set_freq(meta_data.channels[ctrl_msg.channel_id])
                         self.crn_manager.rx_con.acquire()
-                        print "ready to receive at channel %d at .3f%" % (ctrl_msg.channel_id, self.crn_manager.get_virtual_time())
+                        print "ready to receive at channel %d at %.3f" % (ctrl_msg.channel_id, self.crn_manager.get_virtual_time())
                         self.crn_manager.rx_con.notify()
                         self.crn_manager.rx_con.release()
                         rts_ack = rts_ack_msg(1)
@@ -88,7 +88,7 @@ class ccc_server(threading.Thread):
                     
                 # free
                 if ctrl_msg.type == 5:              
-                    print "free at .3f" % self.crn_manager.get_virtual_time()
+                    print "free at %.3f" % self.crn_manager.get_virtual_time()
                     self.crn_manager.status = 0
                     self.crn_manager.tx_con.acquire()
                     self.crn_manager.tx_con.notify()
