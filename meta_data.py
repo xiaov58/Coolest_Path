@@ -9,14 +9,15 @@ init_channel = 1
 round = 20               
 min_time = 0.001          # second
 setup_time = 3               # second
+yeild_forward_time = 0.1 # second
 batch_size = 20
 backoff_min = 0.001
 backoff_max = 0.050
 INF = 100
 
 # sensing PU schedule
-time_interval = 1
-sensing_time = 0.1
+time_interval = 2
+sensing_time = 0.2
 
 # socket parameter
 server_port = 11012
