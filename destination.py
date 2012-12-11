@@ -23,6 +23,7 @@ class destination:
         return link_number
 
     def rx_callback(self, ok, payload):
+        print "status %d" % self.crn_manager.status
         self.crn_manager.process_con.acquire()
         if self.crn_manager.process_flag == 0:
             self.crn_manager.process_con.wait()
