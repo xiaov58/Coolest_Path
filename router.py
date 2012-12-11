@@ -32,7 +32,7 @@ class router:
 #            if self.crn_manager.status == 2:
 #                self.crn_manager.tx_con.wait()
 #            self.crn_manager.tx_con.release()
-
+            time.sleep(meta_data.min_time)
             if self.crn_manager.status != 2:
                 self.mac_layer_.run()
             

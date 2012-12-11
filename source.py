@@ -41,7 +41,7 @@ class source:
 #            self.crn_manager.tx_con.release()
 #            
 #            self.mac_layer_.run()
-            #time.sleep(meta_data.min_time)
+            time.sleep(meta_data.min_time)
             if self.crn_manager.status != 2:
                 self.mac_layer_.run()
 
