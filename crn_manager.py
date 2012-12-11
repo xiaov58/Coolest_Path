@@ -164,18 +164,18 @@ class crn_manager:
         self.broadcast(cum_string) 
         
     def process(self):
-        
+        self.process_con.acquire()
+        print "process at virtual time: %.3f" % (self.get_virtual_time())
         
         # update route, not for destination
         if self.id != meta_data.destination_id:
             self.update_routing()
 
-        self.process_con.acquire()
-        print "process at virtual time: %.3f" % (self.get_virtual_time())
+        
         # let main thread run
         self.process_flag = 1
         self.process_con.notify()
-        self.process_con.release()
+        
         
         # adjust time and set timer for next round
         time_gap = self.get_virtual_time() - self.process_cnt
@@ -183,6 +183,7 @@ class crn_manager:
         self.process_timer = threading.Timer(meta_data.time_interval - time_gap + meta_data.sensing_time, self.process)
         self.process_timer.daemon = True
         self.process_timer.start()
+        self.process_con.release()
         
         
     def update_routing(self):
