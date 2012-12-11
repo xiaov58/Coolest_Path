@@ -33,7 +33,6 @@ class crn_manager:
         self.time_sync_con = threading.Condition()  
         self.process_con = threading.Condition()  
         self.rts_ack_con = threading.Condition()  
-        self.buffer_con = threading.Condition()
         self.tx_con = threading.Condition()  
         self.rx_con = threading.Condition()  
         
@@ -108,8 +107,6 @@ class crn_manager:
         
     # Thread priority need
     def sense(self):
-        sensing_time_stamp = self.get_virtual_time()
-        print "acquire at virtual time: %.3f" % sensing_time_stamp
         self.process_con.acquire()
         print "sense at virtual time: %.3f" %  (self.get_virtual_time())
         
