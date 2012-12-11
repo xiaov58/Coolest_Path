@@ -56,6 +56,7 @@ class mac_layer:
             self.crn_manager.rts_ack_con.release()
             
             if self.crn_manager.rts_ack_flag == 1:
+                print "ready to send at %.3f" % self.crn_manager.get_virtual_time()
                 self.crn_manager.status =1
 
         if self.crn_manager.status ==1 and len(self.buffer) != 0:
