@@ -123,6 +123,7 @@ class crn_manager:
         time_gap = self.get_virtual_time() - self.sense_cnt * meta_data.time_interval
         self.sense_cnt += 1
         self.sense_timer = threading.Timer(meta_data.time_interval - time_gap, self.sense)
+        print "next in %.3f" % (meta_data.time_interval - time_gap)
         self.sense_timer.daemon = True
         self.sense_timer.start()
         self.process_con.release()
