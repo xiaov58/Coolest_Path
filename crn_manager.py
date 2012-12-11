@@ -99,7 +99,7 @@ class crn_manager:
         if self.id == meta_data.source_id:
             print "Source: send out %d" % (self.role.mac_layer_.pkt_cnt)
         if self.id == meta_data.destination_id:
-            print "Destination: recieve %d" % (self.role.pkt_cnt)
+            print "Destination: recieve %d" % (self.role.received_cnt)
             print self.role.routing_request_log
         sys.exit(0)
         
