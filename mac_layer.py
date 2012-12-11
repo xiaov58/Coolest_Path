@@ -71,6 +71,7 @@ class mac_layer:
             # give the next_hop highter priority to forward
             time.sleep(meta_data.yeild_forward_time)
             self.crn_manager.status = 0
+            self.crn_manager.rts_ack_flag = 0
             
 
             
