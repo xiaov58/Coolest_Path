@@ -2,6 +2,7 @@
 # ccc_server.py
 import socket
 import select
+import time
 import threading
 import meta_data
 import cPickle
@@ -66,6 +67,7 @@ class ccc_server(threading.Thread):
                         self.crn_manager.status = 2
                         self.crn_manager.role.tb.set_freq(meta_data.channels[ctrl_msg.channel_id])
 #                        self.crn_manager.rx_con.acquire()
+                        time.sleep(0.01)
                         print "ready to receive at channel %d at %.3f" % (ctrl_msg.channel_id, self.crn_manager.get_virtual_time())
 #                        self.crn_manager.rx_con.notify()
 #                        self.crn_manager.rx_con.release()
@@ -81,7 +83,6 @@ class ccc_server(threading.Thread):
                 if ctrl_msg.type == 4:
                     if ctrl_msg.ack == 1:
                         self.crn_manager.rts_ack_flag = 1
-                        
                     self.crn_manager.rts_ack_con.acquire()
                     self.crn_manager.rts_ack_con.notify()
                     self.crn_manager.rts_ack_con.release()
