@@ -26,6 +26,7 @@ class router:
             self.crn_manager.process_con.acquire()
             if self.crn_manager.process_flag == 0:
                 self.crn_manager.process_con.wait()
+            self.crn_manager.process_con.release()
             
             self.crn_manager.tx_con.acquire()
             if self.crn_manager.status == 2:
@@ -34,7 +35,7 @@ class router:
             
             self.mac_layer_.run()
             
-            self.crn_manager.process_con.release()
+            
             #yeild
             time.sleep(meta_data.min_time)
 
@@ -44,6 +45,7 @@ class router:
         self.crn_manager.process_con.acquire()
         if self.crn_manager.process_flag == 0:
             self.crn_manager.process_con.wait()
+        self.crn_manager.process_con.release()
         
 #        self.crn_manager.rx_con.acquire()
 #        if self.crn_manager.status != 2:
@@ -64,4 +66,4 @@ class router:
             print "receive! pktno: %d, sender: %d" % (pktno, pkt_sender_id)
         else:
             print "ok: %r \t pktno: %d \t" % (ok, pktno)
-        self.crn_manager.process_con.release()
+        

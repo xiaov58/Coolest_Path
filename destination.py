@@ -26,6 +26,7 @@ class destination:
         self.crn_manager.process_con.acquire()
         if self.crn_manager.process_flag == 0:
             self.crn_manager.process_con.wait()
+        self.crn_manager.process_con.release()
         
 #        self.crn_manager.rx_con.acquire()
 #        if self.crn_manager.status != 2:
@@ -42,5 +43,5 @@ class destination:
                 self.received_cnt += 1
         else:
             print "ok: %r \t pktno: %d \t" % (ok, pktno)
-        self.crn_manager.process_con.release()
+        
 

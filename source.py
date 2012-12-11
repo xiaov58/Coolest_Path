@@ -31,9 +31,9 @@ class source:
                     payload = self.generate_pakcage()
                     
             self.crn_manager.process_con.acquire()
-            print "start"
             if self.crn_manager.process_flag == 0:
                 self.crn_manager.process_con.wait()
+            self.crn_manager.process_con.release()
             
             self.crn_manager.tx_con.acquire()
             if self.crn_manager.status == 2:
@@ -42,8 +42,6 @@ class source:
             
             self.mac_layer_.run()
             
-            print "end"
-            self.crn_manager.process_con.release()
             #yeild
             time.sleep(meta_data.min_time)
         
