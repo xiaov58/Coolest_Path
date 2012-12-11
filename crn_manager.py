@@ -202,9 +202,7 @@ class crn_manager:
                 if self.link_temp_table[i][j] < cost and self.channel_mask[j] == 1 and self.neighbour_channel_mask[i][j] ==1:
                     if i == next_hop:
                         self.best_channel = j 
-                        print "set best channel"
                     cost = self.link_temp_table[i][j]
-                    print cost
                     self.role.tb.set_freq(meta_data.channels[j])
             best_links[i] = [self.id, i, cost]         # sender, receiver, cost
         return best_links
