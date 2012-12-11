@@ -68,7 +68,7 @@ class mac_layer:
             self.crn_manager.socks_table[self.crn_manager.route[self.crn_manager.route.index(self.crn_manager.id) + 1]].send(cts_string)
             self.crn_manager.status = 0
             # give the next_hop highter priority to forward
-            time.sleep(0.05)
+            time.sleep(0.1)
             
 
             
