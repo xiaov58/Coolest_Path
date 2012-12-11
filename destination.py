@@ -23,10 +23,10 @@ class destination:
         return link_number
 
     def rx_callback(self, ok, payload):
-#        self.crn_manager.rx_con.acquire()
-#        if self.crn_manager.status != 2:
-#            self.crn_manager.rx_con.wait()
-#        self.crn_manager.rx_con.release()
+        self.crn_manager.rx_con.acquire()
+        if self.crn_manager.status != 2:
+            self.crn_manager.rx_con.wait()
+        self.crn_manager.rx_con.release()
             
         (pktno, ) = struct.unpack('!H', payload[0:2])
         (pkt_sender_id, ) = struct.unpack('!H', payload[2:4])

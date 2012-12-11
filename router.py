@@ -46,10 +46,10 @@ class router:
 #            self.crn_manager.process_con.wait()
 #        self.crn_manager.process_con.release()
         
-#        self.crn_manager.rx_con.acquire()
-#        if self.crn_manager.status != 2:
-#            self.crn_manager.rx_con.wait()
-#        self.crn_manager.rx_con.release()
+        self.crn_manager.rx_con.acquire()
+        if self.crn_manager.status != 2:
+            self.crn_manager.rx_con.wait()
+        self.crn_manager.rx_con.release()
 
 
         (pktno, ) = struct.unpack('!H', payload[0:2])
