@@ -58,7 +58,7 @@ class router:
         if ok:
             # save to buffer, change sender_id
             self.buffer.append([pktno, int(self.options.id), data])
-            print "receive! pktno: %d, sender: %d" % (pktno, pkt_sender_id)
+            print "receive! pktno: %d, sender: %d, status: %d" % (pktno, pkt_sender_id, self.crn_manager.status)
         else:
             print "ok: %r \t pktno: %d \t" % (ok, pktno)
         
