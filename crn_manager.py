@@ -122,7 +122,7 @@ class crn_manager:
         self.pseudo_check()
         
         # adjust time and set timer for next round
-        time_gap = self.get_virtual_time() - self.sense_cnt
+        time_gap = self.get_virtual_time() - self.sense_cnt * meta_data.time_interval
         self.sense_cnt += 1
         self.sense_timer = threading.Timer(meta_data.time_interval - time_gap, self.sense)
         self.sense_timer.daemon = True
@@ -130,7 +130,7 @@ class crn_manager:
         self.process_con.release()
         
     def pseudo_check(self):
-        vts = self.sense_cnt * 1.0
+        vts = self.sense_cnt * meta_data.time_interval
         self.total_time += 1
         # recover channel_mask to original
         for i in range(len(meta_data.channels)) :
@@ -169,7 +169,7 @@ class crn_manager:
         
         
         # adjust time and set timer for next round
-        time_gap = self.get_virtual_time() - self.process_cnt
+        time_gap = self.get_virtual_time() - self.process_cnt * meta_data.time_interval
         self.process_cnt += 1
         self.process_timer = threading.Timer(meta_data.time_interval - time_gap + meta_data.sensing_time, self.process)
         self.process_timer.daemon = True
