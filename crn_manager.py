@@ -194,7 +194,6 @@ class crn_manager:
     def get_best_links(self):
         next_hop = self.route[self.route.index(self.id) + 1]
         best_links = {}
-        print self.link_temp_table
         for i in meta_data.neighbour_table[self.id]:
             cost = meta_data.INF
             for j in range(len(meta_data.channels)) :
