@@ -2,7 +2,7 @@
 # default option value
 packet_size = 400           # Byte
 carrier_thredshold = -60
-channels = [0, 4.9002, 4.9006, 4.901]
+channels = [0, 4.915, 4.9006, 4.901]
 
 # other experiment parameter
 init_channel = 1
