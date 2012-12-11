@@ -40,6 +40,7 @@ class router:
 
         
     def rx_callback(self, ok, payload):
+        print "status %d" % self.crn_manager.status
         self.crn_manager.process_con.acquire()
         if self.crn_manager.process_flag == 0:
             self.crn_manager.process_con.wait()
@@ -54,10 +55,10 @@ class router:
         (pkt_sender_id, ) = struct.unpack('!H', payload[2:4])
         data = payload[4:]
         if ok:
-            if len(self.buffer) == 0:
-                self.crn_manager.buffer_con.acquire()
-                self.crn_manager.buffer_con.notify()
-                self.crn_manager.buffer_con.release()
+#            if len(self.buffer) == 0:
+#                self.crn_manager.buffer_con.acquire()
+#                self.crn_manager.buffer_con.notify()
+#                self.crn_manager.buffer_con.release()
             # save to buffer, change sender_id
             self.buffer.append([pktno, int(self.options.id), data])
             print "pktno: %d, sender: %d" % (pktno, pkt_sender_id)

@@ -117,10 +117,10 @@ class crn_manager:
             
         # block process thread
         self.process_flag = 0
-        # wake form waiting fo buffer
-        self.buffer_con.acquire()
-        self.buffer_con.notify()
-        self.buffer_con.release()
+#        # wake form waiting fo buffer
+#        self.buffer_con.acquire()
+#        self.buffer_con.notify()
+#        self.buffer_con.release()
         
         self.process_con.acquire()
         

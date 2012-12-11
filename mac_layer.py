@@ -38,10 +38,10 @@ class mac_layer:
         self.pkt_cnt += 1
 
     def run(self):
-        if self.crn_manager.status ==0 and len(self.buffer) == 0:
-            self.crn_manager.buffer_con.acquire()
-            self.crn_manager.buffer_con.wait()
-            self.crn_manager.buffer_con.release()
+#        if self.crn_manager.status ==0 and len(self.buffer) == 0:
+#            self.crn_manager.buffer_con.acquire()
+#            self.crn_manager.buffer_con.wait()
+#            self.crn_manager.buffer_con.release()
             
         if self.crn_manager.status == 0 and len(self.buffer) != 0:
             # reserve receiver
