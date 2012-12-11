@@ -110,21 +110,21 @@ class crn_manager:
     def sense(self):
         sensing_time_stamp = self.get_virtual_time()
         print "acquire at virtual time: %.3f" % sensing_time_stamp
+        self.process_con.acquire()
+        print "sense at virtual time: %.3f" %  (self.get_virtual_time())
         
         if self.sense_cnt == meta_data.round:
             self.exit()
             
-            
         # block process thread
         self.process_flag = 0
+        
 #        # wake form waiting fo buffer
 #        self.buffer_con.acquire()
 #        self.buffer_con.notify()
-#        self.buffer_con.release()
+
         
-#        self.process_con.acquire()
-#        
-#        print "sense at virtual time: %.3f" %  (self.get_virtual_time())
+
 #        self.process_con.release()
         # yeild so that process thread can run and wait asap
         time.sleep(meta_data.min_time)
@@ -137,6 +137,7 @@ class crn_manager:
         self.sense_timer = threading.Timer(meta_data.time_interval - time_gap, self.sense)
         self.sense_timer.daemon = True
         self.sense_timer.start()
+        self.buffer_con.release()
         
     def pseudo_check(self, virtual_time_stamp):
         vts = virtual_time_stamp
