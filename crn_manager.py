@@ -118,18 +118,11 @@ class crn_manager:
             
         # block process thread
         self.process_flag = 0
-        
-#        # wake form waiting fo buffer
-#        self.buffer_con.acquire()
-#        self.buffer_con.notify()
-
-        
-
-#        self.process_con.release()
+    
         # yeild so that process thread can run and wait asap
         time.sleep(meta_data.min_time)
 
-        self.pseudo_check(sensing_time_stamp)
+        self.pseudo_check()
         
         # adjust time and set timer for next round
         time_gap = self.get_virtual_time() - self.sense_cnt
@@ -139,8 +132,8 @@ class crn_manager:
         self.sense_timer.start()
         self.process_con.release()
         
-    def pseudo_check(self, virtual_time_stamp):
-        vts = virtual_time_stamp
+    def pseudo_check(self):
+        vts = self.sense_cnt * 1.0
         self.total_time += 1
         # recover channel_mask to original
         for i in range(len(meta_data.channels)) :

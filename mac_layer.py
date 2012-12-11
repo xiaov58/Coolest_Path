@@ -3,6 +3,7 @@ from control_msg import *
 import cPickle
 import struct
 import time
+import sys
 import meta_data
 
 class mac_layer:
