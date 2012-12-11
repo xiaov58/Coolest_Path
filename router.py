@@ -28,12 +28,13 @@ class router:
                 self.crn_manager.process_con.wait()
             self.crn_manager.process_con.release()
             
-            self.crn_manager.tx_con.acquire()
-            if self.crn_manager.status == 2:
-                self.crn_manager.tx_con.wait()
-            self.crn_manager.tx_con.release()
+#            self.crn_manager.tx_con.acquire()
+#            if self.crn_manager.status == 2:
+#                self.crn_manager.tx_con.wait()
+#            self.crn_manager.tx_con.release()
             
-            self.mac_layer_.run()
+            if self.crn_manager.status != 2:
+                self.mac_layer_.run()
             
             
             #yeild
@@ -45,20 +46,18 @@ class router:
 #        if self.crn_manager.process_flag == 0:
 #            self.crn_manager.process_con.wait()
 #        self.crn_manager.process_con.release()
-        
-        self.crn_manager.rx_con.acquire()
-        if self.crn_manager.status != 2:
-            self.crn_manager.rx_con.wait()
-        self.crn_manager.rx_con.release()
+
+        if self.crn_manager.status == 2:
 
 
-        (pktno, ) = struct.unpack('!H', payload[0:2])
-        (pkt_sender_id, ) = struct.unpack('!H', payload[2:4])
-        data = payload[4:]
-        if ok:
-            # save to buffer, change sender_id
-            self.buffer.append([pktno, int(self.options.id), data])
-            print "receive! pktno: %d, sender: %d, status: %d" % (pktno, pkt_sender_id, self.crn_manager.status)
-        else:
-            print "ok: %r \t pktno: %d \t" % (ok, pktno)
+
+            (pktno, ) = struct.unpack('!H', payload[0:2])
+            (pkt_sender_id, ) = struct.unpack('!H', payload[2:4])
+            data = payload[4:]
+            if ok:
+                # save to buffer, change sender_id
+                self.buffer.append([pktno, int(self.options.id), data])
+                print "receive! pktno: %d, sender: %d, status: %d" % (pktno, pkt_sender_id, self.crn_manager.status)
+            else:
+                print "ok: %r \t pktno: %d \t" % (ok, pktno)
         

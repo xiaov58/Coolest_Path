@@ -33,8 +33,6 @@ class crn_manager:
         self.time_sync_con = threading.Condition()  
         self.process_con = threading.Condition()  
         self.rts_ack_con = threading.Condition()  
-        self.tx_con = threading.Condition()  
-        self.rx_con = threading.Condition()  
         
         # flags
         self.time_sync_flag = 0

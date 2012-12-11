@@ -65,10 +65,10 @@ class ccc_server(threading.Thread):
                     if self.crn_manager.status == 0:
                         self.crn_manager.status = 2
                         self.crn_manager.role.tb.set_freq(meta_data.channels[ctrl_msg.channel_id])
-                        self.crn_manager.rx_con.acquire()
+#                        self.crn_manager.rx_con.acquire()
                         print "ready to receive at channel %d at %.3f" % (ctrl_msg.channel_id, self.crn_manager.get_virtual_time())
-                        self.crn_manager.rx_con.notify()
-                        self.crn_manager.rx_con.release()
+#                        self.crn_manager.rx_con.notify()
+#                        self.crn_manager.rx_con.release()
                         rts_ack = rts_ack_msg(1)
                         rts_ack_string = cPickle.dumps(rts_ack)
                         self.crn_manager.socks_table[ctrl_msg.sender_id].send(rts_ack_string)
@@ -90,9 +90,9 @@ class ccc_server(threading.Thread):
                 if ctrl_msg.type == 5:              
                     print "free at %.3f" % self.crn_manager.get_virtual_time()
                     self.crn_manager.status = 0
-                    self.crn_manager.tx_con.acquire()
-                    self.crn_manager.tx_con.notify()
-                    self.crn_manager.tx_con.release()
+#                    self.crn_manager.tx_con.acquire()
+#                    self.crn_manager.tx_con.notify()
+#                    self.crn_manager.tx_con.release()
                         
                         # if multi node request new route, address only one is enough
     
