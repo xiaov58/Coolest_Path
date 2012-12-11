@@ -66,9 +66,10 @@ class mac_layer:
             cts = cts_msg()
             cts_string = cPickle.dumps(cts)
             self.crn_manager.socks_table[self.crn_manager.route[self.crn_manager.route.index(self.crn_manager.id) + 1]].send(cts_string)
-            self.crn_manager.status = 0
+            
             # give the next_hop highter priority to forward
             time.sleep(meta_data.yeild_forward_time)
+            self.crn_manager.status = 0
             
 
             
