@@ -66,6 +66,7 @@ class mac_layer:
             # free receiver
             cts = cts_msg()
             cts_string = cPickle.dumps(cts)
+            print "Give free at %.3f" % self.crn_manager.get_virtual_time()
             self.crn_manager.socks_table[self.crn_manager.route[self.crn_manager.route.index(self.crn_manager.id) + 1]].send(cts_string)
             self.crn_manager.status = 0
             self.crn_manager.rts_ack_flag = 0
