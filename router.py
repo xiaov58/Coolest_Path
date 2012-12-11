@@ -45,10 +45,10 @@ class router:
         if self.crn_manager.process_flag == 0:
             self.crn_manager.process_con.wait()
         
-        self.crn_manager.rx_con.acquire()
-        if self.crn_manager.status != 2:
-            self.crn_manager.rx_con.wait()
-        self.crn_manager.rx_con.release()
+#        self.crn_manager.rx_con.acquire()
+#        if self.crn_manager.status != 2:
+#            self.crn_manager.rx_con.wait()
+#        self.crn_manager.rx_con.release()
 
 
         (pktno, ) = struct.unpack('!H', payload[0:2])
@@ -61,7 +61,7 @@ class router:
 #                self.crn_manager.buffer_con.release()
             # save to buffer, change sender_id
             self.buffer.append([pktno, int(self.options.id), data])
-            print "pktno: %d, sender: %d" % (pktno, pkt_sender_id)
+            print "receive! pktno: %d, sender: %d" % (pktno, pkt_sender_id)
         else:
             print "ok: %r \t pktno: %d \t" % (ok, pktno)
         self.crn_manager.process_con.release()
