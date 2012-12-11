@@ -117,6 +117,7 @@ class crn_manager:
             
         # block process thread
         self.process_flag = 0
+        print "change flag"
 #        # wake form waiting fo buffer
 #        self.buffer_con.acquire()
 #        self.buffer_con.notify()
