@@ -137,7 +137,7 @@ class crn_manager:
         self.sense_timer = threading.Timer(meta_data.time_interval - time_gap, self.sense)
         self.sense_timer.daemon = True
         self.sense_timer.start()
-        self.buffer_con.release()
+        self.process_con.release()
         
     def pseudo_check(self, virtual_time_stamp):
         vts = virtual_time_stamp
