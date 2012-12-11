@@ -42,9 +42,8 @@ class source:
 #            
 #            self.mac_layer_.run()
             if self.crn_manager.status != 2:
-#                self.mac_layer_.run()
-                self.generate_pakcage()
-                self.tb.txpath.send_pkt(payload, False)
+                self.mac_layer_.run()
+
             
             #yeild
             time.sleep(meta_data.min_time)
