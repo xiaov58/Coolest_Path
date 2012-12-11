@@ -47,7 +47,7 @@ class router:
 #            self.crn_manager.process_con.wait()
 #        self.crn_manager.process_con.release()
 
-        if self.crn_manager.status == 2:
+        if self.crn_manager.status == 2 and len(payload) > 4:
 
 
 

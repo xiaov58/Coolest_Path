@@ -28,7 +28,7 @@ class destination:
 #            self.crn_manager.rx_con.wait()
 #        self.crn_manager.rx_con.release()
 
-        if self.crn_manager.status == 2:
+        if self.crn_manager.status == 2 and len(payload) > 4:
             
             (pktno, ) = struct.unpack('!H', payload[0:2])
             (pkt_sender_id, ) = struct.unpack('!H', payload[2:4])
