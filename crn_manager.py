@@ -205,10 +205,11 @@ class crn_manager:
                 self.error_flag = 1
    
         if self.error_flag ==1:
+            print "routing error"
             self.get_best_links()
-            del self.crn_manager.role.buffer[:]
-            self.crn_manager.route = []
-            self.crn_manager.process_flag = 0
+            del self.role.buffer[:]
+            self.route = []
+            self.process_flag = 0
             # update route
             if self.id == meta_data.source_id:
                 self.routing_error_cnt += 1
