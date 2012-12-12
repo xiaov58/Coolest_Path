@@ -219,6 +219,7 @@ class crn_manager:
 
         
     def get_best_links(self):
+        self.best_links = []
         for i in meta_data.neighbour_table[self.id]:
             cost = meta_data.INF
             for j in range(len(meta_data.channels)) :
