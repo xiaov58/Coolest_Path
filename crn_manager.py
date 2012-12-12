@@ -228,7 +228,7 @@ class crn_manager:
     def set_best_channel(self):
         print self.link_temp_table
         print self.channel_mask
-        print neighbour_channel_mask
+        print self.neighbour_channel_mask
         
         next_hop = self.route[self.route.index(self.id) + 1]
         print next_hop
