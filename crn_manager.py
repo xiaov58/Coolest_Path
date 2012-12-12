@@ -25,24 +25,28 @@ class crn_manager:
         self.role = 0
         self.status = 0         #0: free 1: transmiting 2: reiceving
         self.route = []
-        self.route = [1, 2, 3]
         self.best_channel = 0       # coolest and available channel for transmiting to  next hop
+        self.best_links = []
         self.start_local_time = 0
             
         # condition variables
         self.time_sync_con = threading.Condition()  
         self.process_con = threading.Condition()  
         self.rts_ack_con = threading.Condition()  
+        self.route_con = threading.Condition()  
         
         # flags
         self.time_sync_flag = 0
         self.process_flag = 0
         self.rts_ack_flag = 0
+        self.error_flag = 0
         
         # counts
         self.sense_cnt = 0
         self.process_cnt = 0
         self.routing_request_cnt = 0
+        self.routing_reply_cnt = 0
+        self.routing_error_cnt = 0
         
         # timer
         self.sense_timer = 0
@@ -149,19 +153,24 @@ class crn_manager:
         self.channel_utilization_table[0] = 1
         
         # broadcast utilazation table to neighbour in order to calculate link temprature
-        cum = sensing_result_msg(self.id, self.channel_utilization_table, self.channel_mask)
-        cum_string = cPickle.dumps(cum)
-        self.broadcast(cum_string) 
+        srm = sensing_result_msg(self.id, self.channel_utilization_table, self.channel_mask)
+        srm_string = cPickle.dumps(srm)
+        self.broadcast(srm_string) 
         
     def process(self):
         self.process_con.acquire()
         print "process at virtual time: %.3f" % (self.get_virtual_time())
         
+        
+        
         # update route, not for destination
         if self.id != meta_data.destination_id:
             self.update_routing()
-
+            self.route_con.acquire()
+            self.route_con.wait()
+            self.route_con.release()
         
+
         # let main thread run
         self.process_flag = 1
         self.process_con.notify()
@@ -175,28 +184,56 @@ class crn_manager:
         self.process_timer.start()
         self.process_con.release()
         
+    def init_broadcast_error(self):
+        self.routing_error_cnt += 1
+        err = routing_error_msg(self.routing_error_cnt)
+        err_string = cPickle.dumps(err)
+        self.broadcast(err_string)
         
+    def init_broadcast_request(self):
+        self.routing_request_cnt += 1
+        req = routing_request_msg(self.routing_request_cnt, self.best_links)
+        req_string = cPickle.dumps(req)
+        self.broadcast(req_string)
+    
     def update_routing(self):
-        best_links = self.get_best_links()
-        # if none of the channel can be use, broadcast error so that source will invoke routing request
-        if self.best_channel == 0:
-            print "route error"            
+        if self.route == []:
+            self.error_flag = 1
+        else:
+            self.set_best_channel()        
+            if self.best_channel == 0:
+                self.error_flag = 1
+   
+        if self.error_flag ==1:
+            self.get_best_links()
+            del self.crn_manager.role.buffer[:]
+            self.crn_manager.route = []
+            self.crn_manager.process_flag = 0
             # update route
-            self.exit()
+            if self.id == meta_data.source_id:
+                self.routing_error_cnt += 1
+                self.init_broadcast_request()
+            else:
+                self.init_broadcast_error()
+
         
     def get_best_links(self):
+        for i in meta_data.neighbour_table[self.id]:
+            cost = meta_data.INF
+            for j in range(len(meta_data.channels)) :
+                if self.link_temp_table[i][j] < cost and self.channel_mask[j] == 1 and self.neighbour_channel_mask[i][j] ==1:
+                    cost = self.link_temp_table[i][j]
+                    self.role.tb.set_freq(meta_data.channels[j])
+            self.best_links.append([self.id, i, cost])       # sender, receiver, cost
+
+    def set_best_channel(self):
         next_hop = self.route[self.route.index(self.id) + 1]
-        best_links = {}
         for i in meta_data.neighbour_table[self.id]:
             cost = meta_data.INF
             for j in range(len(meta_data.channels)) :
                 if self.link_temp_table[i][j] < cost and self.channel_mask[j] == 1 and self.neighbour_channel_mask[i][j] ==1:
                     if i == next_hop:
                         self.best_channel = j 
-                    cost = self.link_temp_table[i][j]
-                    self.role.tb.set_freq(meta_data.channels[j])
-            best_links[i] = [self.id, i, cost]         # sender, receiver, cost
-        return best_links
             
     def run(self):
         # start ccc_server, recieve coming control msg only

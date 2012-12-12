@@ -1,11 +1,4 @@
 
-        #0: null
-        #1: time sync
-        #2: sensing result info
-        #3: reserve
-        #4: reserve reply
-        #5: free
-        
         
 class time_sync_msg:
     def __init__(self, time_sync_flag):
@@ -34,4 +27,18 @@ class cts_msg:
     def __init__(self):
         self.type = 5
         
-
+class routing_request_msg:
+    def __init__(self, routing_request_cnt, links):
+        self.type = 6
+        self.routing_request_cnt = routing_request_cnt
+        self.links = links
+        
+class routing_reply_msg:
+    def __init__(self,routing_reply_cnt,  route):
+        self.type = 7
+        self.route = route
+        
+class routing_error_msg:
+    def __init__(self, routing_error_cnt):
+        self.type = 8
+        self.routing_error_cnt = routing_error_cnt

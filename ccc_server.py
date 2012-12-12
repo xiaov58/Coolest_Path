@@ -90,11 +90,65 @@ class ccc_server(threading.Thread):
                 if ctrl_msg.type == 5:              
                     print "free at %.3f" % self.crn_manager.get_virtual_time()
                     self.crn_manager.status = 0
-#                    self.crn_manager.tx_con.acquire()
-#                    self.crn_manager.tx_con.notify()
-#                    self.crn_manager.tx_con.release()
-                        
-                        # if multi node request new route, address only one is enough
+
+                # request
+                if ctrl_msg.type == 6:    
+                    #ignore if already broadcasted error
+                    if self.crn_manager.routing_request_cnt < ctrl_msg.routing_request_cnt:
+                        if self.crn_manager.id != meta_data.destination_id:
+                            self.crn_manager.routing_request_cnt += 1
+                            self.crn_manager.get_best_links()
+                            # merge best links
+                            links = list(set(ctrl_msg.links + self.crn_manager.best_links))
+                            req = routing_request_msg(self.crn_manager.routing_request_cnt, links)
+                            req_string = cPickle.dumps(req)
+                            self.broadcast(req_string)
+                        else:
+                            self.crn_manager.get_best_links()
+                            self.crn_manager.role.links = list(set(ctrl_msg.links + self.crn_manager.role.links + self.crn_manager.best_links))
+                            if len(self.crn_manager.role.links) == self.crn_manager.role.link_number:
+                                # run dijkstra
+                                result = self.crn_manager.role.calculate_path()
+                                route = result[0]
+                                print route
+                                # clear link list
+                                del self.crn_manager.role.links[:]
+                                # check and reply
+                                if meta_data.INF in route:
+                                    route = []
+                                self.crn_manager.routing_reply_cnt += 1
+                                rep = routing_reply_msg(route)
+                                rep_string = cPickle.dumps(rep)
+                                self.broadcast(rep_string)
+                                    
+                # reply
+                if ctrl_msg.type == 7:    
+                    if self.crn_manager.routing_reply_cnt < ctrl_msg.routing_reply_cnt:
+                        self.crn_manager.routing_reply_cnt += 1
+                        self.crn_manager.route = ctrl_msg.route
+                        if ctrl_msg.route != []:
+                            self.process_con.acquire()
+                            self.crn_manager.process_flag = 1
+                            self.process_con.notify()
+                            self.process_con.release()
+                        self.broadcast(str)
+            
+                # error
+                if ctrl_msg.type == 8:    
+                    #ignore if already broadcasted error
+                    if self.crn_manager.routing_error_cnt < ctrl_msg.routing_error_cnt:
+                        self.crn_manager.routing_error_cnt += 1
+                        # clear buffer
+                        del self.crn_manager.role.buffer[:]
+                        self.crn_manager.route = []
+                        self.crn_manager.process_flag = 0
+                        if self.crn_manager.id == meta_data.source_id:
+                            self.crn_manager.get_best_links()
+                            self.crn_manager.init_broadcast_request()
+                        else:
+                            self.crn_manager.broadcast(str)
+
+        
     
     def accept_new_connection(self):
       newsock, (remhost, remport) = self.srvsock.accept()

@@ -28,29 +28,16 @@ class router:
                 self.crn_manager.process_con.wait()
             self.crn_manager.process_con.release()
             
-#            self.crn_manager.tx_con.acquire()
-#            if self.crn_manager.status == 2:
-#                self.crn_manager.tx_con.wait()
-#            self.crn_manager.tx_con.release()
+
             time.sleep(meta_data.min_time)
             if self.crn_manager.status != 2:
                 self.mac_layer_.run()
             
-            
-            #yeild
             time.sleep(meta_data.min_time)
 
         
     def rx_callback(self, ok, payload):
-#        self.crn_manager.process_con.acquire()
-#        if self.crn_manager.process_flag == 0:
-#            self.crn_manager.process_con.wait()
-#        self.crn_manager.process_con.release()
-
         if self.crn_manager.status == 2 and len(payload) > 4:
-
-
-
             (pktno, ) = struct.unpack('!H', payload[0:2])
             (pkt_sender_id, ) = struct.unpack('!H', payload[2:4])
             data = payload[4:]

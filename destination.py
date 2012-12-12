@@ -13,6 +13,8 @@ class destination:
         self.options = options
         self.crn_manager = crn_manager
         self.tb = my_top_block(self.rx_callback, self.options)
+        self.links = []
+        self.buffer = []
         self.routing_request_log = [] 
         self.link_number = self.get_link_number()
             
@@ -21,15 +23,17 @@ class destination:
         for i in range(len(meta_data.neighbour_table)):
             link_number += len(meta_data.neighbour_table[i])
         return link_number
+        
+    def calculate_path(self):
+        print self.links
+        graph = Graph()
+        for i in range(len(self.links)):
+            graph.add_edge(self.links[i][0], self.links[i][0], {'cost': self.links[i][0]})
+        cost_func = lambda u, v, e, prev_e: e['cost']
+        return find_path(graph, meta_data.source_id, meta_data.destination_id, cost_func=cost_func)
 
     def rx_callback(self, ok, payload):
-#        self.crn_manager.rx_con.acquire()
-#        if self.crn_manager.status != 2:
-#            self.crn_manager.rx_con.wait()
-#        self.crn_manager.rx_con.release()
-
         if self.crn_manager.status == 2 and len(payload) > 4:
-            
             (pktno, ) = struct.unpack('!H', payload[0:2])
             (pkt_sender_id, ) = struct.unpack('!H', payload[2:4])
             data = payload[4:]
