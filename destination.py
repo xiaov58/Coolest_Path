@@ -28,7 +28,7 @@ class destination:
         print self.links
         graph = Graph()
         for i in range(len(self.links)):
-            graph.add_edge(self.links[i][0], self.links[i][0], {'cost': self.links[i][0]})
+            graph.add_edge(self.links[i][0], self.links[i][1], {'cost': self.links[i][2]})
         cost_func = lambda u, v, e, prev_e: e['cost']
         return find_path(graph, meta_data.source_id, meta_data.destination_id, cost_func=cost_func)
 
