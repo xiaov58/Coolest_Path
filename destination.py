@@ -22,7 +22,7 @@ class destination:
         link_number =0
         for i in range(len(meta_data.neighbour_table)):
             link_number += len(meta_data.neighbour_table[i])
-        return link_number/2
+        return link_number
         
     def calculate_path(self):
         print self.links
