@@ -95,17 +95,16 @@ class ccc_server(threading.Thread):
                 if ctrl_msg.type == 6:    
                     #ignore if already broadcasted error
                     if self.crn_manager.routing_request_cnt < ctrl_msg.routing_request_cnt:
+                        self.crn_manager.routing_request_cnt += 1
+                        self.crn_manager.get_best_links()
+                        # merge best links
+                        links = self.merge(ctrl_msg.links, self.crn_manager.best_links)
                         if self.crn_manager.id != meta_data.destination_id:
-                            self.crn_manager.routing_request_cnt += 1
-                            self.crn_manager.get_best_links()
-                            # merge best links
-                            links = self.merge(ctrl_msg.links, self.crn_manager.best_links)
                             req = routing_request_msg(self.crn_manager.routing_request_cnt, links)
                             req_string = cPickle.dumps(req)
                             self.crn_manager.broadcast(req_string)
                         else:
-                            self.crn_manager.get_best_links()
-                            self.crn_manager.role.links = self.merge(self.merge(ctrl_msg.links, self.crn_manager.best_links), self.crn_manager.role.links )
+                            self.crn_manager.role.links = self.merge(links, self.crn_manager.role.links )
                             if len(self.crn_manager.role.links) == self.crn_manager.role.link_number:
                                 # run dijkstra
                                 result = self.crn_manager.role.calculate_path()
