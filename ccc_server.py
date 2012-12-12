@@ -106,6 +106,7 @@ class ccc_server(threading.Thread):
                             req_string = cPickle.dumps(req)
                             self.crn_manager.broadcast(req_string)
                         else:
+                            self.crn_manager.role.routing_request_log.append(self.crn_manager.get_virtual_time())
                             self.crn_manager.role.links = self.merge(links, self.crn_manager.role.links )
                             if len(self.crn_manager.role.links) == self.crn_manager.role.link_number:
                                 # run dijkstra
@@ -116,6 +117,10 @@ class ccc_server(threading.Thread):
                                 # check and reply
                                 if meta_data.INF in route:
                                     route = []
+                                    self.crn_manager.role.log_mask.append(0)
+                                else: 
+                                    self.crn_manager.role.log_mask.append(1)
+                                    
                                 self.crn_manager.routing_reply_cnt += 1
                                 rep = routing_reply_msg(self.crn_manager.routing_reply_cnt, route)
                                 rep_string = cPickle.dumps(rep)
@@ -128,10 +133,10 @@ class ccc_server(threading.Thread):
                         self.crn_manager.route = ctrl_msg.route
                         if ctrl_msg.route != []:
                             print "try to wake"
-                            self.crn_manager.process_con.acquire()
+                            #self.crn_manager.process_con.acquire()
                             self.crn_manager.process_flag = 1
                             self.crn_manager.process_con.notify()
-                            self.crn_manager.process_con.release()
+                            #self.crn_manager.process_con.release()
                         self.crn_manager.broadcast(str)
             
                 # error

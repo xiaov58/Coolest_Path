@@ -16,6 +16,7 @@ class destination:
         self.links = []
         self.buffer = []
         self.routing_request_log = [] 
+        self.log_mask = []
         self.link_number = self.get_link_number()
             
     def get_link_number(self):
