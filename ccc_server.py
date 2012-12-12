@@ -118,7 +118,7 @@ class ccc_server(threading.Thread):
                                 if meta_data.INF in route:
                                     route = []
                                 self.crn_manager.routing_reply_cnt += 1
-                                rep = routing_reply_msg(route)
+                                rep = routing_reply_msg(self.crn_manager.routing_reply_cnt, route)
                                 rep_string = cPickle.dumps(rep)
                                 self.crn_manager.broadcast(rep_string)
                                 print "reply"
