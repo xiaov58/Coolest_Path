@@ -19,10 +19,10 @@ class destination:
         self.link_number = self.get_link_number()
             
     def get_link_number(self):
-        link_number = -1        # minute null element
+        link_number =0
         for i in range(len(meta_data.neighbour_table)):
             link_number += len(meta_data.neighbour_table[i])
-        return link_number
+        return link_number/2
         
     def calculate_path(self):
         print self.links
