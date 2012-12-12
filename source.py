@@ -24,7 +24,6 @@ class source:
         
     def run(self):
         while 1:       
-            sys.stderr.write('B')
             # app layer: fill the buffer once it is empty
             # do not need to lock app layer during sensing, because app layer do not use USRP
             if len(self.buffer) == 0 and self.crn_manager.status == 0:
@@ -33,9 +32,7 @@ class source:
                     
             self.crn_manager.process_con.acquire()
             if self.crn_manager.process_flag == 0:
-                print "wait 1"
                 self.crn_manager.process_con.wait()
-                print "wake"
             self.crn_manager.process_con.release()
             
 
