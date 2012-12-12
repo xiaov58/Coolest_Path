@@ -133,10 +133,10 @@ class ccc_server(threading.Thread):
                         self.crn_manager.route = ctrl_msg.route
                         if ctrl_msg.route != []:
                             print "try to wake"
-                            #self.crn_manager.process_con.acquire()
+                            self.crn_manager.process_con.acquire()
                             self.crn_manager.process_flag = 1
                             self.crn_manager.process_con.notify()
-                            #self.crn_manager.process_con.release()
+                            self.crn_manager.process_con.release()
                         self.crn_manager.broadcast(str)
             
                 # error
