@@ -131,6 +131,7 @@ class ccc_server(threading.Thread):
                     if self.crn_manager.routing_reply_cnt < ctrl_msg.routing_reply_cnt:
                         self.crn_manager.routing_reply_cnt += 1
                         self.crn_manager.route = ctrl_msg.route
+                        print self.crn_manager.route
                         if ctrl_msg.route != []:
                             print "try to wake"
                             self.crn_manager.process_con.acquire()

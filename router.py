@@ -23,12 +23,9 @@ class router:
     def run(self):
         
         while 1:
-            sys.stderr.write('B')
             self.crn_manager.process_con.acquire()
             if self.crn_manager.process_flag == 0:
-                print "wait 1"
                 self.crn_manager.process_con.wait()
-                print "wake"
             self.crn_manager.process_con.release()
             
 
