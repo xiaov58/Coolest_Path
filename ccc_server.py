@@ -103,9 +103,10 @@ class ccc_server(threading.Thread):
                             req = routing_request_msg(self.crn_manager.routing_request_cnt, links)
                             req_string = cPickle.dumps(req)
                             self.crn_manager.broadcast(req_string)
-                            print "forward error"
                         else:
                             self.crn_manager.role.links = self.merge(links, self.crn_manager.role.links )
+                            print self.crn_manager.role.links
+                            print self.crn_manager.role.link_number
                             if len(self.crn_manager.role.links) == self.crn_manager.role.link_number:
                                 # run dijkstra
                                 result = self.crn_manager.role.calculate_path()
