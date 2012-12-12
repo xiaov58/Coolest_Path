@@ -121,6 +121,9 @@ class ccc_server(threading.Thread):
                                 else: 
                                     self.crn_manager.role.log_mask.append(1)
                                     
+                                self.crn_manager.route = route
+                                if ctrl_msg.route != []:
+                                    self.crn_manager.set_best_channel()
                                 self.crn_manager.routing_reply_cnt += 1
                                 rep = routing_reply_msg(self.crn_manager.routing_reply_cnt, route)
                                 rep_string = cPickle.dumps(rep)
@@ -133,7 +136,6 @@ class ccc_server(threading.Thread):
                         self.crn_manager.route = ctrl_msg.route
                         print self.crn_manager.route
                         if ctrl_msg.route != []:
-                            print "try to wake"
                             self.crn_manager.set_best_channel()
                             self.crn_manager.process_con.acquire()
                             self.crn_manager.process_flag = 1
