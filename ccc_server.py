@@ -122,8 +122,6 @@ class ccc_server(threading.Thread):
                                     self.crn_manager.role.log_mask.append(1)
                                     
                                 self.crn_manager.route = route
-                                if route != []:
-                                    self.crn_manager.set_best_channel()
                                 self.crn_manager.routing_reply_cnt += 1
                                 rep = routing_reply_msg(self.crn_manager.routing_reply_cnt, route)
                                 rep_string = cPickle.dumps(rep)
