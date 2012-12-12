@@ -111,7 +111,6 @@ class ccc_server(threading.Thread):
                                 # run dijkstra
                                 result = self.crn_manager.role.calculate_path()
                                 route = result[0]
-                                print route
                                 # clear link list
                                 del self.crn_manager.role.links[:]
                                 # check and reply
@@ -121,7 +120,6 @@ class ccc_server(threading.Thread):
                                 rep = routing_reply_msg(self.crn_manager.routing_reply_cnt, route)
                                 rep_string = cPickle.dumps(rep)
                                 self.crn_manager.broadcast(rep_string)
-                                print "reply"
                                     
                 # reply
                 if ctrl_msg.type == 7:    
@@ -129,10 +127,10 @@ class ccc_server(threading.Thread):
                         self.crn_manager.routing_reply_cnt += 1
                         self.crn_manager.route = ctrl_msg.route
                         if ctrl_msg.route != []:
-                            self.process_con.acquire()
+                            self.crn_manager.process_con.acquire()
                             self.crn_manager.process_flag = 1
-                            self.process_con.notify()
-                            self.process_con.release()
+                            self.crn_manager.process_con.notify()
+                            self.crn_manager.process_con.release()
                         self.crn_manager.broadcast(str)
             
                 # error
