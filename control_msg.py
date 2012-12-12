@@ -36,6 +36,7 @@ class routing_request_msg:
 class routing_reply_msg:
     def __init__(self,routing_reply_cnt,  route):
         self.type = 7
+        self.routing_reply_cnt = routing_reply_cnt
         self.route = route
         
 class routing_error_msg:
