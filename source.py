@@ -50,7 +50,7 @@ class source:
         pkt_size = int(meta_data.packet_size)
         self.pktno += 1
         pkt_sender_id =  int(self.options.id)
-        data = (pkt_size - 6) * chr(self.pktno & 0xff) 
+        data = (pkt_size - 4) * chr(self.pktno & 0xff) 
         self.buffer.append([self.pktno, pkt_sender_id, data])
         
     
