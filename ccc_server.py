@@ -134,6 +134,7 @@ class ccc_server(threading.Thread):
                         print self.crn_manager.route
                         if ctrl_msg.route != []:
                             print "try to wake"
+                            self.crn_manager.set_best_channel()
                             self.crn_manager.process_con.acquire()
                             self.crn_manager.process_flag = 1
                             self.crn_manager.process_con.notifyAll()
