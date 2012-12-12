@@ -102,7 +102,7 @@ class ccc_server(threading.Thread):
                             links = self.merge(ctrl_msg.links, self.crn_manager.best_links)
                             req = routing_request_msg(self.crn_manager.routing_request_cnt, links)
                             req_string = cPickle.dumps(req)
-                            self.broadcast(req_string)
+                            self.crn_manager.broadcast(req_string)
                         else:
                             self.crn_manager.get_best_links()
                             self.crn_manager.role.links = self.merge(self.merge(ctrl_msg.links, self.crn_manager.best_links), self.crn_manager.role.links )
@@ -119,7 +119,7 @@ class ccc_server(threading.Thread):
                                 self.crn_manager.routing_reply_cnt += 1
                                 rep = routing_reply_msg(route)
                                 rep_string = cPickle.dumps(rep)
-                                self.broadcast(rep_string)
+                                self.crn_manager.broadcast(rep_string)
                                     
                 # reply
                 if ctrl_msg.type == 7:    
@@ -131,7 +131,7 @@ class ccc_server(threading.Thread):
                             self.crn_manager.process_flag = 1
                             self.process_con.notify()
                             self.process_con.release()
-                        self.broadcast(str)
+                        self.crn_manager.broadcast(str)
             
                 # error
                 if ctrl_msg.type == 8:    
