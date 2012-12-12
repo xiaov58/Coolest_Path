@@ -135,7 +135,7 @@ class ccc_server(threading.Thread):
                             print "try to wake"
                             self.crn_manager.process_con.acquire()
                             self.crn_manager.process_flag = 1
-                            self.crn_manager.process_con.notify()
+                            self.crn_manager.process_con.notifyAll()
                             self.crn_manager.process_con.release()
                         self.crn_manager.broadcast(str)
             
