@@ -100,6 +100,8 @@ class ccc_server(threading.Thread):
                         
                         if self.crn_manager.id != meta_data.destination_id:
                             # merge best links
+                            print ctrl_msg.links
+                            print self.crn_manager.best_links
                             links = self.merge(ctrl_msg.links, self.crn_manager.best_links)
                             req = routing_request_msg(self.crn_manager.routing_request_cnt, links)
                             req_string = cPickle.dumps(req)
