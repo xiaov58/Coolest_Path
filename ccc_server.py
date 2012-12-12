@@ -105,7 +105,7 @@ class ccc_server(threading.Thread):
                             self.broadcast(req_string)
                         else:
                             self.crn_manager.get_best_links()
-                            self.crn_manager.role.links = list(set(ctrl_msg.links + self.crn_manager.role.links + self.crn_manager.best_links))
+                            self.crn_manager.role.links = self.merge(self.merge(ctrl_msg.links, self.crn_manager.best_links), self.crn_manager.role.links )
                             if len(self.crn_manager.role.links) == self.crn_manager.role.link_number:
                                 # run dijkstra
                                 result = self.crn_manager.role.calculate_path()
@@ -149,6 +149,15 @@ class ccc_server(threading.Thread):
                             self.crn_manager.broadcast(str)
 
         
+    def merge(self, a, b):
+        c = []
+        for i in a:
+            if i not in b:
+                c.append(i)
+                
+        for i in b:
+            c.append(i)
+        return c
     
     def accept_new_connection(self):
       newsock, (remhost, remport) = self.srvsock.accept()
