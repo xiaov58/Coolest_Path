@@ -194,6 +194,7 @@ class crn_manager:
         self.broadcast(req_string)
     
     def update_routing(self):
+        self.error_flag = 0
         if self.route == []:
             self.error_flag = 1
         else:
