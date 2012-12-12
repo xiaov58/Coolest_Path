@@ -168,8 +168,9 @@ class crn_manager:
         
 
         # let main thread run
-        self.process_flag = 1
-        self.process_con.notify()
+        if self.error_flag == 0:
+            self.process_flag = 1
+            self.process_con.notify()
         
         
         # adjust time and set timer for next round
