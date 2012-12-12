@@ -33,7 +33,6 @@ class crn_manager:
         self.time_sync_con = threading.Condition()  
         self.process_con = threading.Condition()  
         self.rts_ack_con = threading.Condition()  
-        self.route_con = threading.Condition()  
         
         # flags
         self.time_sync_flag = 0
@@ -166,9 +165,6 @@ class crn_manager:
         # update route, not for destination
         if self.id != meta_data.destination_id:
             self.update_routing()
-            self.route_con.acquire()
-            self.route_con.wait()
-            self.route_con.release()
         
 
         # let main thread run
