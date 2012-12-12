@@ -230,9 +230,8 @@ class crn_manager:
         for i in meta_data.neighbour_table[self.id]:
             cost = meta_data.INF
             for j in range(len(meta_data.channels)) :
-                if self.link_temp_table[i][j] < cost and self.channel_mask[j] == 1 and self.neighbour_channel_mask[i][j] ==1:
-                    if i == next_hop:
-                        self.best_channel = j 
+                if self.link_temp_table[i][j] < cost and self.channel_mask[j] == 1 and self.neighbour_channel_mask[i][j] ==1 and i == next_hop:
+                    self.best_channel = j 
             
     def run(self):
         # start ccc_server, recieve coming control msg only
