@@ -24,6 +24,7 @@ class source:
         
     def run(self):
         while 1:       
+            sys.stderr.write('B')
             # app layer: fill the buffer once it is empty
             # do not need to lock app layer during sensing, because app layer do not use USRP
             if len(self.buffer) == 0 and self.crn_manager.status == 0:
