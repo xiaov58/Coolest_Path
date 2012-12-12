@@ -103,6 +103,7 @@ class ccc_server(threading.Thread):
                             req = routing_request_msg(self.crn_manager.routing_request_cnt, links)
                             req_string = cPickle.dumps(req)
                             self.crn_manager.broadcast(req_string)
+                            print "forward error"
                         else:
                             self.crn_manager.role.links = self.merge(links, self.crn_manager.role.links )
                             if len(self.crn_manager.role.links) == self.crn_manager.role.link_number:
@@ -119,6 +120,7 @@ class ccc_server(threading.Thread):
                                 rep = routing_reply_msg(route)
                                 rep_string = cPickle.dumps(rep)
                                 self.crn_manager.broadcast(rep_string)
+                                print "reply"
                                     
                 # reply
                 if ctrl_msg.type == 7:    
