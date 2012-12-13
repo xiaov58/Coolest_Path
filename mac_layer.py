@@ -64,7 +64,7 @@ class mac_layer:
                 
         if self.crn_manager.status == 1 and len(self.buffer) == 0:
             # air time
-            time.sleep(meta_data.yeild_forward_time * 2)
+            time.sleep(1)
             
             # free receiver
             cts = cts_msg()
