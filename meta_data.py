@@ -30,7 +30,7 @@ sock_buffer_size = 1000
 source_id = 1
 destination_id = 3
 neighbour_table =         [[]      ,   [2]                          ,   [1, 3]                      , [2]                          ] 
-ip_table =                       [''     , '128.205.39.104'  , '67.20.206.90'      , '128.205.39.100'] 
+ip_table =                       [''     , '11.0.0.1'  , '11.0.0.2'      , '11.0.0.3'] 
 
 
 # PU info (first item is null to make it easy to count)
