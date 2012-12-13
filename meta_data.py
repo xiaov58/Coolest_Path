@@ -3,7 +3,7 @@
 packet_size = 400           # Byte
 carrier_thredshold = -60
 bandwidth = 0.2       # MHz
-channels = [0, 2.512, 4.9006, 4.915]
+channels = [0, 2.516, 4.9006, 4.915]
 
 # other experiment parameter
 init_channel = 1
@@ -11,7 +11,7 @@ round = 20
 min_time = 0.01         # second
 setup_time = 3               # second
 yeild_forward_time = 1 # second
-batch_size = 50
+batch_size = 30
 backoff_min = 0.001
 backoff_max = 0.050
 INF = 100
