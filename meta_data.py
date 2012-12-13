@@ -1,8 +1,8 @@
 
 # default option value
-packet_size = 200           # Byte
+packet_size = 500           # Byte
 carrier_thredshold = -60
-bandwidth = 2       # MHz
+bandwidth = 0.5       # MHz
 channels = [0, 2.516, 4.9006, 4.915]
 
 # other experiment parameter
