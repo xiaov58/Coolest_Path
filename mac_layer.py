@@ -63,6 +63,9 @@ class mac_layer:
             self.send()
                 
         if self.crn_manager.status == 1 and len(self.buffer) == 0:
+            # air time
+            time.sleep(meta_data.yeild_forward_time)
+            
             # free receiver
             cts = cts_msg()
             cts_string = cPickle.dumps(cts)
