@@ -106,7 +106,7 @@ class ccc_server(threading.Thread):
                             self.crn_manager.role.links = self.merge(links, self.crn_manager.role.links )
                             if len(self.crn_manager.role.links) == self.crn_manager.role.link_number:
                                 # run dijkstra
-                                result = self.crn_manager.role.calculate_path()
+                                route = self.crn_manager.role.calculate_path()
                                
                                 self.crn_manager.routing_reply_cnt += 1
                                 rep = routing_reply_msg(self.crn_manager.routing_reply_cnt, route)
