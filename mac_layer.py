@@ -38,13 +38,9 @@ class mac_layer:
         print "send! pktno %d; channel %d" % (self.pktno, self.crn_manager.best_channel)
         self.pkt_cnt += 1
 
-    def run(self):
-#        if self.crn_manager.status ==0 and len(self.buffer) == 0:
-#            self.crn_manager.buffer_con.acquire()
-#            self.crn_manager.buffer_con.wait()
-#            self.crn_manager.buffer_con.release()
-            
+    def run(self):            
         if self.crn_manager.status == 0 and len(self.buffer) != 0:
+            self.crn_manager.status =1
             # reserve receiver
             rts = rts_msg(self.crn_manager.id, self.crn_manager.best_channel)
             rts_string = cPickle.dumps(rts)
@@ -59,7 +55,9 @@ class mac_layer:
                 print self.crn_manager.route
                 print self.crn_manager.best_channel
                 self.crn_manager.role.tb.set_freq(meta_data.channels[self.crn_manager.best_channel])
-                self.crn_manager.status =1
+            else:
+                self.crn_manager.status =0
+                
 
         if self.crn_manager.status ==1 and len(self.buffer) != 0:
             self.send()
