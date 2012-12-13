@@ -66,10 +66,7 @@ class ccc_server(threading.Thread):
                     if self.crn_manager.status == 0:
                         self.crn_manager.status = 2
                         self.crn_manager.role.tb.set_freq(meta_data.channels[ctrl_msg.channel_id])
-#                        self.crn_manager.rx_con.acquire()
                         print "ready to receive at channel %d at %.3f" % (ctrl_msg.channel_id, self.crn_manager.get_virtual_time())
-#                        self.crn_manager.rx_con.notify()
-#                        self.crn_manager.rx_con.release()
                         rts_ack = rts_ack_msg(1)
                         rts_ack_string = cPickle.dumps(rts_ack)
                         self.crn_manager.socks_table[ctrl_msg.sender_id].send(rts_ack_string)
@@ -106,22 +103,11 @@ class ccc_server(threading.Thread):
                             req_string = cPickle.dumps(req)
                             self.crn_manager.broadcast(req_string)
                         else:
-                            self.crn_manager.role.routing_request_log.append(self.crn_manager.get_virtual_time())
                             self.crn_manager.role.links = self.merge(links, self.crn_manager.role.links )
                             if len(self.crn_manager.role.links) == self.crn_manager.role.link_number:
                                 # run dijkstra
                                 result = self.crn_manager.role.calculate_path()
-                                route = result[0]
-                                # clear link list
-                                del self.crn_manager.role.links[:]
-                                # check and reply
-                                if meta_data.INF in route:
-                                    route = []
-                                    self.crn_manager.role.log_mask.append(0)
-                                else: 
-                                    self.crn_manager.role.log_mask.append(1)
-                                    
-                                self.crn_manager.route = route
+                               
                                 self.crn_manager.routing_reply_cnt += 1
                                 rep = routing_reply_msg(self.crn_manager.routing_reply_cnt, route)
                                 rep_string = cPickle.dumps(rep)

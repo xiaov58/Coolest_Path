@@ -16,10 +16,12 @@ class mac_layer:
     def fetch_packge(self):
         self.pktno = self.buffer[0][0]
         pkt_sender_id =  self.buffer[0][1]
-        data = self.buffer[0][2]
+        pkt_receiver_id =  self.buffer[0][2]
+        data = self.buffer[0][3]
         del self.buffer[0]
         payload =    struct.pack('!H', self.pktno & 0xffff) +\
                             struct.pack('!H', pkt_sender_id & 0xffff) + \
+                            struct.pack('!H', pkt_receiver_id & 0xffff) + \
                             data
         return payload
     

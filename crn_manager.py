@@ -26,6 +26,7 @@ class crn_manager:
         self.status = 0         #0: free 1: transmiting 2: reiceving
         self.route = []
         self.best_channel = 0       # coolest and available channel for transmiting to  next hop
+        self.next_hop = 0
         self.best_links = []
         self.start_local_time = 0
             
@@ -227,11 +228,11 @@ class crn_manager:
             self.best_links.append([self.id, i, cost])       # sender, receiver, cost
 
     def set_best_channel(self):
-        next_hop = self.route[self.route.index(self.id) + 1]
+        self.next_hop = self.route[self.route.index(self.id) + 1]
         for i in meta_data.neighbour_table[self.id]:
             cost = meta_data.INF
             for j in range(len(meta_data.channels)) :
-                if self.link_temp_table[i][j] < cost and self.channel_mask[j] == 1 and self.neighbour_channel_mask[i][j] ==1 and i == next_hop:
+                if self.link_temp_table[i][j] < cost and self.channel_mask[j] == 1 and self.neighbour_channel_mask[i][j] ==1 and i == self.next_hop:
                     self.best_channel = j 
                     cost = self.link_temp_table[i][j]
             

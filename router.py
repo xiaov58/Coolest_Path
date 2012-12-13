@@ -28,7 +28,6 @@ class router:
                 self.crn_manager.process_con.wait()
             self.crn_manager.process_con.release()
             
-
             if self.crn_manager.status != 2:
                 self.mac_layer_.run()
             
@@ -36,15 +35,16 @@ class router:
 
         
     def rx_callback(self, ok, payload):
-        if self.crn_manager.status == 2 and len(payload) > 4:
+        if self.crn_manager.status == 2 and len(payload) > 6:
             (pktno, ) = struct.unpack('!H', payload[0:2])
             (pkt_sender_id, ) = struct.unpack('!H', payload[2:4])
-            data = payload[4:]
+            (pkt_receiver_id, ) = struct.unpack('!H', payload[4:6])
+            data = payload[6:]
             if ok:
                 # save to buffer, change sender_id
-                self.buffer.append([pktno, int(self.options.id), data])
-                print "receive! pktno: %d, sender: %d" % (pktno, pkt_sender_id)
+                self.buffer.append([pktno, self.crn_manager.id, self.crn_manager.next_hop, data])
+                print "pktno: %d, from %d to %d" % (pktno, pkt_sender_id, pkt_receiver_id)
             else:
                 print "ok: %r \t pktno: %d \t" % (ok, pktno)
-        end = time.time()
+        
         

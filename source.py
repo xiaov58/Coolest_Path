@@ -35,7 +35,6 @@ class source:
                 self.crn_manager.process_con.wait()
             self.crn_manager.process_con.release()
             
-            
             if self.crn_manager.status != 2:
                 self.mac_layer_.run()
 
@@ -49,8 +48,9 @@ class source:
         pkt_size = int(meta_data.packet_size)
         self.pktno += 1
         pkt_sender_id =  int(self.options.id)
+        pkt_receiver_id = self.crn_manager.next_hop
         data = (pkt_size - 4) * chr(self.pktno & 0xff) 
-        self.buffer.append([self.pktno, pkt_sender_id, data])
+        self.buffer.append([self.pktno, pkt_sender_id, pkt_receiver_id, data])
         
     
     def rx_callback(self, ok, payload):

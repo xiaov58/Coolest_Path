@@ -26,21 +26,34 @@ class destination:
         return link_number
         
     def calculate_path(self):
+        self.routing_request_log.append(self.crn_manager.get_virtual_time())
         graph = Graph()
         for i in range(len(self.links)):
             graph.add_edge(self.links[i][0], self.links[i][1], {'cost': self.links[i][2]})
         cost_func = lambda u, v, e, prev_e: e['cost']
-        return find_path(graph, meta_data.source_id, meta_data.destination_id, cost_func=cost_func)
+        result =  find_path(graph, meta_data.source_id, meta_data.destination_id, cost_func=cost_func)
+        route = result[0]
+        # clear link list
+        del self.crn_manager.role.links[:]
+        # check and reply
+        if meta_data.INF in route:
+            route = []
+            self.log_mask.append(0)
+        else: 
+            self.log_mask.append(1)
+        self.crn_manager.route = route
+        return route
 
     def rx_callback(self, ok, payload):
-        if self.crn_manager.status == 2 and len(payload) > 4:
+        if self.crn_manager.status == 2 and len(payload) > 6:
             (pktno, ) = struct.unpack('!H', payload[0:2])
             (pkt_sender_id, ) = struct.unpack('!H', payload[2:4])
-            data = payload[4:]
+            (pkt_receiver_id, ) = struct.unpack('!H', payload[4:6])
+            data = payload[6:]
             if ok:
-                print "pktno: %d, sender: %d" % (pktno, pkt_sender_id)
+                print "pktno: %d, from %d to %d" % (pktno, pkt_sender_id, pkt_receiver_id)
                 # only count packets from last hop
-                if self.crn_manager.route[self.crn_manager.route.index(self.crn_manager.id) -1] == pkt_sender_id:
+                if self.crn_manager.id == pkt_receiver_id:
                     self.received_cnt += 1
             else:
                 print "ok: %r \t pktno: %d \t" % (ok, pktno)
