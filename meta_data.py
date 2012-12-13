@@ -8,7 +8,7 @@ channels = [0, 2.516, 4.9006, 4.915]
 # other experiment parameter
 init_channel = 1
 round = 20               
-min_time = 0.02         # second
+min_time = 0.001         # second
 setup_time = 3               # second
 yeild_forward_time = 0.1 # second
 batch_size = 50
