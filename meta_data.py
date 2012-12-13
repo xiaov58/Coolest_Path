@@ -9,9 +9,11 @@ channels = [0, 2.516, 4.9006, 4.915]
 init_channel = 1
 round = 20               
 setup_time = 3               # second
-min_time = 0.001         # second
 air_time = 0.5               # second
+min_time = 0.001         # second
 yeild_forward_time = 0.01 # second
+
+
 
 batch_size = 50
 backoff_min = 0.001

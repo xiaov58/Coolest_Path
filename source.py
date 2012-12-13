@@ -36,7 +36,6 @@ class source:
             self.crn_manager.process_con.release()
             
             
-            time.sleep(meta_data.min_time)
             if self.crn_manager.status != 2:
                 self.mac_layer_.run()
 

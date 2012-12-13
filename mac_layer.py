@@ -10,7 +10,6 @@ import meta_data
 class mac_layer:
     def __init__(self, buffer, crn_manager):
         self.pktno = 0
-        self.pkt_cnt = 0
         self.buffer = buffer
         self.crn_manager = crn_manager
             
@@ -36,7 +35,6 @@ class mac_layer:
                 
         self.crn_manager.role.tb.txpath.send_pkt(payload, False)
         print "send! pktno %d; channel %d; buffer: %d" % (self.pktno, self.crn_manager.best_channel, len(self.buffer))
-        self.pkt_cnt += 1
 
     def run(self):            
         if self.crn_manager.status == 0 and len(self.buffer) != 0:
@@ -64,7 +62,7 @@ class mac_layer:
                 
         if self.crn_manager.status == 1 and len(self.buffer) == 0:
             # air time
-            time.sleep(1)
+            time.sleep(meta_data.air_time)
             
             # free receiver
             cts = cts_msg()
