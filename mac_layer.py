@@ -26,7 +26,6 @@ class mac_layer:
     
     def send(self):
         payload = self.fetch_packge()
-        self.crn_manager.role.tb.set_freq(meta_data.channels[self.crn_manager.best_channel])
         # carrier sense
         delay_range = meta_data.min_time
         while self.crn_manager.role.tb.carrier_sense():
@@ -59,6 +58,7 @@ class mac_layer:
                 print "ready to send at %.3f" % self.crn_manager.get_virtual_time()
                 print self.crn_manager.route
                 print self.crn_manager.best_channel
+                self.crn_manager.role.tb.set_freq(meta_data.channels[self.crn_manager.best_channel])
                 self.crn_manager.status =1
 
         if self.crn_manager.status ==1 and len(self.buffer) != 0:
