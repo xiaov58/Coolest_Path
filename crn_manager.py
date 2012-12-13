@@ -99,7 +99,7 @@ class crn_manager:
     
     def exit(self):
         print "Done !!" 
-        print options.bandwidth
+        print self.options.bandwidth
         if self.id == meta_data.source_id:
             print "Source: send out %d" % (self.role.mac_layer_.pkt_cnt)
         if self.id == meta_data.destination_id:
