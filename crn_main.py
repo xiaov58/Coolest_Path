@@ -47,7 +47,7 @@ def preprocess():
     else:
         options.rx_freq = meta_data.channels[meta_data.init_channel] * 1e9
         options.tx_freq = meta_data.channels[meta_data.init_channel] * 1e9
-        options.bandwidth = (meta_data.bandwidth * 1000000.0)/4
+        options.bandwidth = (meta_data.bandwidth * 10000000.0)/4
     
     return options
 
