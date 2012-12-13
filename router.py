@@ -37,7 +37,6 @@ class router:
 
         
     def rx_callback(self, ok, payload):
-        start = time.time()
         if self.crn_manager.status == 2 and len(payload) > 4:
             (pktno, ) = struct.unpack('!H', payload[0:2])
             (pkt_sender_id, ) = struct.unpack('!H', payload[2:4])
@@ -49,5 +48,4 @@ class router:
             else:
                 print "ok: %r \t pktno: %d \t" % (ok, pktno)
         end = time.time()
-        print "%.3f" % (end - start)
         
