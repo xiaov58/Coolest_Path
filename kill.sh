@@ -1,3 +1,3 @@
 killall -9 python
-git pull lan TDMA
+git pull lan master
 
