@@ -104,10 +104,9 @@ class ccc_server(threading.Thread):
                     self.crn_manager.get_best_links()
                     links = self.merge(ctrl_msg.links, self.crn_manager.best_links)
                     if self.crn_manager.id != meta_data.destination_id:
-                        print ctrl_msg.path
-                        path = ctrl_msg.path.append(self.crn_manager.id)
+                        ctrl_msg.path.append(self.crn_manager.id)
 
-                        req = routing_request_msg(ctrl_msg.routing_request_cnt, path, links)
+                        req = routing_request_msg(ctrl_msg.routing_request_cnt, ctrl_msg.path, links)
                         req_string = cPickle.dumps(req)
                         self.crn_manager.broadcast(req_string)
                         
