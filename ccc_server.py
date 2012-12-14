@@ -123,10 +123,9 @@ class ccc_server(threading.Thread):
                         if ctrl_msg.route != []:
                             print "try to wake from route error"
                             self.crn_manager.set_best_channel()
-                            self.crn_manager.process_con.acquire()
-                            self.crn_manager.process_flag = 1
-                            self.crn_manager.process_con.notifyAll()
-                            self.crn_manager.process_con.release()
+                            self.routing_con.acquire()
+                            self.routing_con.notify()
+                            self.routing_con.release()
                         self.crn_manager.broadcast(str)
             
                 # error
@@ -134,10 +133,14 @@ class ccc_server(threading.Thread):
                     #ignore if already broadcasted error
                     if self.crn_manager.routing_error_cnt < ctrl_msg.routing_error_cnt:
                         self.crn_manager.routing_error_cnt += 1
+                        self.crn_manager.process_con.acquire()
                         # clear buffer
                         del self.crn_manager.role.buffer[:]
                         self.crn_manager.route = []
-                        self.crn_manager.process_flag = 0
+                        self.crn_manager.routing_con.acquire()
+                        self.crn_manager.routing_con.wait()
+                        self.crn_manager.routing_con.release()
+                        self.crn_manager.process_con.release()
                         if self.crn_manager.id == meta_data.source_id:
                             self.crn_manager.get_best_links()
                             self.crn_manager.init_broadcast_request()
