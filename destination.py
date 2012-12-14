@@ -51,10 +51,11 @@ class destination:
             (pkt_receiver_id, ) = struct.unpack('!H', payload[4:6])
             data = payload[6:]
             if ok:
-                print "received! pktno: %d, from %d to %d" % (pktno, pkt_sender_id, pkt_receiver_id)
-                # only count packets from last hop
                 if self.crn_manager.id == pkt_receiver_id:
+                    print "received! pktno: %d, from %d to %d" % (pktno, pkt_sender_id, pkt_receiver_id)
                     self.received_cnt += 1
+                else: 
+                    print "overhear! pktno: %d, from %d to %d" % (pktno, pkt_sender_id, pkt_receiver_id)
             else:
                 print "ok: %r \t pktno: %d \t" % (ok, pktno)
             
