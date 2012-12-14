@@ -63,7 +63,6 @@ class ccc_server(threading.Thread):
                                 
                 # rts
                 if ctrl_msg.type == 3:
-                    print "status : %d" % self.crn_manager.status
                     if self.crn_manager.status == 0:
                         self.crn_manager.status = 2
                         self.crn_manager.role.tb.set_freq(meta_data.channels[ctrl_msg.channel_id])                        
@@ -127,11 +126,6 @@ class ccc_server(threading.Thread):
                         self.crn_manager.route = ctrl_msg.route
                         print self.crn_manager.route
                         
-
-                        print self.crn_manager.process_con
-
-                        
-    
                         if ctrl_msg.route != [] and self.crn_manager.id in self.crn_manager.route:
                             if self.crn_manager.id != meta_data.destination_id:
                                 self.crn_manager.set_best_channel()
@@ -139,7 +133,6 @@ class ccc_server(threading.Thread):
                                 self.crn_manager.process_flag = 1
                                 self.crn_manager.process_con.notifyAll()
                                 self.crn_manager.process_con.release()
-                                print self.crn_manager.process_con
                         self.crn_manager.broadcast(str)
             
                 # error
