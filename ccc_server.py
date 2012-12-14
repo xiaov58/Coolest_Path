@@ -80,7 +80,6 @@ class ccc_server(threading.Thread):
             
                 # rts ack
                 if ctrl_msg.type == 4:
-                    print "ready to send at channel %d at %.3f" % (ctrl_msg.channel_id, self.crn_manager.get_virtual_time())
                     self.crn_manager.rts_ack_con.acquire()
                     self.crn_manager.rts_ack_con.notify()
                     self.crn_manager.rts_ack_con.release()

@@ -49,6 +49,7 @@ class mac_layer:
             # wait for reply
             self.crn_manager.rts_ack_con.acquire()
             self.crn_manager.rts_ack_con.wait()
+            print "ready to send at channel %d at %.3f" % (self.crn_manager.best_channel, self.crn_manager.get_virtual_time())
             self.crn_manager.role.tb.set_freq(meta_data.channels[self.crn_manager.best_channel])
             self.crn_manager.rts_ack_con.release()
 
