@@ -33,11 +33,11 @@ sock_buffer_size = 1000
 source_id = 1
 destination_id = 4
 neighbour_table =         [[], [2], [1, 3] , [2, 4] , [3]] 
-ip_table =                      ['' , '11.0.0.1'  , '11.0.0.2' , '11.0.0.3', '11.0..0.4'] 
+ip_table =                      ['' , '11.0.0.1'  , '11.0.0.2' , '11.0.0.3', '11.0.0.4'] 
 
 
 # PU info (first item is null to make it easy to count)
-pu_id_table =                  [[] ,   []  ,   [1]  ,  [2, 3] , [4] ]
+pu_id_table = [[] ,   []  ,   [1]  ,  [2, 3] , [4] ]
 pu_channel = [0, 1, 2, 3]
 #pu_activity = [
 #               [], 
