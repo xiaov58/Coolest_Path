@@ -113,7 +113,6 @@ class ccc_server(threading.Thread):
                             self.crn_manager.role.routing_request_cnt += 1
                             # run dijkstra
                             route = self.crn_manager.role.calculate_path()
-                            print route
                            
                             #self.crn_manager.routing_reply_cnt += 1
                             rep = routing_reply_msg(self.crn_manager.routing_reply_cnt + 1, route)
