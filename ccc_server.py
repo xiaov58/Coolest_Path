@@ -124,6 +124,7 @@ class ccc_server(threading.Thread):
                         self.crn_manager.routing_reply_cnt += 1
                         self.crn_manager.route = ctrl_msg.route
                         print self.crn_manager.route
+                        print "%.3f" % self.crn_manager.get_virtual_time()
                         
                         if ctrl_msg.route != [] and self.crn_manager.id in self.crn_manager.route:
                             if self.crn_manager.id != meta_data.destination_id:
