@@ -226,7 +226,7 @@ class crn_manager:
                     cost = self.link_temp_table[i][j]
                     self.role.tb.set_freq(meta_data.channels[j])
             self.best_links.append([self.id, i, cost])       # sender, receiver, cost
-        print self.best_links
+        #print self.best_links
 
     def set_best_channel(self):
         self.best_channel = 0

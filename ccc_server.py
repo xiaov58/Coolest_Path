@@ -116,6 +116,7 @@ class ccc_server(threading.Thread):
                             req_string = cPickle.dumps(req)
                             self.crn_manager.broadcast(req_string)
                         else:
+                            print "RECEIVE REQUEST"
                             self.crn_manager.role.links = self.merge(links, self.crn_manager.role.links )
                             if len(self.crn_manager.role.links) == self.crn_manager.role.link_number:
                                 # run dijkstra
