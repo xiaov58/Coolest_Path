@@ -100,7 +100,7 @@ class ccc_server(threading.Thread):
                     if self.crn_manager.id == meta_data.destination_id:
                         self.crn_manager.get_best_links()
                         self.crn_manager.role.links = self.merge(ctrl_msg.links, self.crn_manager.best_links)
-                        #print self.crn_manager.role.links
+                        print self.crn_manager.role.links
                         if len(self.crn_manager.role.links) == self.crn_manager.role.link_number:
                             # run dijkstra
                             route = self.crn_manager.role.calculate_path()
