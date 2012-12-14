@@ -96,7 +96,7 @@ class mac_layer:
                 delay_range = delay_range * 2       # exponential back-off range
                 
         self.crn_manager.role.tb.txpath.send_pkt(payload, False)
-        print "Give free" % (self.pktno, self.crn_manager.best_channel, len(self.buffer))
+        print "Give free" 
 
             
 

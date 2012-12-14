@@ -54,6 +54,8 @@ class destination:
                 if self.crn_manager.id == pkt_receiver_id:
                     print "received! pktno: %d, from %d to %d" % (pktno, pkt_sender_id, pkt_receiver_id)
                     self.received_cnt += 1
+                elif pktno == 0:
+                    print "get free"
                 else: 
                     print "overhear! pktno: %d, from %d to %d" % (pktno, pkt_sender_id, pkt_receiver_id)
             else:
