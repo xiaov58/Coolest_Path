@@ -59,7 +59,6 @@ class ccc_server(threading.Thread):
                             self.crn_manager.neighbour_channel_mask[i] = ctrl_msg.channel_mask
                             for j in range(len(meta_data.channels)) :
                                 self.crn_manager.link_temp_table[i][j] = 1 - (1-self.crn_manager.channel_utilization_table[j])*(1-ctrl_msg.channel_utilization_table[j])
-
                                 
                 # rts
                 if ctrl_msg.type == 3:
@@ -116,8 +115,8 @@ class ccc_server(threading.Thread):
                             req_string = cPickle.dumps(req)
                             self.crn_manager.broadcast(req_string)
                         else:
-                            print "RECEIVE REQUEST"
                             self.crn_manager.role.links = self.merge(links, self.crn_manager.role.links )
+                            print self.crn_manager.role.links
                             if len(self.crn_manager.role.links) == self.crn_manager.role.link_number:
                                 # run dijkstra
                                 route = self.crn_manager.role.calculate_path()
