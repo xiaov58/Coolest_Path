@@ -128,7 +128,6 @@ class ccc_server(threading.Thread):
                                     
                 # routing reply
                 if ctrl_msg.type == 7:    
-                    print "routing reply"
                     if self.crn_manager.routing_reply_cnt < ctrl_msg.routing_reply_cnt:
                         self.crn_manager.routing_reply_cnt += 1
                         self.crn_manager.route = ctrl_msg.route
@@ -136,7 +135,8 @@ class ccc_server(threading.Thread):
     
                         if ctrl_msg.route != [] and self.crn_manager.id in self.crn_manager.route:
                             print "try to wake from route error"
-                            self.crn_manager.set_best_channel()
+                            if self.crn_manager.id != meta_data.destination_id:
+                                self.crn_manager.set_best_channel()
                             self.crn_manager.process_con.acquire()
                             self.crn_manager.process_flag = 1
                             self.crn_manager.process_con.notifyAll()
