@@ -99,6 +99,14 @@ class ccc_server(threading.Thread):
                 if ctrl_msg.type == 6:    
                     #ignore if already broadcasted error
                     if self.crn_manager.routing_request_cnt < ctrl_msg.routing_request_cnt:
+                        # request arrives earlier than error
+                        if ctrl_msg.routing_request_cnt > self.crn_manager.routing_error_cnt:
+                            # make up the task that need to be done when receive error msg, then block error msg
+                            self.crn_manager.routing_error_cnt += 1
+                            self.crn_manager.process_flag = 0
+                            del self.crn_manager.role.mac_layer_.buffer[:]
+                            self.crn_manager.route = []
+                            
                         self.crn_manager.routing_request_cnt += 1
                         self.crn_manager.get_best_links()
                         # merge best links
@@ -142,18 +150,18 @@ class ccc_server(threading.Thread):
                     if self.crn_manager.routing_error_cnt < ctrl_msg.routing_error_cnt:
                         self.crn_manager.routing_error_cnt += 1
                         self.crn_manager.process_flag = 0
-                        # clear buffer
-                        del self.crn_manager.role.buffer[:]
+                        del self.crn_manager.role.mac_layer_.buffer[:]
                         self.crn_manager.route = []
-                        if self.crn_manager.id == meta_data.source_id:
-                            self.crn_manager.get_best_links()
-                            self.crn_manager.init_broadcast_request()
-                        else:
+                        if self.crn_manager.id != meta_data.source_id:
                             self.crn_manager.broadcast(str)
-                
+                        else:
+                            req = routing_request_msg(self.routing_request_cnt, self.best_links)
+                            req_string = cPickle.dumps(req)
+                            self.crn_manager.broadcast(req_string)
+                            
                 # air_free reply
                 if ctrl_msg.type == 9:              
-                    print "early wake up"
+                    print "fast wake up"
                     self.crn_manager.early_free_flag = 1
                     self.crn_manager.air_con.acquire()
                     self.crn_manager.air_con.notify()

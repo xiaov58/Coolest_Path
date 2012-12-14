@@ -183,18 +183,6 @@ class crn_manager:
         self.process_timer.start()
         self.process_con.release()
         
-    def init_broadcast_error(self):
-        self.routing_error_cnt += 1
-        err = routing_error_msg(self.routing_error_cnt)
-        err_string = cPickle.dumps(err)
-        self.broadcast(err_string)
-        
-    def init_broadcast_request(self):
-        self.routing_request_cnt += 1
-        req = routing_request_msg(self.routing_request_cnt, self.best_links)
-        req_string = cPickle.dumps(req)
-        self.broadcast(req_string)
-    
     def update_routing(self):
         self.error_flag = 0
         if self.route == []:
@@ -206,16 +194,22 @@ class crn_manager:
    
         if self.error_flag ==1:
             print "routing error"
-            self.get_best_links()
+            # detect routing error, then refuse error  msg from other node
+            self.routing_error_cnt += 1
+            self.process_flag = 0
             del self.role.mac_layer_.buffer[:]
             self.route = []
-            self.process_flag = 0
-            # update route
-            if self.id == meta_data.source_id:
-                self.routing_error_cnt += 1
-                self.init_broadcast_request()
+            
+            if self.id != meta_data.source_id:
+                err = routing_error_msg(self.routing_error_cnt)
+                err_string = cPickle.dumps(err)
+                self.broadcast(err_string)
             else:
-                self.init_broadcast_error()
+                self.routing_request_cnt += 1
+                self.get_best_links()
+                req = routing_request_msg(self.routing_request_cnt, self.best_links)
+                req_string = cPickle.dumps(req)
+                self.broadcast(req_string)
 
         
     def get_best_links(self):
@@ -227,7 +221,6 @@ class crn_manager:
                     cost = self.link_temp_table[i][j]
                     self.role.tb.set_freq(meta_data.channels[j])
             self.best_links.append([self.id, i, cost])       # sender, receiver, cost
-        print "********************"
         print self.best_links
 
     def set_best_channel(self):
