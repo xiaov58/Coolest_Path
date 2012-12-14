@@ -3,7 +3,7 @@
 packet_size = 400           # Byte
 carrier_thredshold = -60
 bandwidth = 0.2       # MHz
-channels = [0, 2.516, 2.514, 2.512]
+channels = [0, 2.512, 2.510, 2.508]
 
 
 # other experiment parameter
