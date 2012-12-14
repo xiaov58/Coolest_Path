@@ -23,6 +23,7 @@ class mac_layer:
                             struct.pack('!H', pkt_sender_id & 0xffff) + \
                             struct.pack('!H', pkt_receiver_id & 0xffff) + \
                             data
+        print len(payload)
         return payload
     
     def send(self):
