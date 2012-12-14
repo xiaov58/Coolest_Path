@@ -40,8 +40,9 @@ class ccc_server(threading.Thread):
                 sock.close
                 self.descriptors.remove(sock)
             else:
-                print "CCC received something"
+                print 
                 ctrl_msg = cPickle.loads(str)
+                print ctrl_msg.type
                 # time sync signal
                 if ctrl_msg.type == 1:
                     #ignore if time_sync_flag is already 1
