@@ -125,6 +125,13 @@ class ccc_server(threading.Thread):
                         self.crn_manager.routing_reply_cnt += 1
                         self.crn_manager.route = ctrl_msg.route
                         print self.crn_manager.route
+                        
+                        print self.crn_manager.time_sync_con
+                        print self.crn_manager.process_con
+                        print self.crn_manager.rts_ack_con
+                        print self.crn_manager.air_con
+                        print self.crn_manager.buffer_con
+                        
     
                         if ctrl_msg.route != [] and self.crn_manager.id in self.crn_manager.route:
                             if self.crn_manager.id != meta_data.destination_id:
