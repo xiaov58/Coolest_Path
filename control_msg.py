@@ -28,9 +28,10 @@ class ccc_free_msg:
         self.sender_id = sender_id
         
 class routing_request_msg:
-    def __init__(self, routing_request_cnt, links):
+    def __init__(self, routing_request_cnt, path, links):
         self.type = 6
         self.routing_request_cnt = routing_request_cnt
+        self.path = path
         self.links = links
         
 class routing_reply_msg:

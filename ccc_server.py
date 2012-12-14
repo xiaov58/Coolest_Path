@@ -96,35 +96,73 @@ class ccc_server(threading.Thread):
 
                 # routing request
                 if ctrl_msg.type == 6:    
-                    # destination can receive multiple request to gather all link info
-                    if self.crn_manager.id == meta_data.destination_id:
-                        self.crn_manager.get_best_links()
-                        self.crn_manager.role.links = self.merge(ctrl_msg.links, self.crn_manager.best_links)
-                        print self.crn_manager.role.links
-                        if len(self.crn_manager.role.links) == self.crn_manager.role.link_number:
-                            # run dijkstra
-                            route = self.crn_manager.role.calculate_path()
-                           
-                            self.crn_manager.routing_reply_cnt += 1
-                            del self.crn_manager.role.links[:]
-                            rep = routing_reply_msg(self.crn_manager.routing_reply_cnt, route)
-                            rep_string = cPickle.dumps(rep)
-                            self.crn_manager.broadcast(rep_string)
-                    elif self.crn_manager.routing_request_cnt < ctrl_msg.routing_request_cnt:
-                        self.crn_manager.routing_request_cnt += 1
-                        # request arrives earlier than error
-                        if ctrl_msg.routing_request_cnt > self.crn_manager.routing_error_cnt:
-                            # make up the task that need to be done when receive error msg, then block error msg
-                            self.crn_manager.routing_error_cnt += 1
-                            self.crn_manager.clear()
+                    if ctrl_msg.routing_request_cnt > self.crn_manager.routing_error_cnt:
+                        # make up the task that need to be done when receive error msg, then block error msg
+                        self.crn_manager.routing_error_cnt += 1
+                        self.crn_manager.clear()
                             
-                        self.crn_manager.get_best_links()
-                        # merge best links
-                        links = self.merge(ctrl_msg.links, self.crn_manager.best_links)
-                        
-                        req = routing_request_msg(self.crn_manager.routing_request_cnt, links)
+                    self.crn_manager.get_best_links()
+                    links = self.merge(ctrl_msg.links, self.crn_manager.best_links)
+                    if self.crn_manager.id != meta_data.destination_id:
+                        path = ctrl_msg.path.append(self.crn_manager.id)
+
+                        req = routing_request_msg(ctrl_msg.routing_request_cnt, path, links)
                         req_string = cPickle.dumps(req)
                         self.crn_manager.broadcast(req_string)
+                        
+                        for k in self.socks_table.keys():
+                            if k not in path:
+                                self.socks_table[k].send(req_string)
+                    else:
+                        print links
+                        
+#                    if self.crn_manager.routing_request_cnt < ctrl_msg.routing_request_cnt:
+#                        self.crn_manager.routing_request_counter += 1
+#                        if self.crn_manager.routing_request_counter <= neighbour_number:
+#                            # request arrives earlier than error
+#                            if ctrl_msg.routing_request_cnt > self.crn_manager.routing_error_cnt and self.crn_manager.routing_request_counter == 0:
+#                                # make up the task that need to be done when receive error msg, then block error msg
+#                                self.crn_manager.routing_error_cnt += 1
+#                                self.crn_manager.clear()
+#                                
+#                            self.crn_manager.get_best_links()
+#                            # merge best links
+#                            links = self.merge(ctrl_msg.links, self.crn_manager.best_links)
+#                            req = routing_request_msg(self.crn_manager.routing_request_cnt, links)
+#                            req_string = cPickle.dumps(req)
+#                            self.crn_manager.broadcast(req_string)
+#                            
+#                        else:
+#                            self.crn_manager.routing_request_cnt += 1
+#                            self.crn_manager.routing_request_counter = 0
+#                            
+#                        
+#                    # destination can receive multiple request to gather all link info
+#                    if self.crn_manager.id == meta_data.destination_id:
+#                        self.crn_manager.get_best_links()
+#                        self.crn_manager.role.links = self.merge(ctrl_msg.links, self.crn_manager.best_links)
+#                        print self.crn_manager.role.links
+#                        if len(self.crn_manager.role.links) == self.crn_manager.role.link_number:
+#                            # run dijkstra
+#                            route = self.crn_manager.role.calculate_path()
+#                           
+#                            self.crn_manager.routing_reply_cnt += 1
+#                            del self.crn_manager.role.links[:]
+#                            rep = routing_reply_msg(self.crn_manager.routing_reply_cnt, route)
+#                            rep_string = cPickle.dumps(rep)
+#                            self.crn_manager.broadcast(rep_string)
+#                    elif self.crn_manager.routing_request_cnt < ctrl_msg.routing_request_cnt:
+#                        self.crn_manager.routing_request_cnt += 1
+#                       
+#                            
+#                        self.crn_manager.get_best_links()
+#                        # merge best links
+#                        links = self.merge(ctrl_msg.links, self.crn_manager.best_links)
+#                        
+#                        
+#                        req = routing_request_msg(self.crn_manager.routing_request_cnt, path, links)
+#                        req_string = cPickle.dumps(req)
+#                        self.crn_manager.broadcast(req_string)
                                     
                 # routing reply
                 if ctrl_msg.type == 7:    
@@ -154,7 +192,8 @@ class ccc_server(threading.Thread):
                         else:
                             self.crn_manager.routing_request_cnt += 1
                             self.crn_manager.get_best_links()
-                            req = routing_request_msg(self.crn_manager.routing_request_cnt, self.crn_manager.best_links)
+                            path = [self.crn_manager.id]
+                            req = routing_request_msg(self.crn_manager.routing_request_cnt, path, self.crn_manager.best_links)
                             req_string = cPickle.dumps(req)
                             self.crn_manager.broadcast(req_string)
                             

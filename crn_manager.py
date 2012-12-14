@@ -51,6 +51,7 @@ class crn_manager:
         self.routing_request_cnt = 0
         self.routing_reply_cnt = 0
         self.routing_error_cnt = 0
+        self.routing_request_counter  = 0
         
         # timer
         self.sense_timer = 0
@@ -86,7 +87,7 @@ class crn_manager:
         self.active_time_table = []
         for i in range(len(meta_data.channels)) :
             self.active_time_table.append(0)
-        
+            
     
     def broadcast(self, ctrl_string):
         str = ctrl_string
@@ -161,19 +162,15 @@ class crn_manager:
     def process(self):
         self.process_con.acquire()
         print "process at virtual time: %.3f" % (self.get_virtual_time())
-        
-        
-        
+
         # update route, not for destination
         if self.id != meta_data.destination_id:
             self.update_routing()
         
-
         # let main thread run
         if self.error_flag == 0:
             self.process_flag = 1
             self.process_con.notify()
-        
         
         # adjust time and set timer for next round
         time_gap = self.get_virtual_time() - self.process_cnt * meta_data.time_interval
@@ -213,6 +210,7 @@ class crn_manager:
             else:
                 self.routing_request_cnt += 1
                 self.get_best_links()
+                path = [self.crn_manager.id]
                 req = routing_request_msg(self.routing_request_cnt, self.best_links)
                 req_string = cPickle.dumps(req)
                 self.broadcast(req_string)
