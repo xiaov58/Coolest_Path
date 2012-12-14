@@ -33,7 +33,7 @@ sock_buffer_size = 1000
 # Topology  (first item is null to make it easy to count)
 source_id = 1
 destination_id = 6
-neighbour_table =         [[], [2, 4], [1, 3 , 5] , [2, 6] , [1, 5] , [2, 4, 6] , [3.5]] 
+neighbour_table =         [[], [2, 4], [1, 3 , 5] , [2, 6] , [1, 5] , [2, 4, 6] , [3, 5]] 
 ip_table =                      ['' , '11.0.0.1'  , '11.0.0.2' , '11.0.0.3', '11.0.0.4', '11.0.0.5', '11.0.0.6'] 
 
 
