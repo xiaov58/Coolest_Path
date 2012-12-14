@@ -57,8 +57,8 @@ class mac_layer:
             self.send()
                 
         if self.crn_manager.status == 1 and len(self.buffer) == 0:
-#            for i in range(10):
-#                self.send_ctrl_msg_over_usrp()
+            for i in range(10):
+                self.send_ctrl_msg_over_usrp()
             # air time
             time.sleep(meta_data.air_time)
             

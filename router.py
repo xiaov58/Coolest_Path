@@ -44,7 +44,9 @@ class router:
                 if self.crn_manager.id == pkt_receiver_id:
                     print "received! pktno: %d, from %d to %d" % (pktno, pkt_sender_id, pkt_receiver_id)
                     self.buffer.append([pktno, self.crn_manager.id, self.crn_manager.next_hop, data])
-                else: 
+                elif pktno == 0:
+                    print "get free"
+                else:
                     print "overhear! pktno: %d, from %d to %d" % (pktno, pkt_sender_id, pkt_receiver_id)
             else:
                 (pktno, ) = struct.unpack('!H', payload[0:2])
