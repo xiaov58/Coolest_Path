@@ -23,7 +23,6 @@ class mac_layer:
                             struct.pack('!H', pkt_sender_id & 0xffff) + \
                             struct.pack('!H', pkt_receiver_id & 0xffff) + \
                             data
-        print len(payload)
         return payload
     
     def send(self):
@@ -35,7 +34,7 @@ class mac_layer:
             time.sleep(delay_range * random.random())
             if delay_range < 0.050:
                 delay_range = delay_range * 2       # exponential back-off range
-                
+        self.crn_manager.role.tb.txpath.send_pkt(payload, False)
         print "send! pktno %d; channel %d; buffer: %d" % (self.pktno, self.crn_manager.best_channel, len(self.buffer))
         
 
@@ -59,12 +58,12 @@ class mac_layer:
                 
         if self.crn_manager.status == 1 and len(self.buffer) == 0:
             #self.air_free()
-#            self.crn_manager.air_con.acquire()
-#            # wait at most 1s, if receive the reply for air free msg, wake up immediately
-#            
-#            self.crn_manager.air_con.wait(meta_data.air_time)
-#            print "air_free wake"
-#            self.crn_manager.air_con.release()
+            self.crn_manager.air_con.acquire()
+            # wait at most 1s, if receive the reply for air free msg, wake up immediately
+            
+            self.crn_manager.air_con.wait(meta_data.air_time)
+            print "air_free wake"
+            self.crn_manager.air_con.release()
             
             # if alreay early free do not need to free over ccc
             if self.crn_manager.early_free_flag == 0:
