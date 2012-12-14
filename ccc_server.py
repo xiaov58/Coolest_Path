@@ -153,6 +153,8 @@ class ccc_server(threading.Thread):
                         if self.crn_manager.id != meta_data.source_id:
                             self.crn_manager.broadcast(str)
                         else:
+                            self.crn_manager.routing_request_cnt += 1
+                            self.crn_manager.get_best_links()
                             req = routing_request_msg(self.crn_manager.routing_request_cnt, self.crn_manager.best_links)
                             req_string = cPickle.dumps(req)
                             self.crn_manager.broadcast(req_string)
