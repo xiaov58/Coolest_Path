@@ -5,6 +5,7 @@ carrier_thredshold = -60
 bandwidth = 0.2       # MHz
 channels = [0, 2.516, 2.514, 2.512]
 
+
 # other experiment parameter
 init_channel = 1
 round = 20               
