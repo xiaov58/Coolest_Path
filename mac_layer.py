@@ -59,8 +59,9 @@ class mac_layer:
             self.air_free()
             self.crn_manager.air_con.acquire()
             # wait at most 1s, if receive the reply for air free msg, wake up immediately
-            print "air_free wait"
+            
             self.crn_manager.air_con.wait(meta_data.air_time)
+            print "air_free wake"
             self.crn_manager.air_con.release()
             
             # if alreay early free do not need to free over ccc
