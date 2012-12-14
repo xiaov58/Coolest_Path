@@ -104,6 +104,7 @@ class ccc_server(threading.Thread):
                     self.crn_manager.get_best_links()
                     links = self.merge(ctrl_msg.links, self.crn_manager.best_links)
                     if self.crn_manager.id != meta_data.destination_id:
+                        print ctrl_msg.path
                         path = ctrl_msg.path.append(self.crn_manager.id)
 
                         req = routing_request_msg(ctrl_msg.routing_request_cnt, path, links)
@@ -112,7 +113,7 @@ class ccc_server(threading.Thread):
                         
                         for k in self.socks_table.keys():
                             if k not in path:
-                                self.socks_table[k].send(req_string)
+                                self.crn_manager.socks_table[k].send(req_string)
                     else:
                         print links
                         
