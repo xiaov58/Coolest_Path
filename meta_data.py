@@ -14,7 +14,7 @@ min_time = 0.001            # second
 yeild_forward_time = 0.01 # second
 
 
-batch_size = 50
+batch_size = 100
 backoff_min = 0.001
 backoff_max = 0.050
 INF = 100
