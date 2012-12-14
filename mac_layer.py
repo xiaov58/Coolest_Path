@@ -18,6 +18,7 @@ class mac_layer:
         pkt_sender_id =  self.buffer[0][1]
         pkt_receiver_id =  self.buffer[0][2]
         data = self.buffer[0][3]
+        del self.buffer[0]
         payload =    struct.pack('!H', self.pktno & 0xffff) +\
                             struct.pack('!H', pkt_sender_id & 0xffff) + \
                             struct.pack('!H', pkt_receiver_id & 0xffff) + \
@@ -36,13 +37,13 @@ class mac_layer:
                 
         self.crn_manager.role.tb.txpath.send_pkt(payload, False)
         print "send! pktno %d; channel %d; buffer: %d" % (self.pktno, self.crn_manager.best_channel, len(self.buffer))
-        del self.buffer[0]
+        
 
     def run(self):            
         if self.crn_manager.status == 0 and len(self.buffer) != 0:
             self.crn_manager.status =1
             # reserve receiver
-            print "send rts"
+            #print "send rts"
             rts = rts_msg(self.crn_manager.id, self.crn_manager.best_channel)
             rts_string = cPickle.dumps(rts)
             self.crn_manager.socks_table[self.crn_manager.route[self.crn_manager.route.index(self.crn_manager.id) + 1]].send(rts_string)
@@ -51,22 +52,13 @@ class mac_layer:
             self.crn_manager.rts_ack_con.wait()
             self.crn_manager.role.tb.set_freq(meta_data.channels[self.crn_manager.best_channel])
             self.crn_manager.rts_ack_con.release()
-            
-#            if self.crn_manager.rts_ack_flag == 1:
-#                print "ready to send at %.3f" % self.crn_manager.get_virtual_time()
-#                print self.crn_manager.route
-#                print self.crn_manager.best_channel
-#                
-#            else:
-#                self.crn_manager.status =0
-                
 
         if self.crn_manager.status ==1 and len(self.buffer) != 0:
             self.send()
                 
         if self.crn_manager.status == 1 and len(self.buffer) == 0:
             # air time
-            #time.sleep(meta_data.air_time)
+            time.sleep(meta_data.air_time)
             
             # free receiver
             cts = cts_msg()
