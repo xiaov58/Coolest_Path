@@ -34,7 +34,6 @@ class crn_manager:
         self.time_sync_con = threading.Condition()  
         self.process_con = threading.Condition()  
         self.rts_ack_con = threading.Condition()  
-        self.routing_con = threading.Condition()
         self.air_con = threading.Condition()
         
         # flags
@@ -166,16 +165,17 @@ class crn_manager:
         self.process_con.acquire()
         print "process at virtual time: %.3f" % (self.get_virtual_time())
         
-
+        
+        
         # update route, not for destination
         if self.id != meta_data.destination_id:
             self.update_routing()
         
 
         # let main thread run
-        #if self.error_flag == 0:
-        self.process_flag = 1
-        self.process_con.notify()
+        if self.error_flag == 0:
+            self.process_flag = 1
+            self.process_con.notify()
         
         
         # adjust time and set timer for next round
@@ -212,15 +212,13 @@ class crn_manager:
             self.get_best_links()
             del self.role.buffer[:]
             self.route = []
+            self.process_flag = 0
             # update route
             if self.id == meta_data.source_id:
                 self.routing_error_cnt += 1
                 self.init_broadcast_request()
             else:
                 self.init_broadcast_error()
-            self.routing_con.acquire()
-            self.routing_con.wait()
-            self.routing_con.release()
 
         
     def get_best_links(self):
