@@ -129,6 +129,7 @@ class ccc_server(threading.Thread):
                 # routing reply
                 if ctrl_msg.type == 7:    
                     if self.crn_manager.routing_reply_cnt < ctrl_msg.routing_reply_cnt:
+                        # routing reply
                         self.crn_manager.routing_reply_cnt += 1
                         self.crn_manager.route = ctrl_msg.route
                         print self.crn_manager.route
