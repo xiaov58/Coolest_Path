@@ -42,13 +42,15 @@ class mac_layer:
         if self.crn_manager.status == 0 and len(self.buffer) != 0:
             self.crn_manager.status =1
             # reserve receiver
-            #print "send rts"
             rts = rts_msg(self.crn_manager.id, self.crn_manager.best_channel)
             rts_string = cPickle.dumps(rts)
             self.crn_manager.socks_table[self.crn_manager.route[self.crn_manager.route.index(self.crn_manager.id) + 1]].send(rts_string)
             # wait for reply
             self.crn_manager.rts_ack_con.acquire()
+            # release process_con so that process timer can go through
+            self.crn_manager.process_con.release()
             self.crn_manager.rts_ack_con.wait()
+            self.crn_manager.process_con.acquire()
             print "ready to send at channel %d at %.3f" % (self.crn_manager.best_channel, self.crn_manager.get_virtual_time())
             self.crn_manager.role.tb.set_freq(meta_data.channels[self.crn_manager.best_channel])
             self.crn_manager.rts_ack_con.release()
