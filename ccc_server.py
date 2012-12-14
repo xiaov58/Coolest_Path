@@ -122,14 +122,14 @@ class ccc_server(threading.Thread):
                             print route
                            
                             #self.crn_manager.routing_reply_cnt += 1
-                            rep = routing_reply_msg(self.crn_manager.routing_reply_cnt, route)
+                            rep = routing_reply_msg(self.crn_manager.routing_reply_cnt + 1, route)
                             rep_string = cPickle.dumps(rep)
                             self.crn_manager.broadcast(rep_string)
                                     
                 # routing reply
                 if ctrl_msg.type == 7:    
+                    print "routing reply"
                     if self.crn_manager.routing_reply_cnt < ctrl_msg.routing_reply_cnt:
-                        print "routing reply"
                         self.crn_manager.routing_reply_cnt += 1
                         self.crn_manager.route = ctrl_msg.route
                         print self.crn_manager.route
