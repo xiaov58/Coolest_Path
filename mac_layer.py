@@ -57,6 +57,8 @@ class mac_layer:
             self.send()
                 
         if self.crn_manager.status == 1 and len(self.buffer) == 0:
+#            for i in range(10):
+#                self.send_ctrl_msg_over_usrp()
             # air time
             time.sleep(meta_data.air_time)
             
@@ -76,10 +78,25 @@ class mac_layer:
                 self.crn_manager.role.tb.set_freq(meta_data.channels[self.crn_manager.rts_register_channel])
                 self.crn_manager.socks_table[self.crn_manager.rts_register_id].send(rts_ack_string)
             else:
-                
                 # give the next_hop highter priority to forward
                 time.sleep(meta_data.yeild_forward_time)
                 self.crn_manager.status = 0
+        
+    # special method to send free msg
+    def send_ctrl_msg_over_usrp(self):
+        payload =    struct.pack('!H', 0 & 0xffff) +\
+                    struct.pack('!H', 0 & 0xffff) + \
+                    struct.pack('!H', 0 & 0xffff) 
+        # carrier sense
+        delay_range = meta_data.min_time
+        while self.crn_manager.role.tb.carrier_sense():
+            sys.stderr.write('B')
+            time.sleep(delay_range * random.random())
+            if delay_range < 0.050:
+                delay_range = delay_range * 2       # exponential back-off range
+                
+        self.crn_manager.role.tb.txpath.send_pkt(payload, False)
+        print "Give free" % (self.pktno, self.crn_manager.best_channel, len(self.buffer))
 
             
 

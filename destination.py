@@ -45,12 +45,12 @@ class destination:
         return route
 
     def rx_callback(self, ok, payload):
-        if self.crn_manager.status == 2 and len(payload) > 6:
-            (pktno, ) = struct.unpack('!H', payload[0:2])
-            (pkt_sender_id, ) = struct.unpack('!H', payload[2:4])
-            (pkt_receiver_id, ) = struct.unpack('!H', payload[4:6])
-            data = payload[6:]
+        if self.crn_manager.status == 2:
             if ok:
+                (pktno, ) = struct.unpack('!H', payload[0:2])
+                (pkt_sender_id, ) = struct.unpack('!H', payload[2:4])
+                (pkt_receiver_id, ) = struct.unpack('!H', payload[4:6])
+                data = payload[6:]
                 if self.crn_manager.id == pkt_receiver_id:
                     print "received! pktno: %d, from %d to %d" % (pktno, pkt_sender_id, pkt_receiver_id)
                     self.received_cnt += 1
