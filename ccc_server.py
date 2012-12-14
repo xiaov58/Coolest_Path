@@ -51,7 +51,7 @@ class ccc_server(threading.Thread):
                         self.crn_manager.broadcast(str)
                         self.crn_manager.time_sync_con.release()
                         
-                # channel utilazation info
+                # sensing result
                 if ctrl_msg.type == 2:
                     #update link temprature table
                     for i in meta_data.neighbour_table[self.crn_manager.id]:
