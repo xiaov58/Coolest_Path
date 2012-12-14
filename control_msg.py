@@ -19,9 +19,8 @@ class rts_msg:
         self.channel_id = channel_id
 
 class rts_ack_msg:
-    def __init__(self, ack):
+    def __init__(self):
         self.type = 4
-        self.ack = ack
 
 class cts_msg:
     def __init__(self):

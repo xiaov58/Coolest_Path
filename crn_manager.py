@@ -38,7 +38,9 @@ class crn_manager:
         # flags
         self.time_sync_flag = 0
         self.process_flag = 0
-        self.rts_ack_flag = 0
+        self.rts_register_flag = 0
+        self.rts_register_id = 0
+        self.rts_register_channel = 0
         self.error_flag = 0
         
         # counts

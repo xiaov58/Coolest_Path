@@ -18,7 +18,6 @@ class mac_layer:
         pkt_sender_id =  self.buffer[0][1]
         pkt_receiver_id =  self.buffer[0][2]
         data = self.buffer[0][3]
-        del self.buffer[0]
         payload =    struct.pack('!H', self.pktno & 0xffff) +\
                             struct.pack('!H', pkt_sender_id & 0xffff) + \
                             struct.pack('!H', pkt_receiver_id & 0xffff) + \
@@ -37,6 +36,7 @@ class mac_layer:
                 
         self.crn_manager.role.tb.txpath.send_pkt(payload, False)
         print "send! pktno %d; channel %d; buffer: %d" % (self.pktno, self.crn_manager.best_channel, len(self.buffer))
+        del self.buffer[0]
 
     def run(self):            
         if self.crn_manager.status == 0 and len(self.buffer) != 0:
@@ -66,7 +66,7 @@ class mac_layer:
                 
         if self.crn_manager.status == 1 and len(self.buffer) == 0:
             # air time
-            time.sleep(meta_data.air_time)
+            #time.sleep(meta_data.air_time)
             
             # free receiver
             cts = cts_msg()
@@ -74,11 +74,21 @@ class mac_layer:
             print "Give free at %.3f" % self.crn_manager.get_virtual_time()
             self.crn_manager.socks_table[self.crn_manager.route[self.crn_manager.route.index(self.crn_manager.id) + 1]].send(cts_string)
 
-            # give the next_hop highter priority to forward
-            time.sleep(meta_data.yeild_forward_time)
             
-            self.crn_manager.status = 0
-            self.crn_manager.rts_ack_flag = 0
+            if self.crn_manager.rts_ack_flag == 1:
+                # direct receive
+                rts_ack = rts_ack_msg()
+                rts_ack_string = cPickle.dumps(rts_ack)
+                self.crn_manager.rts_ack_flag = 0
+                self.crn_manager.status = 2
+                self.crn_manager.role.tb.set_freq(meta_data.channels[self.crn_manager.rts_register_channel])
+                self.crn_manager.socks_table[self.crn_manager.rts_register_id].send(rts_ack_string)
+            else:
+                
+                # give the next_hop highter priority to forward
+                time.sleep(meta_data.yeild_forward_time)
+            
+                self.crn_manager.status = 0
 
             
 

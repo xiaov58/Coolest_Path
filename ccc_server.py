@@ -63,24 +63,31 @@ class ccc_server(threading.Thread):
                                 
                 # rts
                 if ctrl_msg.type == 3:
+                    # register
+                    self.crn_manager.rts_ack_flag = 1
+                    self.crn_manager.rts_register_id = ctrl_msg.channel_id
+                    
                     if self.crn_manager.status == 0:
                         self.crn_manager.status = 2
                         self.crn_manager.role.tb.set_freq(meta_data.channels[ctrl_msg.channel_id])
                         print "ready to receive at channel %d at %.3f" % (ctrl_msg.channel_id, self.crn_manager.get_virtual_time())
-                        rts_ack = rts_ack_msg(1)
+                        
+                        rts_ack = rts_ack_msg()
                         rts_ack_string = cPickle.dumps(rts_ack)
+                        self.crn_manager.rts_ack_flag = 0
                         self.crn_manager.socks_table[ctrl_msg.sender_id].send(rts_ack_string)
-                    else: 
-                        rts_ack = rts_ack_msg(0)
-                        rts_ack_string = cPickle.dumps(rts_ack)
-                        self.crn_manager.socks_table[ctrl_msg.sender_id].send(rts_ack_string)
+                    else:
+                        self.crn_manager.rts_ack_flag = 1
+                        self.crn_manager.rts_register_id = ctrl_msg.sender_id
+                        self.crn_manager.rts_register_channel = ctrl_msg.channel_id
+                        
+                    #  reply later when buffer become empty
             
                 # rts ack
                 if ctrl_msg.type == 4:
-                    if ctrl_msg.ack == 1:
-                        self.crn_manager.rts_ack_con.acquire()
-                        self.crn_manager.rts_ack_con.notify()
-                        self.crn_manager.rts_ack_con.release()
+                    self.crn_manager.rts_ack_con.acquire()
+                    self.crn_manager.rts_ack_con.notify()
+                    self.crn_manager.rts_ack_con.release()
                     
                 # free
                 if ctrl_msg.type == 5:              
