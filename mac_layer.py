@@ -48,9 +48,7 @@ class mac_layer:
             # wait for reply
             self.crn_manager.rts_ack_con.acquire()
             # release process_con so that process timer can go through
-            self.crn_manager.process_con.release()
             self.crn_manager.rts_ack_con.wait()
-            self.crn_manager.process_con.acquire()
             print "ready to send at channel %d at %.3f" % (self.crn_manager.best_channel, self.crn_manager.get_virtual_time())
             self.crn_manager.role.tb.set_freq(meta_data.channels[self.crn_manager.best_channel])
             self.crn_manager.rts_ack_con.release()
@@ -68,9 +66,9 @@ class mac_layer:
             
             # if alreay early free do not need to free over ccc
             if self.crn_manager.early_free_flag == 0:
-                free = free_msg()
+                free = ccc_free_msg(self.crn_manager.id)
                 free_string = cPickle.dumps(free)
-                print "ccc free at %.3f" % self.crn_manager.get_virtual_time()
+                print "ccc free %d at %.3f" % (self.crn_manager.next_hop, self.crn_manager.get_virtual_time())
                 self.crn_manager.socks_table[self.crn_manager.route[self.crn_manager.route.index(self.crn_manager.id) + 1]].send(free_string)
             
             if self.crn_manager.rts_register_flag == 1:
@@ -100,6 +98,6 @@ class mac_layer:
                 delay_range = delay_range * 2       # exponential back-off range
                 
         self.crn_manager.role.tb.txpath.send_pkt(payload, False)
-        print "air free at %.3f" % self.crn_manager.get_virtual_time() 
+        print "air free %d at %.3f" % (self.crn_manager.next_hop, self.crn_manager.get_virtual_time())
             
             

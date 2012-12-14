@@ -119,12 +119,8 @@ class crn_manager:
         if self.sense_cnt == meta_data.round:
             self.exit()
             
-        # block process thread
+        # block process thread before process timer unblock it
         self.process_flag = 0
-    
-        # yeild so that process thread can run and wait asap
-        time.sleep(meta_data.min_time)
-
         self.pseudo_check()
         
         # adjust time and set timer for next round

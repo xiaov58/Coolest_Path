@@ -45,7 +45,7 @@ class router:
                 data = payload[6:]
                 if self.crn_manager.id == pkt_receiver_id:
                     if pktno == 0:
-                        print "get air free at %.3f" % self.crn_manager.get_virtual_time()
+                        print "get air free from %d at %.3f" % (pkt_sender_id, self.crn_manager.get_virtual_time())
                         self.crn_manager.status = 0
                         # send air free reply
                         afr = air_free_reply()

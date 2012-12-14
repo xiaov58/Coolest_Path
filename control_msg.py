@@ -22,9 +22,10 @@ class rts_ack_msg:
     def __init__(self):
         self.type = 4
         
-class free_msg:
-    def __init__(self):
+class ccc_free_msg:
+    def __init__(self, sender_id):
         self.type = 5
+        self.sender_id = sender_id
         
 class routing_request_msg:
     def __init__(self, routing_request_cnt, links):
