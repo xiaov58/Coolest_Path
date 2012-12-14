@@ -42,7 +42,6 @@ class ccc_server(threading.Thread):
             else:
                 print 
                 ctrl_msg = cPickle.loads(str)
-                print ctrl_msg.type
                 # time sync signal
                 if ctrl_msg.type == 1:
                     #ignore if time_sync_flag is already 1
