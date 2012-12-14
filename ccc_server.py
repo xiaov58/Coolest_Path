@@ -120,7 +120,7 @@ class ccc_server(threading.Thread):
                             # run dijkstra
                             route = self.crn_manager.role.calculate_path()
                            
-                            self.crn_manager.routing_reply_cnt += 1
+                            #self.crn_manager.routing_reply_cnt += 1
                             del self.crn_manager.role.links[:]
                             rep = routing_reply_msg(self.crn_manager.routing_reply_cnt, route)
                             rep_string = cPickle.dumps(rep)

@@ -32,9 +32,8 @@ class source:
                     
             self.crn_manager.process_con.acquire()
             if self.crn_manager.process_flag == 0:
-                print "Main wait"
                 self.crn_manager.process_con.wait()
-                print "Main wake"
+                print "process_con wake"
             self.crn_manager.process_con.release()
             
             if self.crn_manager.status != 2:
