@@ -126,11 +126,9 @@ class ccc_server(threading.Thread):
                         self.crn_manager.route = ctrl_msg.route
                         print self.crn_manager.route
                         
-                        print self.crn_manager.time_sync_con
+
                         print self.crn_manager.process_con
-                        print self.crn_manager.rts_ack_con
-                        print self.crn_manager.air_con
-                        print self.crn_manager.buffer_con
+
                         
     
                         if ctrl_msg.route != [] and self.crn_manager.id in self.crn_manager.route:
@@ -138,9 +136,12 @@ class ccc_server(threading.Thread):
                                 print "try to wake from route error"
                                 self.crn_manager.set_best_channel()
                                 self.crn_manager.process_con.acquire()
+                                print self.crn_manager.process_con
                                 self.crn_manager.process_flag = 1
                                 self.crn_manager.process_con.notifyAll()
+                                print self.crn_manager.process_con
                                 self.crn_manager.process_con.release()
+                                print self.crn_manager.process_con
                         self.crn_manager.broadcast(str)
             
                 # error
