@@ -73,7 +73,7 @@ class mac_layer:
             # reserve receiver
             rts = rts_msg(self.crn_manager.id, self.crn_manager.best_channel)
             rts_string = cPickle.dumps(rts)
-            self.crn_manager.socks_table[self.crn_manager.route[self.crn_manager.next_hop]].send(rts_string)
+            self.crn_manager.socks_table[self.crn_manager.next_hop].send(rts_string)
             # wait for reply
             self.crn_manager.rts_ack_con.acquire()
             # release process_con so that process timer can go through
@@ -98,7 +98,7 @@ class mac_layer:
                 free = ccc_free_msg(self.crn_manager.id)
                 free_string = cPickle.dumps(free)
                 print "ccc free %d at %.3f" % (self.crn_manager.next_hop, self.crn_manager.get_virtual_time())
-                self.crn_manager.socks_table[self.crn_manager.route[self.crn_manager.next_hop]].send(free_string)
+                self.crn_manager.socks_table[self.crn_manager.next_hop].send(free_string)
             
             if self.crn_manager.rts_register_flag == 1:
                 # direct receive
