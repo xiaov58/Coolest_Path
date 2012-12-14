@@ -98,6 +98,7 @@ class ccc_server(threading.Thread):
                 if ctrl_msg.type == 6:    
                     #ignore if already broadcasted error
                     if self.crn_manager.routing_request_cnt < ctrl_msg.routing_request_cnt:
+                        print "RECEIVE REQUST"
                         # request arrives earlier than error
                         if ctrl_msg.routing_request_cnt > self.crn_manager.routing_error_cnt:
                             # make up the task that need to be done when receive error msg, then block error msg
@@ -122,6 +123,7 @@ class ccc_server(threading.Thread):
                                 route = self.crn_manager.role.calculate_path()
                                
                                 self.crn_manager.routing_reply_cnt += 1
+                                del self.crn_manager.role.links[:]
                                 rep = routing_reply_msg(self.crn_manager.routing_reply_cnt, route)
                                 rep_string = cPickle.dumps(rep)
                                 self.crn_manager.broadcast(rep_string)
