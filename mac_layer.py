@@ -68,6 +68,9 @@ class mac_layer:
         return value
 
     def tx_run(self):            
+        if self.crn_manager.status == 0 and len(self.buffer) == 0:
+            print "wait fill buffer"
+        
         if self.crn_manager.status == 0 and len(self.buffer) != 0:
             self.crn_manager.status =1
             # reserve receiver
