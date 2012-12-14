@@ -110,7 +110,7 @@ class ccc_server(threading.Thread):
                         req_string = cPickle.dumps(req)
                         
                         for k in self.crn_manager.socks_table.keys():
-                            if k not in path:
+                            if k not in ctrl_msg.path:
                                 self.crn_manager.socks_table[k].send(req_string)
                     else:
                         print links
