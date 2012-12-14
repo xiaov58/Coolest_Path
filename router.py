@@ -34,6 +34,7 @@ class router:
             if self.crn_manager.status != 2:
                 self.mac_layer_.tx_run()
             
+            time.sleep(0.1)
             time.sleep(meta_data.min_time)
 
         
