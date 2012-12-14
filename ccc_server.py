@@ -108,9 +108,8 @@ class ccc_server(threading.Thread):
 
                         req = routing_request_msg(ctrl_msg.routing_request_cnt, ctrl_msg.path, links)
                         req_string = cPickle.dumps(req)
-                        self.crn_manager.broadcast(req_string)
                         
-                        for k in self.socks_table.keys():
+                        for k in self.crn_manager.socks_table.keys():
                             if k not in path:
                                 self.crn_manager.socks_table[k].send(req_string)
                     else:
