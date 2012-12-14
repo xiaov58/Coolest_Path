@@ -44,15 +44,16 @@ class router:
                 (pkt_receiver_id, ) = struct.unpack('!H', payload[4:6])
                 data = payload[6:]
                 if self.crn_manager.id == pkt_receiver_id:
-                    print "received! pktno: %d, from %d to %d" % (pktno, pkt_sender_id, pkt_receiver_id)
-                    self.buffer.append([pktno, self.crn_manager.id, self.crn_manager.next_hop, data])
-                elif pktno == 0:
-                    print "get air free at %.3f" % self.crn_manager.get_virtual_time()
-                    self.crn_manager.status = 0
-                    # send air free reply
-                    afr = air_free_reply()
-                    afr_string = cPickle.dumps(afr)
-                    self.crn_manager.socks_table[pkt_sender_id].send(afr_string)
+                    if pktno == 0:
+                        print "get air free at %.3f" % self.crn_manager.get_virtual_time()
+                        self.crn_manager.status = 0
+                        # send air free reply
+                        afr = air_free_reply()
+                        afr_string = cPickle.dumps(afr)
+                        self.crn_manager.socks_table[pkt_sender_id].send(afr_string)
+                    else:
+                        print "received! pktno: %d, from %d to %d" % (pktno, pkt_sender_id, pkt_receiver_id)
+                        self.buffer.append([pktno, self.crn_manager.id, self.crn_manager.next_hop, data])
                 else:
                     print "overhear! pktno: %d, from %d to %d" % (pktno, pkt_sender_id, pkt_receiver_id)
             else:
