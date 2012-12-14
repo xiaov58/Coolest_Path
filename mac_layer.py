@@ -75,11 +75,11 @@ class mac_layer:
             self.crn_manager.socks_table[self.crn_manager.route[self.crn_manager.route.index(self.crn_manager.id) + 1]].send(cts_string)
 
             
-            if self.crn_manager.rts_ack_flag == 1:
+            if self.crn_manager.rts_register_flag == 1:
                 # direct receive
                 rts_ack = rts_ack_msg()
                 rts_ack_string = cPickle.dumps(rts_ack)
-                self.crn_manager.rts_ack_flag = 0
+                self.crn_manager.rts_register_flag = 0
                 self.crn_manager.status = 2
                 self.crn_manager.role.tb.set_freq(meta_data.channels[self.crn_manager.rts_register_channel])
                 self.crn_manager.socks_table[self.crn_manager.rts_register_id].send(rts_ack_string)
@@ -87,7 +87,6 @@ class mac_layer:
                 
                 # give the next_hop highter priority to forward
                 time.sleep(meta_data.yeild_forward_time)
-            
                 self.crn_manager.status = 0
 
             

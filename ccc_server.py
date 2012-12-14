@@ -63,9 +63,6 @@ class ccc_server(threading.Thread):
                                 
                 # rts
                 if ctrl_msg.type == 3:
-                    # register
-                    self.crn_manager.rts_ack_flag = 1
-                    self.crn_manager.rts_register_id = ctrl_msg.channel_id
                     
                     if self.crn_manager.status == 0:
                         self.crn_manager.status = 2
@@ -74,13 +71,11 @@ class ccc_server(threading.Thread):
                         
                         rts_ack = rts_ack_msg()
                         rts_ack_string = cPickle.dumps(rts_ack)
-                        self.crn_manager.rts_ack_flag = 0
                         self.crn_manager.socks_table[ctrl_msg.sender_id].send(rts_ack_string)
                     else:
-                        self.crn_manager.rts_ack_flag = 1
+                        self.crn_manager.rts_register_flag = 1
                         self.crn_manager.rts_register_id = ctrl_msg.sender_id
                         self.crn_manager.rts_register_channel = ctrl_msg.channel_id
-                        
                     #  reply later when buffer become empty
             
                 # rts ack
