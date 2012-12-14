@@ -89,7 +89,7 @@ class mac_layer:
     def air_free(self):
         payload =    struct.pack('!H', 0 & 0xffff) +\
                     struct.pack('!H', self.crn_manager.id & 0xffff) + \
-                    struct.pack('!H', self.crn_manager.next_hop & 0xffff) 
+                    struct.pack('!H', 0 & 0xffff) 
         # carrier sense
         delay_range = meta_data.min_time
         while self.crn_manager.role.tb.carrier_sense():
