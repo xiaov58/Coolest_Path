@@ -46,7 +46,7 @@ class destination:
             self.log_mask.append(0)
         else: 
             self.log_mask.append(1)
-        self.crn_manager.route = route
+        #self.crn_manager.route = route
         return route
 
     def rx_callback(self, ok, payload):

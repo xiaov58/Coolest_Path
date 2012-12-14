@@ -122,7 +122,6 @@ class ccc_server(threading.Thread):
                             print route
                            
                             #self.crn_manager.routing_reply_cnt += 1
-                            del self.crn_manager.role.links[:]
                             rep = routing_reply_msg(self.crn_manager.routing_reply_cnt, route)
                             rep_string = cPickle.dumps(rep)
                             self.crn_manager.broadcast(rep_string)
