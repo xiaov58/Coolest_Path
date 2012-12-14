@@ -132,6 +132,7 @@ class ccc_server(threading.Thread):
                 if ctrl_msg.type == 8:    
                     #ignore if already broadcasted error
                     if self.crn_manager.routing_error_cnt < ctrl_msg.routing_error_cnt:
+                        print "error from other nodes"
                         self.crn_manager.routing_error_cnt += 1
                         self.crn_manager.process_con.acquire()
                         # clear buffer
@@ -142,9 +143,6 @@ class ccc_server(threading.Thread):
                             self.crn_manager.init_broadcast_request()
                         else:
                             self.crn_manager.broadcast(str)
-                        self.crn_manager.routing_con.acquire()
-                        self.crn_manager.routing_con.wait()
-                        self.crn_manager.routing_con.release()
                         self.crn_manager.process_con.release()
                 
                 # air_free reply
