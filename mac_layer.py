@@ -59,7 +59,6 @@ class mac_layer:
                             value = 1
                         elif self.crn_manager.id != meta_data.source_id:
                             self.buffer.append([pktno, self.crn_manager.id, self.crn_manager.next_hop, data])
-                                
                 else:
                     print "overhear! pktno: %d, from %d to %d" % (pktno, pkt_sender_id, pkt_receiver_id)
             else:
