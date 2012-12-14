@@ -216,7 +216,6 @@ class crn_manager:
                 req = routing_request_msg(self.routing_request_cnt, self.best_links)
                 req_string = cPickle.dumps(req)
                 self.broadcast(req_string)
-
         
     def get_best_links(self):
         self.best_links = []
