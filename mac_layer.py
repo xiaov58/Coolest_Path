@@ -98,6 +98,6 @@ class mac_layer:
                 delay_range = delay_range * 2       # exponential back-off range
                 
         self.crn_manager.role.tb.txpath.send_pkt(payload, False)
-        print "air free" 
+        print "air free at %.3f" % self.crn_manager.get_virtual_time() 
             
             

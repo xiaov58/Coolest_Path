@@ -86,7 +86,7 @@ class ccc_server(threading.Thread):
                     
                 # free over ccc
                 if ctrl_msg.type == 5:              
-                    print "free at %.3f" % self.crn_manager.get_virtual_time()
+                    print "get ccc free at %.3f" % self.crn_manager.get_virtual_time()
                     self.crn_manager.status = 0
 
                 # request

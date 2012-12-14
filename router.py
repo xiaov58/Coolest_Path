@@ -46,7 +46,7 @@ class router:
                     print "received! pktno: %d, from %d to %d" % (pktno, pkt_sender_id, pkt_receiver_id)
                     self.buffer.append([pktno, self.crn_manager.id, self.crn_manager.next_hop, data])
                 elif pktno == 0:
-                    print "free at %.3f" % self.crn_manager.get_virtual_time()
+                    print "get air free at %.3f" % self.crn_manager.get_virtual_time()
                     self.crn_manager.status = 0
                     # send air free reply
                     afr = air_free_reply()
