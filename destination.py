@@ -40,7 +40,7 @@ class destination:
         # clear link list
         del self.crn_manager.role.links[:]
         # check and reply
-        if meta_data.INF in route:
+        if meta_data.INF in result[2]:
             route = []
             self.log_mask.append(0)
         else: 
