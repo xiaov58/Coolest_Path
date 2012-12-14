@@ -133,13 +133,10 @@ class ccc_server(threading.Thread):
     
                         if ctrl_msg.route != [] and self.crn_manager.id in self.crn_manager.route:
                             if self.crn_manager.id != meta_data.destination_id:
-                                print "try to wake from route error"
                                 self.crn_manager.set_best_channel()
                                 self.crn_manager.process_con.acquire()
-                                print self.crn_manager.process_con
                                 self.crn_manager.process_flag = 1
                                 self.crn_manager.process_con.notifyAll()
-                                print self.crn_manager.process_con
                                 self.crn_manager.process_con.release()
                                 print self.crn_manager.process_con
                         self.crn_manager.broadcast(str)
