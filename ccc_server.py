@@ -134,10 +134,10 @@ class ccc_server(threading.Thread):
                     #ignore if already broadcasted error
                     if self.crn_manager.routing_error_cnt < ctrl_msg.routing_error_cnt:
                         self.crn_manager.routing_error_cnt += 1
+                        self.crn_manager.process_flag = 0
                         # clear buffer
                         del self.crn_manager.role.buffer[:]
                         self.crn_manager.route = []
-                        self.crn_manager.process_flag = 0
                         if self.crn_manager.id == meta_data.source_id:
                             self.crn_manager.get_best_links()
                             self.crn_manager.init_broadcast_request()

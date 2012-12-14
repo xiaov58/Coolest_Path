@@ -65,7 +65,7 @@ class mac_layer:
             self.crn_manager.air_con.release()
             
             # if alreay early free do not need to free over ccc
-            if self.crn_manager == 0:
+            if self.crn_manager.early_free_flag == 0:
                 free = free_msg()
                 free_string = cPickle.dumps(free)
                 print "ccc free at %.3f" % self.crn_manager.get_virtual_time()
