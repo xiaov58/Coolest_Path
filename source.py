@@ -20,6 +20,7 @@ class source:
         self.tb = my_top_block(self.rx_callback, self.options)
         self.tb.rxpath.set_carrier_threshold(options.carrier_threshold)
         self.mac_layer_ = mac_layer(self.crn_manager)
+        self.routing_request_cnt = 0
         
     def run(self):
         while 1:       

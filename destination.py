@@ -18,6 +18,7 @@ class destination:
         self.tb = my_top_block(self.rx_callback, self.options)
         self.mac_layer_ = mac_layer(self.crn_manager)
         self.links = []
+        self.routing_request_cnt = 0
         self.routing_request_log = [] 
         self.log_mask = []
         self.link_number = self.get_link_number()

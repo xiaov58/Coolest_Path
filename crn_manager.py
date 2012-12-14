@@ -48,10 +48,8 @@ class crn_manager:
         # counts
         self.sense_cnt = 0
         self.process_cnt = 0
-        self.routing_request_cnt = 0
         self.routing_reply_cnt = 0
         self.routing_error_cnt = 0
-        self.routing_request_counter  = 0
         
         # timer
         self.sense_timer = 0
