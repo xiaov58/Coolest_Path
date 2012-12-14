@@ -182,7 +182,15 @@ class crn_manager:
         self.process_timer.daemon = True
         self.process_timer.start()
         self.process_con.release()
-        
+    
+    def clear(self):
+        self.process_flag = 0
+        # simple way to make main thread sleep, otherwise empty route may cause problem
+        time.sleep(meta_data.yeild_time)
+        del self.role.mac_layer_.buffer[:]
+        self.status = 0
+        self.route = []
+    
     def update_routing(self):
         self.error_flag = 0
         if self.route == []:
@@ -196,9 +204,7 @@ class crn_manager:
             print "routing error"
             # detect routing error, then refuse error  msg from other node
             self.routing_error_cnt += 1
-            self.process_flag = 0
-            del self.role.mac_layer_.buffer[:]
-            self.route = []
+            self.clear()
             
             if self.id != meta_data.source_id:
                 err = routing_error_msg(self.routing_error_cnt)

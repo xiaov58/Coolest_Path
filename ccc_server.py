@@ -103,9 +103,7 @@ class ccc_server(threading.Thread):
                         if ctrl_msg.routing_request_cnt > self.crn_manager.routing_error_cnt:
                             # make up the task that need to be done when receive error msg, then block error msg
                             self.crn_manager.routing_error_cnt += 1
-                            self.crn_manager.process_flag = 0
-                            del self.crn_manager.role.mac_layer_.buffer[:]
-                            self.crn_manager.route = []
+                            self.crn_manager.clear()
                             
                         self.crn_manager.routing_request_cnt += 1
                         self.crn_manager.get_best_links()
@@ -149,9 +147,8 @@ class ccc_server(threading.Thread):
                     #ignore if already broadcasted error
                     if self.crn_manager.routing_error_cnt < ctrl_msg.routing_error_cnt:
                         self.crn_manager.routing_error_cnt += 1
-                        self.crn_manager.process_flag = 0
-                        del self.crn_manager.role.mac_layer_.buffer[:]
-                        self.crn_manager.route = []
+                        self.crn_manager.clear()
+                        
                         if self.crn_manager.id != meta_data.source_id:
                             self.crn_manager.broadcast(str)
                         else:

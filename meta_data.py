@@ -11,7 +11,7 @@ round = 20
 setup_time = 3               # second
 air_time = 1                    # second
 min_time = 0.001            # second
-yeild_forward_time = 0.01 # second
+yeild_time = 0.01 # second
 
 
 batch_size = 50
