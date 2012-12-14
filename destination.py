@@ -62,6 +62,7 @@ class destination:
                     # send air free reply
                     afr = air_free_reply()
                     afr_string = cPickle.dumps(afr)
+                    print pkt_sender_id
                     self.crn_manager.socks_table[pkt_sender_id].send(afr_string)
                 else: 
                     print "overhear! pktno: %d, from %d to %d" % (pktno, pkt_sender_id, pkt_receiver_id)
