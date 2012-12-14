@@ -57,6 +57,7 @@ class destination:
                 else: 
                     print "overhear! pktno: %d, from %d to %d" % (pktno, pkt_sender_id, pkt_receiver_id)
             else:
+                (pktno, ) = struct.unpack('!H', payload[0:2])
                 print "ok: %r \t pktno: %d \t" % (ok, pktno)
             
 
