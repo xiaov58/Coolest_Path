@@ -43,7 +43,7 @@ class router:
             if ok:
                 # save to buffer, change sender_id
                 self.buffer.append([pktno, self.crn_manager.id, self.crn_manager.next_hop, data])
-                print "pktno: %d, from %d to %d" % (pktno, pkt_sender_id, pkt_receiver_id)
+                print "received! pktno: %d, from %d to %d" % (pktno, pkt_sender_id, pkt_receiver_id)
             else:
                 print "ok: %r \t pktno: %d \t" % (ok, pktno)
         
