@@ -59,6 +59,11 @@ class mac_layer:
                             value = 1
                         elif self.crn_manager.id != meta_data.source_id:
                             self.buffer.append([pktno, self.crn_manager.id, self.crn_manager.next_hop, data])
+                            if len(self.buffer) == 1: 
+                                self.crn_manager.buffer_con.acquire()
+                                self.crn_manager.buffer_con.wait()
+                                self.crn_manager.buffer_con.release()
+                                
                 else:
                     print "overhear! pktno: %d, from %d to %d" % (pktno, pkt_sender_id, pkt_receiver_id)
             else:
@@ -69,7 +74,10 @@ class mac_layer:
 
     def tx_run(self):            
         if self.crn_manager.status == 0 and len(self.buffer) == 0:
-            print "wait fill buffer"
+            if self.crn_manager.id != meta_data.source_id:
+                self.crn_manager.buffer_con.acquire()
+                self.crn_manager.buffer_con.wait()
+                self.crn_manager.buffer_con.release()
         
         if self.crn_manager.status == 0 and len(self.buffer) != 0:
             self.crn_manager.status =1
