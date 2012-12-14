@@ -8,7 +8,7 @@ channels = [0, 2.516, 2.514, 2.512]
 
 # other experiment parameter
 init_channel = 1
-round = 20               
+round = 50               
 setup_time = 3               # second
 air_time = 1                    # second
 min_time = 0.001            # second
@@ -32,20 +32,22 @@ sock_buffer_size = 1000
 
 # Topology  (first item is null to make it easy to count)
 source_id = 1
-destination_id = 4
-neighbour_table =         [[], [2], [1, 3] , [2, 4] , [3]] 
-ip_table =                      ['' , '11.0.0.1'  , '11.0.0.2' , '11.0.0.3', '11.0.0.4'] 
+destination_id = 6
+neighbour_table =         [[], [2, 4], [1, 3 , 5] , [2, 6] , [1, 5] , [2, 4, 6] , [3.5]] 
+ip_table =                      ['' , '11.0.0.1'  , '11.0.0.2' , '11.0.0.3', '11.0.0.4', '11.0.0.5', '11.0.0.6'] 
 
 
 # PU info (first item is null to make it easy to count)
-pu_id_table = [[] ,   []  ,   [1]  ,  [2, 3] , [] ]
-pu_channel = [0, 1, 2, 3]
+pu_id_table = [[] ,   []  ,   [1, 2, 3]  ,  [] , [] , [4, 5, 6] , []]
+pu_channel = [0, 1, 2, 3, 1, 2, 3]
 pu_activity = [
                [], 
-               [[19.612, 77.456], [200.171, 300.950]], 
-               [[39.872, 79.847], [200.137, 300.646]], 
-               [[59.377, 78, 032], [200.137, 300.646]], 
-               []
+               [[9.612, 39.456], [59.171, 69.950]], 
+               [[19.872, 49.847], [59.137, 69.646]], 
+               [[29.377, 59, 032], [59.137, 69.646]], 
+               [[39.785, 69.342]], 
+               [[49.612, 69.456], [200.171, 300.950]], 
+               [[59.612, 69.456], [200.171, 300.950]]
                ]
 #pu_activity = [[], [], [], [], []]
 
