@@ -137,15 +137,15 @@ class ccc_server(threading.Thread):
                         # clear buffer
                         del self.crn_manager.role.buffer[:]
                         self.crn_manager.route = []
-                        self.crn_manager.routing_con.acquire()
-                        self.crn_manager.routing_con.wait()
-                        self.crn_manager.routing_con.release()
-                        self.crn_manager.process_con.release()
                         if self.crn_manager.id == meta_data.source_id:
                             self.crn_manager.get_best_links()
                             self.crn_manager.init_broadcast_request()
                         else:
                             self.crn_manager.broadcast(str)
+                        self.crn_manager.routing_con.acquire()
+                        self.crn_manager.routing_con.wait()
+                        self.crn_manager.routing_con.release()
+                        self.crn_manager.process_con.release()
                 
                 # air_free reply
                 if ctrl_msg.type == 9:              
