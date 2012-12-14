@@ -27,6 +27,7 @@ class source:
             # app layer: fill the buffer once it is empty
             # do not need to lock app layer during sensing, because app layer do not use USRP
             if len(self.mac_layer_.buffer) == 0 and self.crn_manager.status == 0:
+                print "fill"
                 for i in range(meta_data.batch_size):
                     payload = self.generate_pakcage()
                     
