@@ -65,12 +65,7 @@ class ccc_server(threading.Thread):
                     
                     if self.crn_manager.status == 0:
                         self.crn_manager.status = 2
-                        self.crn_manager.role.tb.set_freq(meta_data.channels[ctrl_msg.channel_id])
-#                        print self.crn_manager.time_sync_con
-#                        print self.crn_manager.process_con
-#                        print self.crn_manager.rts_ack_con
-#                        print self.crn_manager.air_con
-                        
+                        self.crn_manager.role.tb.set_freq(meta_data.channels[ctrl_msg.channel_id])                        
                         print "ready to receive at channel %d at %.3f" % (ctrl_msg.channel_id, self.crn_manager.get_virtual_time())
                         
                         
@@ -137,6 +132,10 @@ class ccc_server(threading.Thread):
                             print "try to wake from route error"
                             if self.crn_manager.id != meta_data.destination_id:
                                 self.crn_manager.set_best_channel()
+                            print self.crn_manager.time_sync_con
+                            print self.crn_manager.process_con
+                            print self.crn_manager.rts_ack_con
+                            print self.crn_manager.air_con
                             self.crn_manager.process_con.acquire()
                             self.crn_manager.process_flag = 1
                             self.crn_manager.process_con.notifyAll()
