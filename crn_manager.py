@@ -190,7 +190,7 @@ class crn_manager:
         self.error_flag = 0
         if self.route == []:
             self.error_flag = 1
-        else:
+        elif self.id in self.route:
             self.set_best_channel()        
             if self.best_channel == 0:
                 self.error_flag = 1

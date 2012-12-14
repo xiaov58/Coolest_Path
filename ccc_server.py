@@ -173,7 +173,6 @@ class ccc_server(threading.Thread):
         for i in a:
             if i not in b:
                 c.append(i)
-                
         for i in b:
             c.append(i)
             
