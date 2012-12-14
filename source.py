@@ -43,13 +43,13 @@ class source:
     def generate_pakcage(self):
         # prepare data and save to buffer
         # structure: 
-        # |  packet_no   |   sender  |   data    |
-        # |     2 bytes     |   2 bytes |   ......     |
+        # |  packet_no   |   sender  |   receiverer  |   data    |
+        # |     2 bytes     |   2 bytes |     2 bytes     |    ......    |
         pkt_size = int(meta_data.packet_size)
         self.pktno += 1
         pkt_sender_id =  self.crn_manager.id
         pkt_receiver_id = self.crn_manager.next_hop
-        data = (pkt_size - 4) * chr(self.pktno & 0xff) 
+        data = (pkt_size - 6) * chr(self.pktno & 0xff) 
         self.buffer.append([self.pktno, pkt_sender_id, pkt_receiver_id, data])
         
     
