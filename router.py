@@ -27,12 +27,12 @@ class router:
             self.crn_manager.process_con.acquire()
             if self.crn_manager.process_flag == 0:
                 self.crn_manager.process_con.wait()
+            time.sleep(10)
             self.crn_manager.process_con.release()
             
             if self.crn_manager.status != 2:
                 self.mac_layer_.tx_run()
             
-            time.sleep(0.1)
             time.sleep(meta_data.min_time)
 
         
