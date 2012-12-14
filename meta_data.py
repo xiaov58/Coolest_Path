@@ -20,8 +20,8 @@ backoff_max = 0.050
 INF = 100
 
 # sensing PU schedule
-time_interval = 5
-sensing_time = 0.5
+time_interval = 2
+sensing_time = 0.2
 
 # socket parameter
 server_port = 11012
