@@ -14,19 +14,18 @@ from mac_layer import mac_layer
 class source:
 
     def __init__(self, options, crn_manager):
+        self.pktno = 0
         self.options = options
         self.crn_manager = crn_manager
         self.tb = my_top_block(self.rx_callback, self.options)
         self.tb.rxpath.set_carrier_threshold(options.carrier_threshold)
-        self.pktno = 0
-        self.buffer = []
-        self.mac_layer_ = mac_layer(self.buffer, self.crn_manager)
+        self.mac_layer_ = mac_layer(self.crn_manager)
         
     def run(self):
         while 1:       
             # app layer: fill the buffer once it is empty
             # do not need to lock app layer during sensing, because app layer do not use USRP
-            if len(self.buffer) == 0 and self.crn_manager.status == 0:
+            if len(self.mac_layer_.buffer) == 0 and self.crn_manager.status == 0:
                 for i in range(meta_data.batch_size):
                     payload = self.generate_pakcage()
                     
@@ -36,7 +35,7 @@ class source:
             self.crn_manager.process_con.release()
             
             if self.crn_manager.status != 2:
-                self.mac_layer_.run()
+                self.mac_layer_.tx_run()
 
             time.sleep(meta_data.min_time)
         
@@ -50,7 +49,7 @@ class source:
         pkt_sender_id =  self.crn_manager.id
         pkt_receiver_id = self.crn_manager.next_hop
         data = (pkt_size - 6) * chr(self.pktno & 0xff) 
-        self.buffer.append([self.pktno, pkt_sender_id, pkt_receiver_id, data])
+        self.mac_layer_.buffer.append([self.pktno, pkt_sender_id, pkt_receiver_id, data])
         
     
     def rx_callback(self, ok, payload):

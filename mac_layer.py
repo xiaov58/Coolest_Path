@@ -8,9 +8,9 @@ import random
 import meta_data
 
 class mac_layer:
-    def __init__(self, buffer, crn_manager):
+    def __init__(self, crn_manager):
         self.pktno = 0
-        self.buffer = buffer
+        self.buffer = []
         self.crn_manager = crn_manager
             
     def fetch_packge(self):
@@ -37,8 +37,37 @@ class mac_layer:
         self.crn_manager.role.tb.txpath.send_pkt(payload, False)
         print "send! pktno %d; channel %d; buffer: %d" % (self.pktno, self.crn_manager.best_channel, len(self.buffer))
         
+    def rx_callback(self, ok, payload):
+        value = 0
+        if self.crn_manager.status == 2:
+            if ok:
+                (pktno, ) = struct.unpack('!H', payload[0:2])
+                (pkt_sender_id, ) = struct.unpack('!H', payload[2:4])
+                (pkt_receiver_id, ) = struct.unpack('!H', payload[4:6])
+                data = payload[6:]
+                if self.crn_manager.id == pkt_receiver_id:
+                    if pktno == 0:
+                        print "get air free from %d at %.3f" % (pkt_sender_id, self.crn_manager.get_virtual_time())
+                        self.crn_manager.status = 0
+                        # send air free reply
+                        afr = air_free_reply()
+                        afr_string = cPickle.dumps(afr)
+                        self.crn_manager.socks_table[pkt_sender_id].send(afr_string)
+                    else:
+                        print "received! pktno: %d, from %d to %d" % (pktno, pkt_sender_id, pkt_receiver_id)
+                        if self.crn_manager.id == meta_data.destination_id:
+                            value = 1
+                        elif self.crn_manager.id != meta_data.source_id:
+                            self.buffer.append([pktno, self.crn_manager.id, self.crn_manager.next_hop, data])
+                else:
+                    print "overhear! pktno: %d, from %d to %d" % (pktno, pkt_sender_id, pkt_receiver_id)
+            else:
+                (pktno, ) = struct.unpack('!H', payload[0:2])
+                print "ok: %r \t pktno: %d \t" % (ok, pktno)
+                
+        return value
 
-    def run(self):            
+    def tx_run(self):            
         if self.crn_manager.status == 0 and len(self.buffer) != 0:
             self.crn_manager.status =1
             # reserve receiver

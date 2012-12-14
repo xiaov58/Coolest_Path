@@ -109,6 +109,7 @@ class crn_manager:
         if self.id == meta_data.destination_id:
             print "Destination: recieve %d" % (self.role.received_cnt)
             print self.role.routing_request_log
+            print self.role.log_mask
         sys.exit(0)
         
     # Thread priority need
@@ -206,7 +207,7 @@ class crn_manager:
         if self.error_flag ==1:
             print "routing error"
             self.get_best_links()
-            del self.role.buffer[:]
+            del self.role.mac_layer_.buffer[:]
             self.route = []
             self.process_flag = 0
             # update route
@@ -226,6 +227,8 @@ class crn_manager:
                     cost = self.link_temp_table[i][j]
                     self.role.tb.set_freq(meta_data.channels[j])
             self.best_links.append([self.id, i, cost])       # sender, receiver, cost
+            print "********************S"
+            print self.best_links
 
     def set_best_channel(self):
         self.best_channel = 0
