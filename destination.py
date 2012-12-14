@@ -30,6 +30,7 @@ class destination:
         return link_number
         
     def calculate_path(self):
+        print "calculate"
         self.routing_request_log.append(self.crn_manager.get_virtual_time())
         graph = Graph()
         for i in range(len(self.links)):
