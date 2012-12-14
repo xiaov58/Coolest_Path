@@ -87,8 +87,10 @@ def main():
     r = gr.enable_realtime_scheduling()
     if r != gr.RT_OK:
         print "Warning: failed to enable realtime scheduling"
-
+    
+    
     tb.start()                       # start flow graph
+    start = time.time()
     
     # generate and send packets
     nbytes = int(1e6 * options.megabytes)
@@ -114,6 +116,8 @@ def main():
         
     send_pkt(eof=True)
     tb.wait()                       # wait for it to finish
+    end = time.time()
+    print "Time: %.3f" % (end - start)
 
 if __name__ == '__main__':
     try:
