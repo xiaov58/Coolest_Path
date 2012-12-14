@@ -47,7 +47,7 @@ class source:
         # |     2 bytes     |   2 bytes |   ......     |
         pkt_size = int(meta_data.packet_size)
         self.pktno += 1
-        pkt_sender_id =  int(self.options.id)
+        pkt_sender_id =  self.crn_manager.id
         pkt_receiver_id = self.crn_manager.next_hop
         data = (pkt_size - 4) * chr(self.pktno & 0xff) 
         self.buffer.append([self.pktno, pkt_sender_id, pkt_receiver_id, data])

@@ -84,7 +84,7 @@ class ccc_server(threading.Thread):
                     self.crn_manager.rts_ack_con.notify()
                     self.crn_manager.rts_ack_con.release()
                     
-                # free
+                # free over ccc
                 if ctrl_msg.type == 5:              
                     print "free at %.3f" % self.crn_manager.get_virtual_time()
                     self.crn_manager.status = 0
@@ -143,6 +143,14 @@ class ccc_server(threading.Thread):
                             self.crn_manager.init_broadcast_request()
                         else:
                             self.crn_manager.broadcast(str)
+                
+                # air_free reply
+                if ctrl_msg.type == 9:              
+                    print "early wake up"
+                    self.crn_manager.early_free_flag = 1
+                    self.crn_manager.air_con.acquire()
+                    self.crn_manager.air_con.notify()
+                    self.crn_manager.air_con.release()
 
         
     def merge(self, a, b):

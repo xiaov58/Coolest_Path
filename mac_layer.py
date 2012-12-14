@@ -35,9 +35,7 @@ class mac_layer:
             if delay_range < 0.050:
                 delay_range = delay_range * 2       # exponential back-off range
                 
-        a = self.crn_manager.role.tb.txpath.send_pkt(payload, False)
         print "send! pktno %d; channel %d; buffer: %d" % (self.pktno, self.crn_manager.best_channel, len(self.buffer))
-        print a
         
 
     def run(self):            
@@ -58,17 +56,18 @@ class mac_layer:
             self.send()
                 
         if self.crn_manager.status == 1 and len(self.buffer) == 0:
-#            for i in range(10):
-#                self.send_ctrl_msg_over_usrp()
-            # air time
-            time.sleep(meta_data.air_time)
+            self.air_free()
+            self.crn_manager.air_con.acquire()
+            # wait at most 1s, if receive the reply for air free msg, wake up immediately
+            self.crn_manager.air_con.wait(meta_data.air_time)
+            self.crn_manager.air_con.release()
             
-            # free receiver
-            cts = cts_msg()
-            cts_string = cPickle.dumps(cts)
-            print "Give free at %.3f" % self.crn_manager.get_virtual_time()
-            self.crn_manager.socks_table[self.crn_manager.route[self.crn_manager.route.index(self.crn_manager.id) + 1]].send(cts_string)
-
+            # if alreay early free do not need to free over ccc
+            if self.crn_manager == 0:
+                free = free_msg()
+                free_string = cPickle.dumps(free)
+                print "ccc free at %.3f" % self.crn_manager.get_virtual_time()
+                self.crn_manager.socks_table[self.crn_manager.route[self.crn_manager.route.index(self.crn_manager.id) + 1]].send(free_string)
             
             if self.crn_manager.rts_register_flag == 1:
                 # direct receive
@@ -83,22 +82,20 @@ class mac_layer:
                 time.sleep(meta_data.yeild_forward_time)
                 self.crn_manager.status = 0
         
-#    # special method to send free msg
-#    def send_ctrl_msg_over_usrp(self):
-#        payload =    struct.pack('!H', 0 & 0xffff) +\
-#                    struct.pack('!H', 0 & 0xffff) + \
-#                    struct.pack('!H', 0 & 0xffff) 
-#        # carrier sense
-#        delay_range = meta_data.min_time
-#        while self.crn_manager.role.tb.carrier_sense():
-#            sys.stderr.write('B')
-#            time.sleep(delay_range * random.random())
-#            if delay_range < 0.050:
-#                delay_range = delay_range * 2       # exponential back-off range
-#                
-#        self.crn_manager.role.tb.txpath.send_pkt(payload, False)
-#        print "Give free" 
-
+    # special method to solve the air problem that will not happend in realality
+    def air_free(self):
+        payload =    struct.pack('!H', 0 & 0xffff) +\
+                    struct.pack('!H', self.crn_manager.id & 0xffff) + \
+                    struct.pack('!H', self.crn_manager.next_hop & 0xffff) 
+        # carrier sense
+        delay_range = meta_data.min_time
+        while self.crn_manager.role.tb.carrier_sense():
+            sys.stderr.write('B')
+            time.sleep(delay_range * random.random())
+            if delay_range < 0.050:
+                delay_range = delay_range * 2       # exponential back-off range
+                
+        self.crn_manager.role.tb.txpath.send_pkt(payload, False)
+        print "air free" 
             
-
             

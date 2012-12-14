@@ -34,6 +34,7 @@ class crn_manager:
         self.time_sync_con = threading.Condition()  
         self.process_con = threading.Condition()  
         self.rts_ack_con = threading.Condition()  
+        self.air_con = threading.Condition()
         
         # flags
         self.time_sync_flag = 0
@@ -42,6 +43,7 @@ class crn_manager:
         self.rts_register_id = 0
         self.rts_register_channel = 0
         self.error_flag = 0
+        self.early_free_flag = 0
         
         # counts
         self.sense_cnt = 0

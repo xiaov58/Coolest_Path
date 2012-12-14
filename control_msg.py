@@ -21,8 +21,8 @@ class rts_msg:
 class rts_ack_msg:
     def __init__(self):
         self.type = 4
-
-class cts_msg:
+        
+class free_msg:
     def __init__(self):
         self.type = 5
         
@@ -42,3 +42,7 @@ class routing_error_msg:
     def __init__(self, routing_error_cnt):
         self.type = 8
         self.routing_error_cnt = routing_error_cnt
+        
+class air_free_reply:
+    def __init__(self):
+        self.type = 9

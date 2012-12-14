@@ -6,6 +6,7 @@ import struct
 import meta_data
 from my_top_block import my_top_block
 from dijkstar import Graph, find_path
+from control_msg import *
 
 class destination:
     def __init__(self, options, crn_manager):
