@@ -67,7 +67,13 @@ class ccc_server(threading.Thread):
                     if self.crn_manager.status == 0:
                         self.crn_manager.status = 2
                         self.crn_manager.role.tb.set_freq(meta_data.channels[ctrl_msg.channel_id])
+                        print self.crn_manager.time_sync_con
+                        print self.crn_manager.process_con
+                        print self.crn_manager.rts_ack_con
+                        print self.crn_manager.air_con
+                        
                         print "ready to receive at channel %d at %.3f" % (ctrl_msg.channel_id, self.crn_manager.get_virtual_time())
+                        
                         
                         rts_ack = rts_ack_msg()
                         rts_ack_string = cPickle.dumps(rts_ack)
@@ -89,7 +95,7 @@ class ccc_server(threading.Thread):
                     print "get ccc free from % d at %.3f" % (ctrl_msg.sender_id, self.crn_manager.get_virtual_time())
                     self.crn_manager.status = 0
 
-                # request
+                # routing request
                 if ctrl_msg.type == 6:    
                     #ignore if already broadcasted error
                     if self.crn_manager.routing_request_cnt < ctrl_msg.routing_request_cnt:
@@ -114,11 +120,12 @@ class ccc_server(threading.Thread):
                                 rep_string = cPickle.dumps(rep)
                                 self.crn_manager.broadcast(rep_string)
                                     
-                # reply
+                # routing reply
                 if ctrl_msg.type == 7:    
                     if self.crn_manager.routing_reply_cnt < ctrl_msg.routing_reply_cnt:
                         self.crn_manager.routing_reply_cnt += 1
                         self.crn_manager.route = ctrl_msg.route
+                        print self.crn_manager.route
     
                         if ctrl_msg.route != []:
                             print "try to wake from route error"

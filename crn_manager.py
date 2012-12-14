@@ -228,6 +228,7 @@ class crn_manager:
             self.best_links.append([self.id, i, cost])       # sender, receiver, cost
 
     def set_best_channel(self):
+        self.best_channel = 0
         self.next_hop = self.route[self.route.index(self.id) + 1]
         for i in meta_data.neighbour_table[self.id]:
             cost = meta_data.INF
