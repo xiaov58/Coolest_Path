@@ -110,6 +110,7 @@ class ccc_server(threading.Thread):
                         print self.crn_manager.best_links
                         # merge best links
                         links = self.merge(ctrl_msg.links, self.crn_manager.best_links)
+                        print links
                         
                         if self.crn_manager.id != meta_data.destination_id:
                             req = routing_request_msg(self.crn_manager.routing_request_cnt, links)
