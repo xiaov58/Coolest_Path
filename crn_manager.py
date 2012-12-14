@@ -264,7 +264,6 @@ class crn_manager:
         self.time_sync_con.acquire()
         if self.time_sync_flag == 0:
             self.time_sync_con.wait() 
-            print "sync_con wake"
         self.time_sync_con.release()
         
         self.start_local_time = time.time()
