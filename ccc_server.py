@@ -113,7 +113,7 @@ class ccc_server(threading.Thread):
                         for k in self.crn_manager.socks_table.keys():
                             if k not in ctrl_msg.path:
                                 self.crn_manager.socks_table[k].send(req_string)
-                    elif self.crn_manager.role.routing_request_counter < ctrl_msg.routing_request_cnt:
+                    elif self.crn_manager.role.routing_request_cnt < ctrl_msg.routing_request_cnt:
                         self.crn_manager.role.links = self.merge(self.crn_manager.role.links, links)
                         if len(self.crn_manager.role.links) == self.crn_manager.role.link_number:
                             self.crn_manager.role.routing_request_cnt += 1
