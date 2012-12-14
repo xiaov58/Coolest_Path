@@ -134,8 +134,8 @@ class ccc_server(threading.Thread):
                                 self.crn_manager.process_flag = 1
                                 self.crn_manager.process_con.notifyAll()
                                 self.crn_manager.process_con.release()
+                                print "notify"
                         self.crn_manager.broadcast(str)
-                    print "address reply done"
             
                 # error
                 if ctrl_msg.type == 8:    
