@@ -77,10 +77,10 @@ class mac_layer:
             if self.crn_manager.id != meta_data.source_id:
                 self.crn_manager.buffer_con.acquire()
                 self.crn_manager.buffer_con.wait()
-                print "buffer wake"
                 self.crn_manager.buffer_con.release()
         
         if self.crn_manager.status == 0 and len(self.buffer) != 0:
+            print "send RTS"
             self.crn_manager.status =1
             # reserve receiver
             rts = rts_msg(self.crn_manager.id, self.crn_manager.best_channel)
