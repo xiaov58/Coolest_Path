@@ -30,8 +30,6 @@ class source:
                 for i in range(meta_data.batch_size):
                     self.generate_pakcage()
                     
-            print  len(self.mac_layer_.buffer)
-                    
             self.crn_manager.process_con.acquire()
             if self.crn_manager.process_flag == 0:
                 self.crn_manager.process_con.wait()
