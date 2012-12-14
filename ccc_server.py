@@ -78,10 +78,9 @@ class ccc_server(threading.Thread):
                 # rts ack
                 if ctrl_msg.type == 4:
                     if ctrl_msg.ack == 1:
-                        self.crn_manager.rts_ack_flag = 1
-                    self.crn_manager.rts_ack_con.acquire()
-                    self.crn_manager.rts_ack_con.notify()
-                    self.crn_manager.rts_ack_con.release()
+                        self.crn_manager.rts_ack_con.acquire()
+                        self.crn_manager.rts_ack_con.notify()
+                        self.crn_manager.rts_ack_con.release()
                     
                 # free
                 if ctrl_msg.type == 5:              
