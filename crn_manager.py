@@ -133,6 +133,7 @@ class crn_manager:
         self.sense_timer.daemon = True
         self.sense_timer.start()
         self.process_con.release()
+        print "sense done at %.3f" % self.get_virtual_time()
         
     def pseudo_check(self):
         vts = self.sense_cnt * meta_data.time_interval
