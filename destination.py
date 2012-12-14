@@ -6,6 +6,7 @@ import cPickle
 # from current dir
 import meta_data
 from my_top_block import my_top_block
+from mac_layer import mac_layer
 from dijkstar import Graph, find_path
 from control_msg import *
 
