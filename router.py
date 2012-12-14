@@ -4,6 +4,7 @@ import struct
 import sys
 import time
 import random
+import cPickle
 
 # from current dir
 import meta_data
