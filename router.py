@@ -29,8 +29,6 @@ class router:
                 self.crn_manager.process_con.wait()
             self.crn_manager.process_con.release()
             
-            print self.crn_manager.status
-            print  len(self.mac_layer_.buffer)
             if self.crn_manager.status != 2:
                 self.mac_layer_.tx_run()
             
