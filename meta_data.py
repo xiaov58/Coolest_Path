@@ -12,7 +12,7 @@ round = 50
 setup_time = 2               # second
 air_time = 1                    # second
 min_time = 0.001            # second
-yeild_time = 0.01 # second
+yeild_time = 0.02 # second
 
 
 batch_size = 50

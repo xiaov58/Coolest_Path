@@ -71,7 +71,7 @@ class ccc_server(threading.Thread):
                         rts_ack = rts_ack_msg()
                         rts_ack_string = cPickle.dumps(rts_ack)
                         self.crn_manager.socks_table[ctrl_msg.sender_id].send(rts_ack_string)
-                    else:
+                    elif self.crn_manager.status == 1:
                         self.crn_manager.rts_register_flag = 1
                         self.crn_manager.rts_register_id = ctrl_msg.sender_id
                         self.crn_manager.rts_register_channel = ctrl_msg.channel_id
