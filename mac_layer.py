@@ -114,7 +114,6 @@ class mac_layer:
                 print "ccc free %d at %.3f" % (self.crn_manager.next_hop, self.crn_manager.get_virtual_time())
                 self.crn_manager.socks_table[self.crn_manager.next_hop].send(free_string)
             
-            print self.crn_manager.rts_register_flag
             if self.crn_manager.rts_register_flag == 1:
                 # direct receive
                 rts_ack = rts_ack_msg()
