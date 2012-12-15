@@ -46,7 +46,7 @@ def preprocess():
         sys.exit(1)
     else:
         if meta_data.full_duplex_mask[int(options.id)] == 1:
-            options.antenna = "TX/RX"
+            options.antenna = "TXRX"
             print "*****************************"
             print "*****************************"
             print "*****************************"
