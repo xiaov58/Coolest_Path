@@ -114,6 +114,7 @@ class mac_layer:
                 print "ccc free %d at %.3f" % (self.crn_manager.next_hop, self.crn_manager.get_virtual_time())
                 self.crn_manager.socks_table[self.crn_manager.next_hop].send(free_string)
             
+            print self.crn_manager.rts_register_flag
             if self.crn_manager.rts_register_flag == 1:
                 # direct receive
                 rts_ack = rts_ack_msg()
@@ -132,13 +133,13 @@ class mac_layer:
         payload =    struct.pack('!H', 0 & 0xffff) +\
                     struct.pack('!H', self.crn_manager.id & 0xffff) + \
                     struct.pack('!H', self.crn_manager.next_hop & 0xffff) 
-        # carrier sense
-        delay_range = meta_data.min_time
-        while self.crn_manager.role.tb.carrier_sense():
-            sys.stderr.write('B')
-            time.sleep(delay_range * random.random())
-            if delay_range < 0.050:
-                delay_range = delay_range * 2       # exponential back-off range
+#        # carrier sense
+#        delay_range = meta_data.min_time
+#        while self.crn_manager.role.tb.carrier_sense():
+#            sys.stderr.write('B')
+#            time.sleep(delay_range * random.random())
+#            if delay_range < 0.050:
+#                delay_range = delay_range * 2       # exponential back-off range
                 
         self.crn_manager.role.tb.txpath.send_pkt(payload, False)
         print "air free %d at %.3f" % (self.crn_manager.next_hop, self.crn_manager.get_virtual_time())
