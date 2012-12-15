@@ -200,15 +200,13 @@ class crn_manager:
    
         if self.error_flag ==1:
             print "routing error"
-            # detect routing error, then refuse error  msg from other node
-            self.routing_error_cnt += 1
-            self.clear()
-            
             if self.id != meta_data.source_id:
                 err = routing_error_msg(self.routing_error_cnt)
                 err_string = cPickle.dumps(err)
                 self.broadcast(err_string)
             elif self.role.routing_request_cnt  == self.routing_reply_cnt:
+                self.routing_error_cnt += 1
+                self.clear()
                 self.role.routing_request_cnt += 1
                 self.get_best_links()
                 path = [self.id]
