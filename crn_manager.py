@@ -201,6 +201,7 @@ class crn_manager:
         if self.error_flag ==1:
             print "routing error"
             if self.id != meta_data.source_id:
+                self.routing_error_cnt += 1
                 err = routing_error_msg(self.routing_error_cnt)
                 err_string = cPickle.dumps(err)
                 self.broadcast(err_string)
