@@ -216,6 +216,13 @@ class crn_manager:
         del self.role.mac_layer_.buffer[:]
         self.status = 0
         self.route = []
+        # release some wait become there will be not reply when routing error
+        self.rts_ack_con.acquire()
+        self.rts_ack_con.notify()
+        self.rts_ack_con.release()
+        self.air_con.acquire()
+        self.air_con.notify()
+        self.air_con.release()
         
     def get_best_links(self):
         self.best_links = []
