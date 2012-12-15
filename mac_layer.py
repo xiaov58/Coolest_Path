@@ -120,6 +120,7 @@ class mac_layer:
                 rts_ack = rts_ack_msg()
                 rts_ack_string = cPickle.dumps(rts_ack)
                 self.crn_manager.rts_register_flag = 0
+                print "ready to receive"
                 self.crn_manager.status = 2
                 self.crn_manager.role.tb.set_freq(meta_data.channels[self.crn_manager.rts_register_channel])
                 self.crn_manager.socks_table[self.crn_manager.rts_register_id].send(rts_ack_string)
