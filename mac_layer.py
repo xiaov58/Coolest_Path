@@ -29,11 +29,12 @@ class mac_layer:
         payload = self.fetch_packge()
         # carrier sense
         delay_range = meta_data.min_time
-        while self.crn_manager.role.tb.carrier_sense():
-            sys.stderr.write('B')
-            time.sleep(delay_range * random.random())
-            if delay_range < 0.050:
-                delay_range = delay_range * 2       # exponential back-off range
+#        while self.crn_manager.role.tb.carrier_sense():
+#            sys.stderr.write('B')
+#            time.sleep(0.5)
+#            time.sleep(delay_range * random.random())
+#            if delay_range < 0.050:
+#                delay_range = delay_range * 2       # exponential back-off range
         self.crn_manager.role.tb.txpath.send_pkt(payload, False)
         print "send! pktno %d; channel %d; buffer: %d" % (self.pktno, self.crn_manager.best_channel, len(self.buffer))
         
