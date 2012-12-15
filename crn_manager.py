@@ -48,7 +48,7 @@ class crn_manager:
         self.early_free_flag = 0
         
         # counts
-        self.schedule_cnt = -2
+        self.schedule_cnt = 0
         self.sense_cnt = 0
         self.process_cnt = 0
         self.routing_reply_cnt = 0
@@ -247,32 +247,33 @@ class crn_manager:
     
     def schedule(self):
         self.schedule_con.acquire()
-        print "sense at virtual time: %.3f" %  (self.get_virtual_time())
-        
-        if self.sense_cnt == meta_data.round:
-            self.exit()
+        if self.schedule_cnt >= 2:
+            print "sense at virtual time: %.3f" %  (self.get_virtual_time())
             
-        # block process thread before process timer unblock it
-        self.process_flag = 0
-        self.pseudo_check()
-        
-        time.sleep(meta_data.sensing_time)
-        print "process at virtual time: %.3f" %  (self.get_virtual_time())
-        
-#        # check if route still hold
-#        if self.id != meta_data.destination_id:
-#            if self.check_route() == 1:
-#                # error
-#                if self.id == meta_data.source_id:
-#                    # make up
-#                    self.routing_error_cnt += 1
-#                    self.clear()
-#                    self.init_request()
-#                else:
-#                    self.init_error()
-#            else:
-#                self.process_flag = 1
-#                self.process_con.notify()
+            if self.sense_cnt == meta_data.round:
+                self.exit()
+                
+            # block process thread before process timer unblock it
+            self.process_flag = 0
+            self.pseudo_check()
+            
+            time.sleep(meta_data.sensing_time)
+            print "process at virtual time: %.3f" %  (self.get_virtual_time())
+            
+    #        # check if route still hold
+    #        if self.id != meta_data.destination_id:
+    #            if self.check_route() == 1:
+    #                # error
+    #                if self.id == meta_data.source_id:
+    #                    # make up
+    #                    self.routing_error_cnt += 1
+    #                    self.clear()
+    #                    self.init_request()
+    #                else:
+    #                    self.init_error()
+    #            else:
+    #                self.process_flag = 1
+    #                self.process_con.notify()
         
         
         # adjust time and set timer for next round
