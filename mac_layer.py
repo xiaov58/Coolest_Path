@@ -71,7 +71,7 @@ class mac_layer:
         if self.crn_manager.status == 0 and len(self.buffer) == 0:
             if self.crn_manager.id != meta_data.source_id:
                 self.crn_manager.buffer_con.acquire()
-                print "buffer wait"
+                print "buffer wait at %.3f" % self.crn_manager.get_virtual_time()
                 self.crn_manager.buffer_con.wait()
                 self.crn_manager.buffer_con.release()
         
@@ -85,7 +85,6 @@ class mac_layer:
             # wait for reply
             self.crn_manager.rts_ack_con.acquire()
             # release process_con so that process timer can go through
-            print "wait rts ack"
             self.crn_manager.rts_ack_con.wait()
             print "ready to send at channel %d at %.3f" % (self.crn_manager.best_channel, self.crn_manager.get_virtual_time())
             self.crn_manager.role.tb.set_freq(meta_data.channels[self.crn_manager.best_channel])
