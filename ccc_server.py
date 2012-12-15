@@ -89,6 +89,7 @@ class ccc_server(threading.Thread):
 
                 # routing request
                 if ctrl_msg.type == 6:    
+                    self.process_con.acquire()
                     if ctrl_msg.routing_request_cnt > self.crn_manager.routing_error_cnt:
                         # make up the task that need to be done when receive error msg, then block error msg
                         self.crn_manager.routing_error_cnt += 1
@@ -117,9 +118,11 @@ class ccc_server(threading.Thread):
                             rep = routing_reply_msg(self.crn_manager.routing_reply_cnt + 1, route)
                             rep_string = cPickle.dumps(rep)
                             self.crn_manager.broadcast(rep_string)
+                    self.process_con.release()
                                     
                 # routing reply
                 if ctrl_msg.type == 7:    
+                    self.process_con.acquire()
                     if self.crn_manager.routing_reply_cnt < ctrl_msg.routing_reply_cnt:
                         self.crn_manager.routing_reply_cnt += 1
                         self.crn_manager.route = ctrl_msg.route
@@ -134,10 +137,11 @@ class ccc_server(threading.Thread):
                                 self.crn_manager.process_con.notifyAll()
                                 self.crn_manager.process_con.release()
                         self.crn_manager.broadcast(str)
+                    self.process_con.release()
             
                 # error
                 if ctrl_msg.type == 8:    
-                    print ctrl_msg.routing_error_cnt
+                    self.process_con.acquire()
                     #ignore if already broadcasted error
                     if self.crn_manager.routing_error_cnt < ctrl_msg.routing_error_cnt:
                         
@@ -147,12 +151,8 @@ class ccc_server(threading.Thread):
                         if self.crn_manager.id != meta_data.source_id:
                             self.crn_manager.broadcast(str)
                         else:
-                            self.crn_manager.role.routing_request_cnt += 1
-                            self.crn_manager.get_best_links()
-                            path = [self.crn_manager.id]
-                            req = routing_request_msg(self.crn_manager.role.routing_request_cnt, path, self.crn_manager.best_links)
-                            req_string = cPickle.dumps(req)
-                            self.crn_manager.broadcast(req_string)
+                            self.crn_manager.init_request()
+                    self.process_con.release()
                             
                 # air_free reply
                 if ctrl_msg.type == 9:              

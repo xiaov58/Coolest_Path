@@ -44,7 +44,6 @@ class crn_manager:
         self.rts_register_flag = 0
         self.rts_register_id = 0
         self.rts_register_channel = 0
-        self.error_flag = 0
         self.early_free_flag = 0
         
         # counts
@@ -160,18 +159,49 @@ class crn_manager:
         srm_string = cPickle.dumps(srm)
         self.broadcast(srm_string) 
         
+    def check_route(self):
+        error_flag = 0
+        if self.route == []:
+            error_flag = 1
+        elif self.id in self.route:
+            self.set_best_channel()        
+            if self.best_channel == 0:
+                error_flag = 1
+        return error_flag
+        
+    def init_error(self):
+        self.routing_error_cnt += 1
+        self.clear()
+        err = routing_error_msg(routing_error_cnt)
+        err_string = cPickle.dumps(err)
+        self.broadcast(err_string)
+
+    def init_request(self):
+        self.role.routing_request_cnt += 1
+        self.get_best_links()
+        path = [self.id]
+        req = routing_request_msg(self.role.routing_request_cnt, path, self.best_links)
+        req_string = cPickle.dumps(req)
+        self.broadcast(req_string)
+        
     def process(self):
         self.process_con.acquire()
         print "process at virtual time: %.3f" % (self.get_virtual_time())
-
-        # update route, not for destination
-        if self.id != meta_data.destination_id:
-            self.update_routing()
         
-        # let main thread run
-        if self.error_flag == 0:
-            self.process_flag = 1
-            self.process_con.notify()
+        # check if route still hold
+        if self.id != meta_data.destination_id:
+            if self.check_route() == 1:
+                # error
+                if self.id == meta_data.source_id:
+                    # make up
+                    self.routing_error_cnt += 1
+                    self.clear()
+                    self.init_request()
+                else:
+                    self.init_error()
+            else:
+                self.process_flag = 1
+                self.process_con.notify()
         
         # adjust time and set timer for next round
         time_gap = self.get_virtual_time() - self.process_cnt * meta_data.time_interval
@@ -185,35 +215,7 @@ class crn_manager:
         self.process_flag = 0
         del self.role.mac_layer_.buffer[:]
         self.status = 0
-        # simple way to make main thread sleep, otherwise empty route may cause problem
-        #time.sleep(meta_data.yeild_time)
         self.route = []
-    
-    def update_routing(self):
-        self.error_flag = 0
-        if self.route == []:
-            self.error_flag = 1
-        elif self.id in self.route:
-            self.set_best_channel()        
-            if self.best_channel == 0:
-                self.error_flag = 1
-   
-        if self.error_flag ==1:
-            print "routing error"
-            if self.id != meta_data.source_id:
-                self.routing_error_cnt += 1
-                err = routing_error_msg(self.routing_error_cnt)
-                err_string = cPickle.dumps(err)
-                self.broadcast(err_string)
-            elif self.role.routing_request_cnt  == self.routing_reply_cnt:
-                self.routing_error_cnt += 1
-                self.clear()
-                self.role.routing_request_cnt += 1
-                self.get_best_links()
-                path = [self.id]
-                req = routing_request_msg(self.role.routing_request_cnt, path, self.best_links)
-                req_string = cPickle.dumps(req)
-                self.broadcast(req_string)
         
     def get_best_links(self):
         self.best_links = []
