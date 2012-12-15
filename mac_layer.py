@@ -76,7 +76,7 @@ class mac_layer:
                 self.crn_manager.buffer_con.release()
         
         if self.crn_manager.status == 0 and len(self.buffer) != 0:
-            print "send RTS at %.3f" % self.crn_manager.get_virtual_time()
+            print "send RTS at %.3f to %d" % (self.crn_manager.get_virtual_time(), self.crn_manager.next_hop)
             self.crn_manager.status =1
             # reserve receiver
             rts = rts_msg(self.crn_manager.id, self.crn_manager.best_channel)
