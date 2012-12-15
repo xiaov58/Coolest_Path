@@ -172,7 +172,7 @@ class crn_manager:
     def init_error(self):
         self.routing_error_cnt += 1
         self.clear()
-        err = routing_error_msg(routing_error_cnt)
+        err = routing_error_msg(self.routing_error_cnt)
         err_string = cPickle.dumps(err)
         self.broadcast(err_string)
 
