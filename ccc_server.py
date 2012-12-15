@@ -130,13 +130,13 @@ class ccc_server(threading.Thread):
                         print self.crn_manager.route
                         print "%.3f" % self.crn_manager.get_virtual_time()
                         
-                        if ctrl_msg.route != [] and self.crn_manager.id in self.crn_manager.route:
-                            if self.crn_manager.id != meta_data.destination_id:
-                                self.crn_manager.set_best_channel()
-                                #self.crn_manager.process_con.acquire()
-                                self.crn_manager.process_flag = 1
-                                self.crn_manager.process_con.notifyAll()
-                                #self.crn_manager.process_con.release()
+#                        if ctrl_msg.route != [] and self.crn_manager.id in self.crn_manager.route:
+#                            if self.crn_manager.id != meta_data.destination_id:
+#                                self.crn_manager.set_best_channel()
+#                                #self.crn_manager.process_con.acquire()
+#                                self.crn_manager.process_flag = 1
+#                                self.crn_manager.process_con.notifyAll()
+#                                #self.crn_manager.process_con.release()
                         self.crn_manager.broadcast(str)
                     self.crn_manager.process_con.release()
             
