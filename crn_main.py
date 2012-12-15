@@ -45,10 +45,8 @@ def preprocess():
         parser.print_help(sys.stderr)
         sys.exit(1)
     else:
-        for i in meta_data.full_duplex_mask:
-            # full_duplex
-            if i ==1:
-                options.antenna = "TX/RX"
+        if meta_data.full_duplex_mask[int(options.id)] == 1:
+            options.antenna = "TX/RX"
         options.rx_freq = meta_data.channels[meta_data.init_channel] * 1e9
         options.tx_freq = meta_data.channels[meta_data.init_channel] * 1e9
         options.bandwidth = (meta_data.bandwidth * 10000000.0)/4
