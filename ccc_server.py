@@ -89,7 +89,7 @@ class ccc_server(threading.Thread):
 
                 # routing request
                 if ctrl_msg.type == 6:    
-                    self.crn_manager.schedule_con.acquire()
+                    self.crn_manager.process_con.acquire()
                     if ctrl_msg.routing_request_cnt > self.crn_manager.routing_error_cnt:
                         # make up the task that need to be done when receive error msg, then block error msg
                         self.crn_manager.routing_error_cnt += 1
