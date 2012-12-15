@@ -141,7 +141,9 @@ class ccc_server(threading.Thread):
             
                 # error
                 if ctrl_msg.type == 8:    
+                    print "receive error %d " % ctrl_msg.routing_error_cnt
                     self.crn_manager.process_con.acquire()
+                    print self.crn_manager.routing_error_cnt
                     #ignore if already broadcasted error
                     if self.crn_manager.routing_error_cnt < ctrl_msg.routing_error_cnt:
                         
