@@ -48,7 +48,7 @@ class crn_manager:
         self.early_free_flag = 0
         
         # counts
-        self.schedule_cnt = 0
+        self.schedule_cnt = -2
         self.sense_cnt = 0
         self.process_cnt = 0
         self.routing_reply_cnt = 0
@@ -259,20 +259,20 @@ class crn_manager:
         time.sleep(meta_data.sensing_time)
         print "process at virtual time: %.3f" %  (self.get_virtual_time())
         
-#        # check if route still hold
-#        if self.id != meta_data.destination_id:
-#            if self.check_route() == 1:
-#                # error
-#                if self.id == meta_data.source_id:
-#                    # make up
-#                    self.routing_error_cnt += 1
-#                    self.clear()
-#                    self.init_request()
-#                else:
-#                    self.init_error()
-#            else:
-#                self.process_flag = 1
-#                self.process_con.notify()
+        # check if route still hold
+        if self.id != meta_data.destination_id:
+            if self.check_route() == 1:
+                # error
+                if self.id == meta_data.source_id:
+                    # make up
+                    self.routing_error_cnt += 1
+                    self.clear()
+                    self.init_request()
+                else:
+                    self.init_error()
+            else:
+                self.process_flag = 1
+                self.process_con.notify()
         
         
         # adjust time and set timer for next round
