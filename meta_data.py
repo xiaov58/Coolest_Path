@@ -1,9 +1,10 @@
 
 # default option value
 packet_size = 400           # Byte
-carrier_thredshold = -55
+carrier_thredshold = -60
 bandwidth = 0.2       # MHz
-channels = [0, 2.512, 2.516, 2.510]
+channels = [0, 2.512, 2.516, 2.515]
+
 
 
 # other experiment parameter
@@ -33,6 +34,7 @@ sock_buffer_size = 1000
 # Topology  (first item is null to make it easy to count)
 source_id = 1
 destination_id = 6
+full_duplex_mask =       [0, 1, 1, 0, 0, 0, 1]
 neighbour_table =         [[], [2, 4], [1, 3 , 5] , [2, 6] , [1, 5] , [2, 4, 6] , [3, 5]] 
 ip_table =                      ['' , '11.0.0.1'  , '11.0.0.2' , '11.0.0.3', '11.0.0.4', '11.0.0.5', '11.0.0.6'] 
 

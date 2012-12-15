@@ -1,3 +1,6 @@
-1. interfaces: USRP(static IP), Ethernet(subnet), Network 
-2. ssh
-3. test carrier sense threadthold
+while loop when buffer == 0, status = 0
+redesign schedule implementation
+thread synchronization
+dead wait receiving
+self sensing
+
