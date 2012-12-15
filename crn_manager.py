@@ -208,7 +208,7 @@ class crn_manager:
                 err = routing_error_msg(self.routing_error_cnt)
                 err_string = cPickle.dumps(err)
                 self.broadcast(err_string)
-            else:
+            elif self.role.routing_request_cnt  == self.routing_reply_cnt:
                 self.role.routing_request_cnt += 1
                 self.get_best_links()
                 path = [self.id]

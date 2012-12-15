@@ -53,7 +53,6 @@ class ccc_server(threading.Thread):
                         
                 # sensing result
                 if ctrl_msg.type == 2:
-                    print "%.3f" % self.crn_manager.get_virtual_time()
                     #update link temprature table
                     for i in meta_data.neighbour_table[self.crn_manager.id]:
                         if i == ctrl_msg.sender_id:
