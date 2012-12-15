@@ -178,6 +178,7 @@ class crn_manager:
         self.broadcast(err_string)
 
     def init_request(self):
+        print "init request"
         self.role.routing_request_cnt += 1
         self.get_best_links()
         path = [self.id]
