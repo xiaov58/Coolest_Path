@@ -25,7 +25,7 @@ class crn_manager:
         self.role = 0
         self.status = 0         #0: free 1: transmiting 2: reiceving
         self.route = []
-        self.route = [1, 4, 5, 6]
+        #self.route = [1, 4, 5, 6]
         self.best_channel = 0       # coolest and available channel for transmiting to  next hop
         self.next_hop = 0
         self.best_links = []
