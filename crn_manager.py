@@ -193,7 +193,7 @@ class crn_manager:
         print "process at virtual time: %.3f" % (self.get_virtual_time())
         
         # check if route still hold
-        if self.id != meta_data.destination_id and self.routing_error_cnt > self.routing_reply_cnt and self.process_cnt>0:
+        if self.id != meta_data.destination_id and self.routing_error_cnt == self.routing_reply_cnt and self.process_cnt>0:
             if self.check_route() == 1:
                 # error
                 if self.id == meta_data.source_id:
