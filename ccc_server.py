@@ -119,7 +119,6 @@ class ccc_server(threading.Thread):
                             rep_string = cPickle.dumps(rep)
                             self.crn_manager.broadcast(rep_string)
                     self.crn_manager.process_con.release()
-                    time.sleep(meta_data.min_time)
                                     
                 # routing reply
                 if ctrl_msg.type == 7:    
@@ -139,7 +138,6 @@ class ccc_server(threading.Thread):
                                 #self.crn_manager.process_con.release()
                         self.crn_manager.broadcast(str)
                     self.crn_manager.process_con.release()
-                    time.sleep(meta_data.min_time)
             
                 # error
                 if ctrl_msg.type == 8:    
@@ -155,7 +153,6 @@ class ccc_server(threading.Thread):
                         else:
                             self.crn_manager.init_request()
                     self.crn_manager.process_con.release()
-                    time.sleep(meta_data.min_time)
                             
                 # air_free reply
                 if ctrl_msg.type == 9:              

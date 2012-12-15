@@ -9,7 +9,7 @@ channels = [0, 2.512, 2.510, 2.508]
 # other experiment parameter
 init_channel = 1
 round = 50               
-setup_time = 3               # second
+setup_time = 2               # second
 air_time = 1                    # second
 min_time = 0.001            # second
 yeild_time = 0.01 # second
