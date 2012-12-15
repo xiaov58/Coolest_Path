@@ -130,15 +130,12 @@ class crn_manager:
         time_gap = self.get_virtual_time() - self.sense_cnt * meta_data.time_interval
         self.sense_cnt += 1
         self.sense_timer = threading.Timer(meta_data.time_interval - time_gap, self.sense)
-        #print "next in %.3f" % (meta_data.time_interval - time_gap)
         self.sense_timer.daemon = True
         self.sense_timer.start()
         self.process_con.release()
-        print "sense done at %.3f" % self.get_virtual_time()
         
     def pseudo_check(self):
-        #vts = self.sense_cnt * meta_data.time_interval
-        vts = self.schedule_cnt * meta_data.time_interval
+        vts = self.sense_cnt * meta_data.time_interval
         
         self.total_time += 1
         # recover channel_mask to original
@@ -183,7 +180,7 @@ class crn_manager:
         self.broadcast(err_string)
 
     def init_request(self):
-        print "init request"
+        print "init request %d" % self.routing_error_cnt
         self.role.routing_request_cnt += 1
         self.get_best_links()
         path = [self.id]
@@ -196,7 +193,7 @@ class crn_manager:
         print "process at virtual time: %.3f" % (self.get_virtual_time())
         
         # check if route still hold
-        if self.id != meta_data.destination_id:
+        if self.id != meta_data.destination_id and self.routing_error_cnt > self.routing_reply_cnt:
             if self.check_route() == 1:
                 # error
                 if self.id == meta_data.source_id:
@@ -244,45 +241,6 @@ class crn_manager:
                 if self.link_temp_table[i][j] < cost and self.channel_mask[j] == 1 and self.neighbour_channel_mask[i][j] ==1 and i == self.next_hop:
                     self.best_channel = j 
                     cost = self.link_temp_table[i][j]
-    
-    def schedule(self):
-        self.schedule_con.acquire()
-        if self.schedule_cnt >= 2:
-            print "sense at virtual time: %.3f" %  (self.get_virtual_time())
-            
-            if self.sense_cnt == meta_data.round:
-                self.exit()
-                
-            # block process thread before process timer unblock it
-            self.process_flag = 0
-            self.pseudo_check()
-            
-            time.sleep(meta_data.sensing_time)
-            print "process at virtual time: %.3f" %  (self.get_virtual_time())
-            
-            # check if route still hold
-            if self.id != meta_data.destination_id:
-                if self.check_route() == 1:
-                    # error
-                    if self.id == meta_data.source_id:
-                        # make up
-                        self.routing_error_cnt += 1
-                        self.clear()
-                        self.init_request()
-                    else:
-                        self.init_error()
-                else:
-                    self.process_flag = 1
-                    self.process_con.notify()
-        
-        
-        # adjust time and set timer for next round
-        time_gap = self.get_virtual_time() - self.schedule_cnt * meta_data.time_interval
-        self.schedule_cnt += 1
-        self.schedule_timer = threading.Timer(meta_data.time_interval - time_gap, self.schedule)
-        self.schedule_timer.daemon = True
-        self.schedule_timer.start()
-        self.schedule_con.release()
         
     
     def run(self):

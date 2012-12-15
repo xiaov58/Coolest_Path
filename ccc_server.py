@@ -118,11 +118,11 @@ class ccc_server(threading.Thread):
                             rep = routing_reply_msg(self.crn_manager.routing_reply_cnt + 1, route)
                             rep_string = cPickle.dumps(rep)
                             self.crn_manager.broadcast(rep_string)
-                    self.crn_manager.schedule_con.release()
+                    self.crn_manager.process_con.release()
                                     
                 # routing reply
                 if ctrl_msg.type == 7:    
-                    self.crn_manager.schedule_con.acquire()
+                    self.crn_manager.process_con.acquire()
                     if self.crn_manager.routing_reply_cnt < ctrl_msg.routing_reply_cnt:
                         self.crn_manager.routing_reply_cnt += 1
                         self.crn_manager.route = ctrl_msg.route
@@ -132,17 +132,17 @@ class ccc_server(threading.Thread):
                         if ctrl_msg.route != [] and self.crn_manager.id in self.crn_manager.route:
                             if self.crn_manager.id != meta_data.destination_id:
                                 self.crn_manager.set_best_channel()
-                                self.crn_manager.process_con.acquire()
+                                #self.crn_manager.process_con.acquire()
                                 self.crn_manager.process_flag = 1
                                 self.crn_manager.process_con.notifyAll()
-                                self.crn_manager.process_con.release()
+                                #self.crn_manager.process_con.release()
                         self.crn_manager.broadcast(str)
-                    self.crn_manager.schedule_con.release()
+                    self.crn_manager.process_con.release()
             
                 # error
                 if ctrl_msg.type == 8:    
                     print "receive error %d " % ctrl_msg.routing_error_cnt
-                    self.crn_manager.schedule_con.acquire()
+                    self.crn_manager.process_con.acquire()
                     print self.crn_manager.routing_error_cnt
                     #ignore if already broadcasted error
                     if self.crn_manager.routing_error_cnt < ctrl_msg.routing_error_cnt:
@@ -154,7 +154,7 @@ class ccc_server(threading.Thread):
                             self.crn_manager.broadcast(str)
                         else:
                             self.crn_manager.init_request()
-                    self.crn_manager.schedule_con.release()
+                    self.crn_manager.process_con.release()
                             
                 # air_free reply
                 if ctrl_msg.type == 9:              
