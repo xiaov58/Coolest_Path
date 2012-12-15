@@ -24,20 +24,18 @@ class source:
         
     def run(self):
         while 1:       
-            # app layer: fill the buffer once it is empty
-            # do not need to lock app layer during sensing, because app layer do not use USRP
-            if len(self.mac_layer_.buffer) == 0 and self.crn_manager.status == 0:
-                for i in range(meta_data.batch_size):
-                    self.generate_pakcage()
-                    
             self.crn_manager.process_con.acquire()
             if self.crn_manager.process_flag == 0:
                 self.crn_manager.process_con.wait()
-            self.crn_manager.process_con.release()
+            
+            
+            if len(self.mac_layer_.buffer) == 0 and self.crn_manager.status == 0:
+                for i in range(meta_data.batch_size):
+                    self.generate_pakcage()
             
             if self.crn_manager.status != 2:
                 self.mac_layer_.tx_run()
-
+            self.crn_manager.process_con.release()
             time.sleep(meta_data.min_time)
         
     def generate_pakcage(self):
