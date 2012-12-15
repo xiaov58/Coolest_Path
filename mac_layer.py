@@ -68,7 +68,8 @@ class mac_layer:
         return value
 
     def tx_run(self):            
-#        if self.crn_manager.status == 0 and len(self.buffer) == 0:
+        if self.crn_manager.status == 0 and len(self.buffer) == 0:
+            print "Loop"
 #            if self.crn_manager.id != meta_data.source_id:
 #                self.crn_manager.buffer_con.acquire()
 #                print "buffer wait at %.3f" % self.crn_manager.get_virtual_time()
