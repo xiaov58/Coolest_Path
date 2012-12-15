@@ -48,7 +48,7 @@ class crn_manager:
         self.early_free_flag = 0
         
         # counts
-        self.schedule.cnt = 0
+        self.schedule_cnt = 0
         self.sense_cnt = 0
         self.process_cnt = 0
         self.routing_reply_cnt = 0
