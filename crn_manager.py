@@ -170,6 +170,7 @@ class crn_manager:
         return error_flag
         
     def init_error(self):
+        print "init error"
         self.routing_error_cnt += 1
         self.clear()
         err = routing_error_msg(self.routing_error_cnt)
