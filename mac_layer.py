@@ -58,6 +58,11 @@ class mac_layer:
                         if self.crn_manager.id == meta_data.destination_id:
                             value = 1
                         elif self.crn_manager.id != meta_data.source_id:
+                            if len(self.buffer) == 0:
+                                self.crn_manager.buffer_con.acquire()
+                                print "buffer notify at %.3f" % self.crn_manager.get_virtual_time()
+                                self.crn_manager.buffer_con.notify()
+                                self.crn_manager.buffer_con.release()
                             self.buffer.append([pktno, self.crn_manager.id, self.crn_manager.next_hop, data])
                 else:
                     print "overhear! pktno: %d, from %d to %d" % (pktno, pkt_sender_id, pkt_receiver_id)
