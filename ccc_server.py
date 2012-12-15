@@ -62,6 +62,7 @@ class ccc_server(threading.Thread):
                                 
                 # rts
                 if ctrl_msg.type == 3:
+                    print "CCC receive RTS"
                     if self.crn_manager.status == 0:
                         self.crn_manager.status = 2
                         self.crn_manager.role.tb.set_freq(meta_data.channels[ctrl_msg.channel_id])                        
@@ -141,9 +142,7 @@ class ccc_server(threading.Thread):
             
                 # error
                 if ctrl_msg.type == 8:    
-                    print "receive error %d " % ctrl_msg.routing_error_cnt
                     self.crn_manager.process_con.acquire()
-                    print self.crn_manager.routing_error_cnt
                     #ignore if already broadcasted error
                     if self.crn_manager.routing_error_cnt < ctrl_msg.routing_error_cnt:
                         

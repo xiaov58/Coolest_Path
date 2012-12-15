@@ -173,14 +173,12 @@ class crn_manager:
     def init_error(self):
         
         self.routing_error_cnt += 1
-        print "init error %d" % self.routing_error_cnt
         self.clear()
         err = routing_error_msg(self.routing_error_cnt)
         err_string = cPickle.dumps(err)
         self.broadcast(err_string)
 
     def init_request(self):
-        print "init request %d" % self.routing_error_cnt
         self.role.routing_request_cnt += 1
         self.get_best_links()
         path = [self.id]
