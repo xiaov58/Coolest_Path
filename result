@@ -1,0 +1,6 @@
+on		off		file_index   	run_index		packet		throghput
+0.1		0.1		1				1				535	
+0.1		0.1		1				2				512
+0.1		0.1
+0.1		0.1
+0.1		0.1
