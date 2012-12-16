@@ -24,16 +24,21 @@ class mac_layer:
                             struct.pack('!H', pkt_receiver_id & 0xffff) + \
                             data
         return payload
+        
+    def sense(self):
+        # carrier sense
+        if self.crn_manager.sense_flag == 0:
+            delay_range = meta_data.min_time
+            while self.crn_manager.role.tb.carrier_sense():
+                sys.stderr.write('B')
+                time.sleep(delay_range * random.random())
+                if delay_range < 0.050:
+                    delay_range = delay_range * 2       # exponential back-off range
+        
     
     def send(self):
         payload = self.fetch_packge()
-        # carrier sense
-        delay_range = meta_data.min_time
-        while self.crn_manager.role.tb.carrier_sense():
-            sys.stderr.write('B')
-            time.sleep(delay_range * random.random())
-            if delay_range < 0.050:
-                delay_range = delay_range * 2       # exponential back-off range
+        self.sense()
         self.crn_manager.role.tb.txpath.send_pkt(payload, False)
         print "send! pktno %d; channel %d; buffer: %d" % (self.pktno, self.crn_manager.best_channel, len(self.buffer))
         
@@ -133,6 +138,7 @@ class mac_layer:
         payload =    struct.pack('!H', 0 & 0xffff) +\
                     struct.pack('!H', self.crn_manager.id & 0xffff) + \
                     struct.pack('!H', self.crn_manager.next_hop & 0xffff) 
+        self.sense()
 #        # carrier sense
 #        delay_range = meta_data.min_time
 #        while self.crn_manager.role.tb.carrier_sense():

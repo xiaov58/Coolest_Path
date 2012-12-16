@@ -45,6 +45,9 @@ class crn_manager:
         self.rts_register_id = 0
         self.rts_register_channel = 0
         self.early_free_flag = 0
+        self.sense_flag = 0
+        if meta_data.full_duplex_mask[self.id] == 1:
+             self.sense_flag = 1
         
         # counts
         self.sense_cnt = 0
