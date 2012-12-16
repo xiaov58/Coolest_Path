@@ -26,7 +26,8 @@ for k in range(10):
             result.append([start, end])
             store = end
     
-    final.append([result])
+    final.append(result)
+
 
 print final
     
