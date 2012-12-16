@@ -148,7 +148,6 @@ class crn_manager:
             for j in meta_data.pu_activity[i]:
                 #update channel_utilization_table
                 if j[0] < vts < j[1] or j[0] < vts + 0.1 < j[1] :
-                    print i
                     self.channel_mask[meta_data.pu_channel[i]] = 0
                     self.active_time_table[meta_data.pu_channel[i]] += 1
                     
