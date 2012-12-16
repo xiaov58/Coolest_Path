@@ -3,7 +3,7 @@
 packet_size = 400           # Byte
 carrier_thredshold = -60
 bandwidth = 0.2       # MHz
-channels = [0, 2.512, 2.511, 2.515, 2.513, 2.514]
+channels = [0, 2.512, 2.511, 2.510, 2.513, 2.514]
 
 
 
