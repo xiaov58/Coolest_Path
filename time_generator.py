@@ -28,7 +28,6 @@ for k in range(10):
     
     final.append(result)
 
-
 print final
     
     
