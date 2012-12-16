@@ -40,6 +40,7 @@ ip_table =                      ['' , '11.0.0.1'  , '11.0.0.2' , '11.0.0.3', '11
 
 
 # PU info (first item is null to make it easy to count)
+pu_channel_num = 5
 pu_id_table = [[] ,   []  ,   [1, 2, 3, 4, 5]  ,  [] , [] , [6, 7, 8, 9, 10] , []]
 pu_channel = [0, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5]
 pu_activity = [
