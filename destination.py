@@ -20,7 +20,6 @@ class destination:
         self.links = []
         self.routing_request_cnt = 0
         self.routing_request_log = [] 
-        self.log_mask = []
         self.link_number = self.get_link_number()
             
     def get_link_number(self):
@@ -30,7 +29,6 @@ class destination:
         return link_number
         
     def calculate_path(self):
-        self.routing_request_log.append(self.crn_manager.get_virtual_time())
         graph = Graph()
         for i in range(len(self.links)):
             graph.add_edge(self.links[i][0], self.links[i][1], {'cost': self.links[i][2]})
@@ -43,9 +41,9 @@ class destination:
         # check and reply
         if meta_data.INF in result[2]:
             route = []
-            self.log_mask.append(0)
+            self.routing_request_log.append([self.crn_manager.get_virtual_time(), 0])
         else: 
-            self.log_mask.append(1)
+            self.routing_request_log.append([self.crn_manager.get_virtual_time(), 1])
         #self.crn_manager.route = route
         return route
 

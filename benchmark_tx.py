@@ -36,16 +36,13 @@ class my_top_block(gr.top_block):
     def __init__(self, options):
         gr.top_block.__init__(self)
 
-        if(options.tx_freq is not None):
-            self.sink = uhd_transmitter(options.args,
-                                        options.bandwidth,
-                                        options.tx_freq, options.tx_gain,
-                                        options.spec, options.antenna,
-                                        options.verbose)
-        elif(options.to_file is not None):
-            self.sink = gr.file_sink(gr.sizeof_gr_complex, options.to_file)
-        else:
-            self.sink = gr.null_sink(gr.sizeof_gr_complex)
+        
+        self.sink = uhd_transmitter(options.args,
+                                    options.bandwidth,
+                                    options.tx_freq, options.tx_gain,
+                                    options.spec, options.antenna,
+                                    options.verbose)
+  
 
         # do this after for any adjustments to the options that may
         # occur in the sinks (specifically the UHD sink)
@@ -66,14 +63,6 @@ def main():
     expert_grp = parser.add_option_group("Expert")
     parser.add_option("-s", "--size", type="eng_float", default=400,
                       help="set packet size [default=%default]")
-    parser.add_option("-M", "--megabytes", type="eng_float", default=1.0,
-                      help="set megabytes to transmit [default=%default]")
-    parser.add_option("","--discontinuous", action="store_true", default=False,
-                      help="enable discontinuous mode")
-    parser.add_option("","--from-file", default=None,
-                      help="use intput file for packet contents")
-    parser.add_option("","--to-file", default=None,
-                      help="Output file for modulated samples")
 
     transmit_path.add_options(parser, expert_grp)
     digital.ofdm_mod.add_options(parser, expert_grp)
@@ -87,37 +76,24 @@ def main():
     r = gr.enable_realtime_scheduling()
     if r != gr.RT_OK:
         print "Warning: failed to enable realtime scheduling"
-    
-    
+
     tb.start()                       # start flow graph
-    start = time.time()
     
     # generate and send packets
-    nbytes = int(1e6 * options.megabytes)
-    n = 0
     pktno = 0
     pkt_size = int(options.size)
 
-    while n < nbytes:
-        if options.from_file is None:
-            data = (pkt_size - 2) * chr(pktno & 0xff) 
-        else:
-            data = source_file.read(pkt_size - 2)
-            if data == '':
-                break;
-
+    while pktno < 200:
+        pktno += 1
+        data = (pkt_size - 2) * chr(pktno & 0xff) 
         payload = struct.pack('!H', pktno & 0xffff) + data
         send_pkt(payload)
-        n += len(payload)
         sys.stderr.write('.')
-        if options.discontinuous and pktno % 5 == 4:
-            time.sleep(1)
-        pktno += 1
         
+        
+    time.sleep(1)
     send_pkt(eof=True)
     tb.wait()                       # wait for it to finish
-    end = time.time()
-    print "Time: %.3f" % (end - start)
 
 if __name__ == '__main__':
     try:

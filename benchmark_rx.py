@@ -31,22 +31,18 @@ from gnuradio import digital
 from receive_path import receive_path
 from uhd_interface import uhd_receiver
 
-import struct, sys, time
+import struct, sys
 
 class my_top_block(gr.top_block):
     def __init__(self, callback, options):
         gr.top_block.__init__(self)
 
-        if(options.rx_freq is not None):
-            self.source = uhd_receiver(options.args,
-                                       options.bandwidth,
-                                       options.rx_freq, options.rx_gain,
-                                       options.spec, options.antenna,
-                                       options.verbose)
-        elif(options.from_file is not None):
-            self.source = gr.file_source(gr.sizeof_gr_complex, options.from_file)
-        else:
-            self.source = gr.null_source(gr.sizeof_gr_complex)
+        self.source = uhd_receiver(options.args,
+                                   options.bandwidth,
+                                   options.rx_freq, options.rx_gain,
+                                   options.spec, options.antenna,
+                                   options.verbose)
+
 
         # Set up receive path
         # do this after for any adjustments to the options that may
@@ -75,24 +71,10 @@ def main():
             n_right += 1
         print "ok: %r \t pktno: %d \t n_rcvd: %d \t n_right: %d" % (ok, pktno, n_rcvd, n_right)
 
-        if 0:
-            printlst = list()
-            for x in payload[2:]:
-                t = hex(ord(x)).replace('0x', '')
-                if(len(t) == 1):
-                    t = '0' + t
-                printlst.append(t)
-            printable = ''.join(printlst)
 
-            print printable
-            print "\n"
 
     parser = OptionParser(option_class=eng_option, conflict_handler="resolve")
     expert_grp = parser.add_option_group("Expert")
-    parser.add_option("","--discontinuous", action="store_true", default=False,
-                      help="enable discontinuous")
-    parser.add_option("","--from-file", default=None,
-                      help="input file of samples to demod")
 
     receive_path.add_options(parser, expert_grp)
     uhd_receiver.add_options(parser)
@@ -100,11 +82,6 @@ def main():
 
     (options, args) = parser.parse_args ()
 
-    if options.from_file is None:
-        if options.rx_freq is None:
-            sys.stderr.write("You must specify -f FREQ or --freq FREQ\n")
-            parser.print_help(sys.stderr)
-            sys.exit(1)
 
     # build the graph
     tb = my_top_block(rx_callback, options)

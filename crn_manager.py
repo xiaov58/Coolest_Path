@@ -30,13 +30,13 @@ class crn_manager:
         self.next_hop = 0
         self.best_links = []
         self.start_local_time = 0
+        self.channel_log = []
             
         # condition variables
         self.time_sync_con = threading.Condition()  
         self.process_con = threading.Condition()  
         self.rts_ack_con = threading.Condition()  
         self.air_con = threading.Condition()
-        self.buffer_con  =  threading.Condition()
         
         # flags
         self.time_sync_flag = 0
@@ -107,12 +107,13 @@ class crn_manager:
     
     def exit(self):
         print "Done !!" 
+        print "Channel log: %r" % (self.channel_log)
         if self.id == meta_data.source_id:
             print "Source: send out %d" % (self.role.mac_layer_.pktno)
         if self.id == meta_data.destination_id:
             print "Destination: recieve %d" % (self.role.received_cnt)
-            print self.role.routing_request_log
-            print self.role.log_mask
+            print "Route log: %r" % (self.role.routing_request_log)
+#            print self.role.log_mask
         sys.exit(0)
         
     # Thread priority need
@@ -240,7 +241,7 @@ class crn_manager:
         #print self.best_links
 
     def set_best_channel(self):
-        self.best_channel = 0
+        old_best_channel = self.best_channel
         self.next_hop = self.route[self.route.index(self.id) + 1]
         for i in meta_data.neighbour_table[self.id]:
             cost = meta_data.INF
@@ -248,6 +249,9 @@ class crn_manager:
                 if self.link_temp_table[i][j] < cost and self.channel_mask[j] == 1 and self.neighbour_channel_mask[i][j] ==1 and i == self.next_hop:
                     self.best_channel = j 
                     cost = self.link_temp_table[i][j]
+                    
+        if self.best_channel != old_best_channel:
+            self.channel_log.append([self.get_virtual_time(), self.best_channel])
         
     
     def run(self):
