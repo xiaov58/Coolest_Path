@@ -86,6 +86,6 @@ class crn_manager:
         
     def broadcast(self, ctrl_string):
         for i in self.socks_table.keys():
-            self.socks_table[i].send(ctrl_string)
+            self.neighbor_socks_table[i].send(ctrl_string)
             
             
