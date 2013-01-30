@@ -43,5 +43,6 @@ class crn_manager:
             print sock.recv( meta_data.sock_buffer_size )
             self.neighbor_socks_table[i] = sock
             
+        time.sleep(100)
             
             
