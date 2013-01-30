@@ -85,7 +85,7 @@ class crn_manager:
         self.start_local_time = time.time()
         
     def broadcast(self, ctrl_string):
-        for i in self.socks_table.keys():
+        for i in self.neighbor_socks_table.keys():
             self.neighbor_socks_table[i].send(ctrl_string)
             
             
