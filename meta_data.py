@@ -1,16 +1,20 @@
 
 # default option value
-packet_size = 400           # Byte
-carrier_thredshold = -55
-bandwidth = 0.2       # MHz
-channels = [0, 2.5120, 2.5125, 2.513, 2.5135, 2.514]
+default_id = 100       #Magic number
+default_packet_size = 400           # Byte
+default_carrier_thredshold = -60
+default_bandwidth = 0.2       # MHz
+
+# channel info
+init_channel_num = 0
+channels_freq_table = [2.5120, 2.5125, 2.513, 2.5135, 2.514]
+
+# time
+ccc_server_setup_time = 1               # second
 
 
-
-# other experiment parameter
-init_channel = 1
 round = 25               
-setup_time = 2               # second
+
 air_time = 1                    # second
 min_time = 0.001            # second
 yeild_time = 0.02 # second
@@ -34,9 +38,9 @@ sock_buffer_size = 1000
 # Topology  (first item is null to make it easy to count)
 source_id = 1
 destination_id = 6
-full_duplex_mask =       [0, 0, 1, 0, 1, 0, 1]
-neighbour_table =         [[], [2, 4], [1, 3 , 5] , [2, 6] , [1, 5] , [2, 4, 6] , [3, 5]] 
-ip_table =                      ['' , '11.0.0.1'  , '11.0.0.2' , '11.0.0.3', '11.0.0.4', '11.0.0.5', '11.0.0.6'] 
+full_duplex_mask =       [0, 1, 0, 1, 0, 1]
+neighbour_table =        [[1, 3], [0, 2, 4] , [1, 3, 5] , [0, 2, 4] , [1, 3, 5] , [2, 4]] 
+ip_table =               ['11.0.0.10', '11.0.0.11', '11.0.0.12', '11.0.0.13', '11.0.0.14', '11.0.0.15'] 
 
 
 # PU info (first item is null to make it easy to count)

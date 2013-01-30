@@ -1,6 +1,8 @@
 *.py[co]
 id
 Result
+.project
+.pydevproject
 
 # Packages
 *.egg

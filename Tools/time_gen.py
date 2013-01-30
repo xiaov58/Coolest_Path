@@ -1,4 +1,6 @@
 
+#usage example: python time_gen.py 0.05 0.1
+
 import random
 import sys
 

@@ -57,7 +57,7 @@ class ccc_server(threading.Thread):
                     for i in meta_data.neighbour_table[self.crn_manager.id]:
                         if i == ctrl_msg.sender_id:
                             self.crn_manager.neighbour_channel_mask[i] = ctrl_msg.channel_mask
-                            for j in range(len(meta_data.channels)) :
+                            for j in range(len(meta_data.channels_freq_table)) :
                                 self.crn_manager.link_temp_table[i][j] = 1 - (1-self.crn_manager.channel_utilization_table[j])*(1-ctrl_msg.channel_utilization_table[j])
                                 
                 # rts
@@ -65,7 +65,7 @@ class ccc_server(threading.Thread):
                     print "CCC receive RTS"
                     if self.crn_manager.status == 0:
                         self.crn_manager.status = 2
-                        self.crn_manager.role.tb.set_freq(meta_data.channels[ctrl_msg.channel_id])                        
+                        self.crn_manager.role.tb.set_freq(meta_data.channels_freq_table[ctrl_msg.channel_id])                        
                         print "ready to receive at channel %d at %.3f" % (ctrl_msg.channel_id, self.crn_manager.get_virtual_time())
                         
                         rts_ack = rts_ack_msg()
@@ -129,15 +129,8 @@ class ccc_server(threading.Thread):
                         self.crn_manager.route = ctrl_msg.route
                         print self.crn_manager.route
                         print "%.3f" % self.crn_manager.get_virtual_time()
-                        
-#                        if ctrl_msg.route != [] and self.crn_manager.id in self.crn_manager.route:
-#                            if self.crn_manager.id != meta_data.destination_id:
-#                                self.crn_manager.set_best_channel()
-#                                #self.crn_manager.process_con.acquire()
-#                                self.crn_manager.process_flag = 1
-#                                self.crn_manager.process_con.notifyAll()
-#                                #self.crn_manager.process_con.release()
-                        self.crn_manager.broadcast(str)
+                        if self.crn_manager.id != meta_data.destination_id:
+                            self.crn_manager.broadcast(str)
                     self.crn_manager.process_con.release()
             
                 # error
