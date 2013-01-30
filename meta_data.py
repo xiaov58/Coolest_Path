@@ -11,6 +11,8 @@ channels_freq_table = [2.5120, 2.5125, 2.513, 2.5135, 2.514]
 
 # time
 ccc_server_setup_time = 1               # second
+connection_setup_time = 1               # second
+time_sync_setup_time = 1                # second
 
 
 round = 25               
@@ -36,8 +38,8 @@ sock_buffer_size = 1000
 
 
 # Topology  (first item is null to make it easy to count)
-source_id = 1
-destination_id = 6
+source_id = 0
+destination_id = 5
 full_duplex_mask =       [0, 1, 0, 1, 0, 1]
 neighbour_table =        [[1, 3], [0, 2, 4] , [1, 3, 5] , [0, 2, 4] , [1, 3, 5] , [2, 4]] 
 ip_table =               ['11.0.0.10', '11.0.0.11', '11.0.0.12', '11.0.0.13', '11.0.0.14', '11.0.0.15'] 

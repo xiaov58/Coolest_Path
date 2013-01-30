@@ -55,7 +55,7 @@ def main():
     
     # two threads: ccc_server and main schedule loop
     my_crn_manager.establish_ccc()
-    my_crn_manager.run()
+    my_crn_manager.schedule_run()
 
 if __name__ == '__main__':
     try:

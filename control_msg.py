@@ -1,9 +1,8 @@
 
-        
+# control msg for time synchronization
 class time_sync_msg:
     def __init__(self, time_sync_flag):
         self.type = 1
-        self.time_sync_flag = time_sync_flag
         
 class sensing_result_msg:
     def __init__(self, sender_id, channel_utilization_table, channel_mask):
