@@ -4,33 +4,36 @@
 import random
 import sys
 
-cnt = 10
-final = [[]]
 
-for k in range(10):
+# experiment time
+experiment_time = 50
+# hopefully length of 10 can generate longer than 50s which is the experiment time
+# otherwise we need to increase this.
+cnt = 15
+# total channel number
+channel_number = 20
+
+final = []
+
+for k in range(channel_number):
     on = []
     off = []
-    time = 0
+    timestamp = 0
     result = []
-    store = 0
     for i in range(cnt):
         on.append(random.expovariate(float(sys.argv[1])))
-        
-    for i in range(cnt):
         off.append(random.expovariate(float(sys.argv[2])))
-        
-    for i in range(cnt):
-        if store < 50:
-            time += off[i]
-            start = time
-            time += on[i]
-            end = time
+        if timestamp + off[i] < experiment_time:
+            timestamp += off[i]
+            start = timestamp
+            timestamp += on[i]
+            end = timestamp
             result.append([start, end])
-            store = end
     
     final.append(result)
 
 print final
+
     
     
     

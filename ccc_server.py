@@ -19,6 +19,12 @@ class ccc_server(threading.Thread):
         self.srvsock.listen( meta_data.max_client )
         self.descriptors = [self.srvsock]
         print "Control Server started on node %d" % (self.crn_manager.id)
+    
+    def accept_new_connection(self):
+        newsock, (remhost, remport) = self.srvsock.accept()
+        self.descriptors.append(newsock)
+        newsock.send("Connected to ccc_server on node %d" % (self.crn_manager.id))
+        print "Client joined %s:%s" % (remhost, remport)
         
     def run(self):
         while 1:
@@ -53,13 +59,15 @@ class ccc_server(threading.Thread):
                             else:
                                 pass
                         
-                        # signal
+                        # sensing_result_msg
+                        if ctrl_msg.type == 2:
+                            self.crn_manager.my_link_value_table.update_item(ctrl_msg.sender_id, 
+                                                                          ctrl_msg.channel_util_table, 
+                                                                          ctrl_msg.channel_mask_table,
+                                                                          ctrl_msg.round_cnt)
+                            if self.crn_manager.my_link_value_table.check_all_updated() == True:
+                                print "OK"
+                                
                             
                         
-    
-    def accept_new_connection(self):
-        newsock, (remhost, remport) = self.srvsock.accept()
-        self.descriptors.append(newsock)
-        newsock.send("Connected to ccc_server on node %d" % (self.crn_manager.id))
-        print "Client joined %s:%s" % (remhost, remport)
         
