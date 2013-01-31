@@ -32,7 +32,7 @@ for k in range(channel_number):
     
     final.append(result)
 
-print final
+    print final[k]
 
     
     

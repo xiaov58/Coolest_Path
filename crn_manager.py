@@ -89,7 +89,7 @@ class crn_manager:
         
         # block Tx/Rx
         
-        # pseudo sensing here, do nothing actually
+        # pseudo sensing here, do nothing actually, need to adjust sleep time
         sensing_start_time = self.get_virtual_time()
         print sensing_start_time
         time.sleep(meta_data.pu_sensing_time)
