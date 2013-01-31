@@ -78,6 +78,7 @@ class crn_manager:
         self.sense_timer.start()
         
         # make use of first interval to build graph
+        time.sleep(100)
         
         
     def main_loop(self):
