@@ -66,7 +66,7 @@ class ccc_server(threading.Thread):
                                                                           ctrl_msg.channel_mask_table,
                                                                           ctrl_msg.round_cnt)
                             if self.crn_manager.my_link_value_table.check_all_updated() == True:
-                                print "OK"
+                                print self.crn_manager.my_link_value_table.round_cnt
                                 
                             
                         
