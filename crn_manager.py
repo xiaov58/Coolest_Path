@@ -125,7 +125,7 @@ class crn_manager:
                     self.channel_mask_table[(i-1)%len(meta_data.channels_freq_table)] = 1
                     self.channel_busytime_table[(i-1)%len(meta_data.channels_freq_table)] += meta_data.round_time
         # update channel utilization table
-        for i in range(len(self.channel_util_table)) :
+        for i in range(len(meta_data.channels_freq_table)) :
             self.channel_util_table[i] = self.channel_busytime_table[i]/self.experiment_run_time
         
                     
