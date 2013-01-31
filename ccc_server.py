@@ -61,12 +61,18 @@ class ccc_server(threading.Thread):
                         
                         # sensing_result_msg
                         if ctrl_msg.type == 2:
-                            self.crn_manager.my_link_value_table.update_item(ctrl_msg.sender_id, 
+                            self.crn_manager.sensing_result_msg_buffer_lock.acquire()
+                            # check if node itself's channel info is updated
+                            if self.crn_manager.channel_info_cnt == self.crn_manager.round_cnt:
+                                self.crn_manager.my_link_value_table.update_item(ctrl_msg.sender_id, 
                                                                           ctrl_msg.channel_util_table, 
                                                                           ctrl_msg.channel_mask_table,
                                                                           ctrl_msg.round_cnt)
-                            if self.crn_manager.my_link_value_table.check_all_updated() == True:
-                                print self.crn_manager.my_link_value_table.round_cnt
+                            else:
+                                # if node itself's channel info is not updated yet
+                                # save this msg to buffer
+                                self.crn_manager.sensing_result_msg_buffer.add(ctrl_msg)
+                            self.crn_manager.sensing_result_msg_buffer_lock.release()
                                 
                             
                         

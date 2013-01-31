@@ -21,6 +21,8 @@ class crn_manager:
         self.options = options
         self.id = int(options.id)
         
+        # record route
+        self.route = []
         # store all neighbor sockets info to easily send msg
         # key is the node id, value is the sock descriptor
         self.neighbor_socks_table = {}   
@@ -28,6 +30,8 @@ class crn_manager:
         self.start_local_time = 0
         # record the round_cnt to check if should exit and calculate channel utilization
         self.round_cnt = 0
+        # record channel_info to check if the channel info is updated
+        self.channel_info_cnt = 0
         # record active time for each channel to calculate channel utilization, initial values are 0
         self.channel_busytime_table = [0 for n in range(len(meta_data.channels_freq_table))]
         # record channel utilization info to exchange and calculate temperature, initial values are 0
@@ -35,13 +39,20 @@ class crn_manager:
         # record if channel is available in current round, so need to be refresh every round
         # initial values are 0, 0 means available, 1 means unavailable
         self.channel_mask_table = [0 for n in range(len(meta_data.channels_freq_table))]
+        # buffer the sensing_result_msg from neighbor when myself's channel info is not updated yet
+        self.sensing_result_msg_buffer = set() 
+        # sensing_result_msg_buffer_lock: make sure thread safety
+        self.sensing_result_msg_buffer_lock = threading.Lock()
         
         ####  flags ####
         # False: not synchronized yet, true: already synchronized
         self.time_sync_flag = False
+        self.link_table_update_flag = False
         
         #### condition variables ####
         self.time_sync_con = threading.Condition() 
+        self.link_table_update_con = threading.Condition()
+        
         
         # must place it at the bottom of __init__ ,because of the nature of script language 
         self.my_link_value_table = link_value_table(self.id, self)
@@ -73,6 +84,8 @@ class crn_manager:
         self.sync_time()
         
         # start timer and get ready to enter main loop
+        # main loop is the third thread
+        # use block and unblock to let main_loop and schedule_run perform as one
         self.sense_timer = threading.Timer(meta_data.block_setup_time, self.main_loop)
         self.sense_timer.daemon = True
         self.sense_timer.start()
@@ -92,7 +105,7 @@ class crn_manager:
         # pseudo sensing here, do nothing actually, need to adjust sleep time
         sensing_start_time = self.get_virtual_time()
         print sensing_start_time
-        time.sleep(meta_data.pu_sensing_time)
+        time.sleep(meta_data.pu_sensing_time - self.get_adjust_time())
         sensing_end_time = self.get_virtual_time()
         print sensing_end_time
         
@@ -107,16 +120,28 @@ class crn_manager:
         my_sensing_result_msg_string = cPickle.dumps(my_sensing_result_msg)
         self.broadcast(my_sensing_result_msg_string)
         
+        # make sure that link_vlaue_table is completely updated
+        self.link_table_update_con.acquire()
+        if self.link_table_update_flag == False:
+            self.link_table_update_con.wait() 
+        self.link_table_update_flag = False
+        self.link_table_update_con.release()
         
-        # unblock Tx/Rx
+        # select best channel, and check if the route still hold for current node
+        best_link_table = self.my_link_value_table.select_best_link()
+        print best_link_table
         
-        # set timer to enter loop again
-        self.sense_timer = threading.Timer(meta_data.round_time, self.main_loop)
+        
+        # process is done set timer to enter loop again
+        self.sense_timer = threading.Timer(meta_data.round_time, self.main_loop - self.get_adjust_time())
         self.sense_timer.daemon = True
         self.sense_timer.start()
         
+        # unblock Tx/Rx
+        
     
     def update_channel_info(self, start, end):
+        
         # check if the PU is active in this sensing slot
         for i in meta_data.pu_id_table[self.id]:
             for j in meta_data.pu_activity[i]:
@@ -127,7 +152,18 @@ class crn_manager:
         # update channel utilization table
         for i in range(len(meta_data.channels_freq_table)) :
             self.channel_util_table[i] = self.channel_busytime_table[i]/self.get_run_time()
-        
+
+        self.sensing_result_msg_buffer_lock.acquire()
+        # if there is any msg in buffer, check them out
+        for i in self.sensing_result_msg_buffer:
+            self.my_link_value_table.update_item(i.sender_id, 
+                                                 i.channel_util_table, 
+                                                 i.channel_mask_table,
+                                                 i.round_cnt)
+        self.sensing_result_msg_buffer.clear()
+        # indicate the channel info is updated
+        self.channel_info_cnt += 1
+        self.sensing_result_msg_buffer_lock.release()
                     
         
     def sync_time(self):
@@ -159,6 +195,9 @@ class crn_manager:
 
     def get_run_time(self):
         return self.round_cnt * meta_data.round_time
+    
+    def get_adjust_time(self):
+        return self.get_virtual_time() - (self.round_cnt - 1) * meta_data.round_time
     
     def exit(self):
         print "Done !!" 
