@@ -5,11 +5,11 @@ class time_sync_msg:
         self.type = 1
         
 class sensing_result_msg:
-    def __init__(self, sender_id, channel_util_table, channel_mask, round_cnt):
+    def __init__(self, sender_id, channel_util_table, channel_mask_table, round_cnt):
         self.type = 2
         self.sender_id = sender_id
         self.channel_util_table = channel_util_table
-        self.channel_mask = channel_mask
+        self.channel_mask_table = channel_mask_table
         self.round_cnt = round_cnt
         
 class rts_msg:
