@@ -133,7 +133,7 @@ class crn_manager:
         
         
         # process is done set timer to enter loop again
-        self.sense_timer = threading.Timer(meta_data.round_time, self.main_loop - self.get_adjust_time())
+        self.sense_timer = threading.Timer(meta_data.round_time - self.get_adjust_time(), self.main_loop )
         self.sense_timer.daemon = True
         self.sense_timer.start()
         
