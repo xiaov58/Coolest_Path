@@ -141,7 +141,8 @@ class crn_manager:
         
     
     def update_channel_info(self, start, end):
-        
+        # reset
+        self.channel_mask_table = [0 for n in range(len(meta_data.channels_freq_table))]
         # check if the PU is active in this sensing slot
         for i in meta_data.pu_id_table[self.id]:
             for j in meta_data.pu_activity[i]:
